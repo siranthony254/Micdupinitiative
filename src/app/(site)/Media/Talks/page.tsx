@@ -1,5 +1,5 @@
-import { ExternalMediaCard } from "@/src/components/media/ExternalMediaCard";
-import { MediaItem } from "@/src/components/media/types/media";
+import { ExternalMediaCard } from "@/components/media/ExternalMediaCard";
+import { MediaItem } from "@/components/media/types/media";
 
 const talks: MediaItem[] = [
   {
