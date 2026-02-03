@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MediaItem } from "@/src/components/media/types/media";
+import { MediaItem } from "@/components/media/types/media";
 
 interface Props extends MediaItem {}
 

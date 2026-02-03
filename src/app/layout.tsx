@@ -1,8 +1,8 @@
 // src/app/(site)/layout.tsx
 import "./globals.css";
 import type { Metadata } from "next";
-import { SiteHeader } from "@/src/components/layout/site-header";
-import  { SiteFooter }from "@/src/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
+import  { SiteFooter }from "@/components/layout/site-footer";
 
 /**
  * Global SEO Metadata for the Mic’d Up Initiative website. 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageShell } from "@/src/components/layout/PageShell";
+import { PageShell } from "@/components/layout/PageShell";
 
 export default function MicTheCampusPage() {
   return (
@@ -65,7 +65,7 @@ export default function MicTheCampusPage() {
         </Link>
 
         <Link
-          href="/Get-involved/Partnerships"
+          href="/Get-Involved/Partnerships"
           className="px-6 py-3 rounded-full border border-white/30 text-white hover:bg-white/10 transition"
         >
           Explore Partnerships
@@ -89,7 +89,7 @@ function ContributionCard({
 }) {
   return (
     <Link
-      href="/Get-involved/Partnerships"
+      href="/Get-Involved/Partnerships"
       className="block rounded-2xl border border-white/10 bg-white/5 p-6
                  hover:border-amber-400 hover:bg-white/10 transition"
     >

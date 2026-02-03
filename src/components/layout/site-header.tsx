@@ -100,17 +100,17 @@ const NAV_ITEMS = [
       {
         title: "Ambassadors",
         description: "Represent Mic’d Up on your campus",
-        href: "/Get-involved/Ambassadors",
+        href: "/Get-Involved/Ambassadors",
       },
       {
         title: "Partners",
         description: "Collaborate with the initiative",
-        href: "/Get-involved/Partnerships",
+        href: "/Get-Involved/Partnerships",
       },
       {
         title: "Mentors",
         description: "Guide emerging voices",
-        href: "/Get-involved/Mentors",
+        href: "/Get-Involved/Mentors",
       },
       {
         title: "Contact Us",

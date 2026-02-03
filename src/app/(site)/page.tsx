@@ -1,8 +1,8 @@
-import  HomeHero  from "@/src/components/home/HomeHero";
-import  WhyWeExist  from "@/src/components/home/WhyWeExist";
-import { WhatWeDo } from "@/src/components/home/WhatWeDo";
-import  DiscoverRail  from "@/src/components/home/DiscoverRail";
-import  GetInvolved  from "@/src/components/home/GetInvolved";
+import  HomeHero  from "@/components/home/HomeHero";
+import  WhyWeExist  from "@/components/home/WhyWeExist";
+import { WhatWeDo } from "@/components/home/WhatWeDo";
+import  DiscoverRail  from "@/components/home/DiscoverRail";
+import  GetInvolved  from "@/components/home/GetInvolved";
 
 /* ------------------------------------------------------------------ */
 /* Homepage Content Data (temporary – later comes from CMS / API)     */
