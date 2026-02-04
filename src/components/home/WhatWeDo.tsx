@@ -12,8 +12,8 @@ const pillars = [
   {
     title: "Shape Leaders",
     description:
-      "Through mentorship, leadership formation, and ethical grounding, we equip young people to lead with clarity and responsibility.",
-    outcomes: ["Mentorship", "Leadership formation", "Values-based growth"],
+      "Through mentorship, leadership formation, and ethical grounding, we equip young people to lead with clarity and responsible cultural influence across generations.",
+    outcomes: ["Mentorship", "Leadership formation", "Values-based influence"],
     href: "/programs/leadership",
   },
   {
@@ -43,7 +43,7 @@ export function WhatWeDo() {
         What We Do
       </h2>
       <p className="mt-4 text-lg text-white/70">
-        Mic’d Up Initiative is a campus-centered platform that discovers
+        Mic’d Up Initiative is a campus-centered movement that discovers
         voices, shapes leaders, hosts dialogue, and produces insight—turning
         youth expression into societal impact.
       </p>
