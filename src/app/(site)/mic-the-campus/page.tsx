@@ -8,15 +8,16 @@ export default function MicTheCampusPage() {
       subtitle="Enable student voices. Fund dialogue. Equip ideas to travel further."
     >
       {/* Intro */}
-      <section className="max-w-3xl mb-16">
-        <p className="text-white/80 text-lg leading-relaxed">
-          Mic’d Up Initiative exists to amplify student voices across African campuses.
-          This requires more than ideas — it requires tools, platforms, and sustained support.
+      <section className="max-w-3xl mb-14">
+        <p className="text-lg text-white/80 leading-relaxed">
+          Mic’d Up Initiative exists to amplify student voices across African
+          campuses. This requires more than ideas — it requires tools,
+          platforms, and sustained support.
         </p>
       </section>
 
       {/* Contribution Modes */}
-      <section className="grid gap-6 md:grid-cols-2 mb-20">
+      <section className="grid gap-6 sm:grid-cols-2 mb-16">
         <ContributionCard
           title="Fund the Voice"
           description="Support student-led conversations, research, and public dialogue through direct financial contributions."
@@ -43,11 +44,12 @@ export default function MicTheCampusPage() {
       </section>
 
       {/* Impact */}
-      <section className="max-w-3xl mb-20">
-        <h2 className="text-2xl font-semibold text-amber-300 mb-4">
+      <section className="max-w-3xl mb-16">
+        <h2 className="text-xl md:text-2xl font-semibold text-white mb-5">
           What Your Contribution Enables
         </h2>
-        <ul className="space-y-3 text-white/70 pl-4 list-disc">
+
+        <ul className="space-y-3 text-white/70 text-sm md:text-base list-disc pl-5">
           <li>Campus-based podcasts and talk series</li>
           <li>Student research and policy conversations</li>
           <li>Mentorship and leadership formation tours</li>
@@ -59,14 +61,21 @@ export default function MicTheCampusPage() {
       <section className="flex flex-wrap gap-4">
         <Link
           href="/contact"
-          className="px-6 py-3 rounded-full bg-amber-400 text-black font-medium hover:bg-amber-300 transition"
+          className="inline-flex items-center justify-center rounded-full
+                     bg-amber-400 px-7 py-3 text-sm font-semibold text-black
+                     hover:bg-amber-300 active:scale-[0.98]
+                     transition shadow-lg shadow-amber-400/20"
         >
           Start a Conversation
         </Link>
 
         <Link
-          href="/Get-Involved/Partnerships"
-          className="px-6 py-3 rounded-full border border-white/30 text-white hover:bg-white/10 transition"
+          href="/get-involved/partnerships"
+          className="inline-flex items-center justify-center rounded-full
+                     border border-white/20 px-7 py-3 text-sm font-semibold text-white
+                     hover:bg-white/5 hover:border-white/40
+                     active:scale-[0.98]
+                     transition"
         >
           Explore Partnerships
         </Link>
@@ -76,7 +85,7 @@ export default function MicTheCampusPage() {
 }
 
 /* -----------------------------
-   Local Component
+   Contribution Card (Premium)
 ------------------------------*/
 function ContributionCard({
   title,
@@ -89,12 +98,27 @@ function ContributionCard({
 }) {
   return (
     <Link
-      href="/Get-Involved/Partnerships"
-      className="block rounded-2xl border border-white/10 bg-white/5 p-6
-                 hover:border-amber-400 hover:bg-white/10 transition"
+      href={href}
+      className="group relative block rounded-2xl border border-white/10
+                 bg-gradient-to-br from-white/5 to-white/[0.02]
+                 p-7 shadow-sm hover:shadow-xl
+                 hover:border-amber-400/50
+                 transition-all duration-300"
     >
-      <h3 className="text-lg font-semibold text-amber-200 mb-2">{title}</h3>
-      <p className="text-white/75 text-sm leading-relaxed">{description}</p>
+      {/* Title */}
+      <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-amber-300 transition">
+        {title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-sm leading-relaxed text-white/70">
+        {description}
+      </p>
+
+      {/* Subtle Arrow */}
+      <span className="mt-5 inline-flex text-sm font-medium text-amber-300 opacity-0 group-hover:opacity-100 transition">
+        Learn more →
+      </span>
     </Link>
   );
 }
