@@ -13,11 +13,11 @@ const tools = [
       "Podcasts and long-form conversations",
       "Documentaries and campus features",
       "Short-form storytelling",
-      "The Mic’d Up Stage (TED-style talks)",
+      "The MUC Talks (TED-Style Campus Talks)",
     ],
     body: [
       "MUI amplifies meaningful student voices, ideas, talents, and conversations through intentional storytelling.",
-      "We do not chase clout. We shape culture—by preserving ideas, elevating substance, and giving voice to perspectives that deserve longevity.",
+      " We shape culture—by preserving ideas, elevating substance, and giving voice to perspectives that deserve longevity.",
     ],
   },
   {
