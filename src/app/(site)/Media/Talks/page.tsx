@@ -29,7 +29,7 @@ export default function MUCTalksPage() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 bg-slate-900 min-h-screen">
       <header className="max-w-3xl mb-14">
-        <h1 className="text-4xl font-semibold mb-4">MUC Talks</h1>
+        <h1 className="text-4xl font-semibold mb-4 text-amber-300">MUC Talks</h1>
         <p className="text-white/70">
           Stage-based talks where students, leaders, and thinkers challenge
           ideas and inspire action.

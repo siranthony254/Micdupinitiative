@@ -31,7 +31,7 @@ export default function DocumentariesPage() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 bg-slate-900 min-h-screen">
       <header className="max-w-3xl mb-14">
-        <h1 className="text-4xl font-semibold mb-4">Documentaries</h1>
+        <h1 className="text-4xl font-semibold mb-4 text-amber-300">Documentaries</h1>
         <p className="text-white/70">
           Deep-dive visual stories capturing real campus challenges,
           movements, and transformative journeys.

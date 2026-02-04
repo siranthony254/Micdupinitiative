@@ -29,7 +29,7 @@ export default function CampusPodcastPage() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 bg-slate-900 min-h-screen">
       <header className="max-w-3xl mb-14">
-        <h1 className="text-4xl font-semibold mb-4">
+        <h1 className="text-4xl font-semibold mb-4 text-amber-300">
           Mic’d Up Campus Podcast
         </h1>
         <p className="text-white/70">

@@ -105,7 +105,7 @@ export default function VisionMissionPage() {
         transition={{ duration: 0.8 }}
       >
         <header className="max-w-3xl mb-14">
-          <h2 className="text-3xl font-semibold">
+          <h2 className="text-3xl font-semibold text-amber-300">
             Core Values
           </h2>
           <p className="mt-4 text-white/70 leading-relaxed">

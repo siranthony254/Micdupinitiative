@@ -19,7 +19,7 @@ export default function FoundingDirectorsPage() {
         variants={fadeZoom}
         transition={{ duration: 0.6 }}
       >
-        <h1 className="text-4xl font-semibold">Founding Directors</h1>
+        <h1 className="text-4xl font-semibold text-amber-400">Founding Directors</h1>
         <p className="mt-4 text-white/70">
           The leadership team guiding the vision, governance, and strategic
           direction of the Mic’d Up Initiative.
