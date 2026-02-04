@@ -5,14 +5,14 @@ const paths = [
   {
     title: "Ambassadors",
     description:
-      "Represent Mic’d Up Initiative within your campus, host conversations, and help surface voices that deserve to be heard.",
+      "Represent Mic’d Up Initiative within your campus, listen the campus and help surface voices that deserve to be heard.",
     href: "/Get-Involved/Ambassadors",
     cta: "Become an Ambassador",
   },
   {
     title: "Mentors & Advisors",
     description:
-      "Support emerging leaders through guidance, expertise, and ethical leadership—shaping the next generation.",
+      "Support the youth, mentor and shape emerging leaders through guidance, expertise, and ethical leadership—shaping the next generation.",
     href: "/Get-Involved/Mentors",
     cta: "Join as a Mentor",
   },
@@ -38,7 +38,7 @@ export default function GetInvolved() {
           <p className="mt-4 text-lg text-white/70">
             Mic’d Up Initiative thrives through collaboration. Whether you’re
             a student, professional, or institution, there’s a meaningful way
-            to contribute to shaping campus culture and youth leadership.
+            to contribute to shaping campus culture, youth leadership and influence.
           </p>
         </div>
 
