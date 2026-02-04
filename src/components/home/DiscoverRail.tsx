@@ -8,11 +8,9 @@ const categories = [
   { label: "Talent & Creativity", slug: "talent" },
   { label: "Debates & Dialogues", slug: "debates" },
   { label: "Panels & Forums", slug: "panels" },
-  { label: "Campus Stories", slug: "stories" },
   { label: "Mental Health", slug: "mental-health" },
-  { label: "Leadership & Growth", slug: "leadership" },
+  { label: "Leadership & Influence", slug: "leadership" },
   { label: "Education", slug: "education" },
-  { label: "Culture & Identity", slug: "culture" },
   { label: "Research & Insights", slug: "research" },
 ];
 
@@ -49,7 +47,7 @@ export default function DiscoverRail() {
           {categories.map((cat) => (
             <Link
               key={cat.slug}
-              href={`/discover/${cat.slug}`}
+              href={`/Media/${cat.slug}`}
               className="
                 snap-start shrink-0
                 px-5 py-2 rounded-full
