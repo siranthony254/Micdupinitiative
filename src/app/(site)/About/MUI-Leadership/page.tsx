@@ -105,7 +105,7 @@ const DIRECTORS = [
     id: "Content, Research & Insights",
     name: "Hopewin Adams",
     department: "Content, Research & Insights",
-    bio: "Leads content creation, storytelling, and campus research initiatives. Translates student perspectives, trends, and insights into actionable strategies, engaging content, and knowledge-driven impact.",
+    bio: "Leads content direction, storytelling, and campus research initiatives. Translates student perspectives, trends, and insights into actionable strategies, engaging content, and knowledge-driven impact.",
     photo: "/directors/Content.jpeg",
   },
   {
