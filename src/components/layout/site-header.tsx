@@ -32,8 +32,12 @@ const NAV_ITEMS = [
   },
   {
     label: "Initiatives",
-    href: "",
     items: [
+      {
+        title: "Campus Listening & Dialogue Tours",
+        description: "We listen to students, amplify their voices, and plant cultural ripples across campuses.(coming soon)",
+        href: "/Programs/campus-tours",
+      },
       {
         title: "Talent & Mentorship",
         description: "Identifying and nurturing voices(coming soon)",
@@ -154,7 +158,7 @@ export function SiteHeader() {
               onMouseLeave={handleLeave}
             >
               <Link
-                href={nav.href}
+                  href={nav.href || "#"}  
                 className={`
                   relative text-sm font-medium transition
                   ${
