@@ -1,28 +1,26 @@
 @import "tailwindcss";
 
-/* Uncomment this line to enable dark mode via a data-theme attribute */
-/* @variant dark (&:where([data-theme="dark"] *)); */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
 
 @theme inline {
-    /* @see: https://github.com/tailwindlabs/tailwindcss/discussions/13410#discussioncomment-11928917 */
-    --font-sans: var(--font-sans);
-    --font-mono: var(--font-mono);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
-@layer base {
-    html,
-    body {
-        @apply antialiased min-h-screen scroll-smooth;
-    }
-    pre,
-    code {
-        @apply font-mono;
-    }
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
 }
 
-/* Debug element */
-@utility debug {
-    border-width: 1px;
-    border-style: dashed;
-    border-color: #f87171;
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
 }
