@@ -5,9 +5,6 @@ export default function ContactPage() {
     <section className="min-h-screen bg-slate-900 text-white">
       <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-start">
-          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
-            CONTACT US
-          </span>
           
           {/* LEFT: Context */}
           <div className="max-w-xl space-y-6">
