@@ -14,6 +14,9 @@ export default function OurStoryPage() {
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
+          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
+            OUR STORY AND ORIGIN
+          </span>
           <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-amber-300">
             Our Story
           </h1>

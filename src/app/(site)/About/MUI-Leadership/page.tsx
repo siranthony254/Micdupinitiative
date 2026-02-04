@@ -19,6 +19,9 @@ export default function FoundingDirectorsPage() {
         variants={fadeZoom}
         transition={{ duration: 0.6 }}
       >
+        <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
+            FOUNDING DIRECTORS
+          </span>
         <h1 className="text-4xl font-semibold text-amber-400">Founding Directors</h1>
         <p className="mt-4 text-white/70">
           The leadership team guiding the vision, governance, and strategic

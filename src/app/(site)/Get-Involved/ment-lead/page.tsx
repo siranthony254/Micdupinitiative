@@ -14,7 +14,7 @@ export default function MentorshipPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-amber-300">
+          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
             Mentorship & Leadership Formation
           </span>
 
@@ -213,7 +213,7 @@ export default function MentorshipPage() {
               </Link>
 
               <Link
-                href="/campus-tours"
+                href="/Get-Involved/Ambassadors"
                 className="rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold text-white
                            hover:bg-white/5 hover:border-white/40 transition"
               >
@@ -221,7 +221,7 @@ export default function MentorshipPage() {
               </Link>
 
               <Link
-                href="/get-involved/partnerships"
+                href="/Get-Involved/Partnerships"
                 className="rounded-full border border-white/20 px-6 py-2.5 text-sm font-semibold text-white
                            hover:bg-white/5 hover:border-white/40 transition"
               >

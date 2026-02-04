@@ -28,6 +28,11 @@ const NAV_ITEMS = [
         description: "Founding directors and governance",
         href: "/About/MUI-Leadership",
       },
+      {
+        title: "Tools of Influence",
+        description: "MUI's framework for cultural impact",
+        href: "/About/Tools-of-Influence",
+      },
     ],
   },
   {
@@ -52,7 +57,6 @@ const NAV_ITEMS = [
   },
   {
     label: "Research & Insights",
-    href: "",
     items: [
       {
         title: "Campus Reports",
@@ -68,7 +72,6 @@ const NAV_ITEMS = [
   },
   {
     label: "Media",
-    href: "",
     items: [
       {
         title: "Campus Podcast",
