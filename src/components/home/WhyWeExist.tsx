@@ -75,7 +75,7 @@ export default function WhyWeExist() {
         influence.
       </p>
       <p className="mt-1 text-base font-medium text-emerald-400">
-        Because society is shaped by voices and that's what we exist to amplify across the Campuses. How campuses express themselves today shapes the society of
+       Society is shaped by voices and that's what we exist to amplify across the Campuses. How campuses express themselves today shapes the society of
         tomorrow! 
       </p>
     </div>
