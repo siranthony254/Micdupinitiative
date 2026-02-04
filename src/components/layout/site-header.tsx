@@ -31,7 +31,7 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: "Programs",
+    label: "Initiatives",
     href: "",
     items: [
       {
