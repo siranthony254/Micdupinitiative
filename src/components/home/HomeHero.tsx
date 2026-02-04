@@ -50,8 +50,8 @@ excellence across campuses and beyond.
         </Link>
         
         <Link
-          href="/Get-involved/Partnerships"
-          className="text-sm font-medium text-royal-400 underline underline-offset-4 hover:text-royal-300 transition"
+          href="/Get-Involved/Partnerships"
+          className="text-sm font-medium text-roya-400 underline underline-offset-4 hover:text-royal-300 transition"
         >
           Partner With Us
         </Link>
