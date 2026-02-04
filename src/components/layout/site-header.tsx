@@ -77,11 +77,6 @@ const NAV_ITEMS = [
         href: "/Media/Podcast",
       },
       {
-        title: "Voices & Stories",
-        description: "Narratives from student life",
-        href: "/Media/stories",
-      },
-      {
         title: "MUC Talks",
         description: "Stage talks and panels",
         href: "/Media/Talks",

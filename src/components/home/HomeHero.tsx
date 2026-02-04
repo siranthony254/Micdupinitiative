@@ -67,7 +67,7 @@ excellence across campuses and beyond.
     <div className="hidden lg:block relative">
       <div className="aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
         <Image
-          src="/images/hero-Placeholder (2).jpeg"
+          src="/images/hero.jpeg"
           alt="Mic’d Up Campus Talk"
           fill
           className="object-cover"
