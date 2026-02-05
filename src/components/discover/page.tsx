@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import { DiscoverGrid } from "@/components/discover/DiscoverGrid";
 import { DiscoverHero } from "@/components/discover/DiscoverHero";
