@@ -31,7 +31,7 @@ const featuredPlaylists = [
     href: "/watch/playlists/faith",
   },
   {
-    title: "Creative Resistance",
+    title: "Creativity",
     count: "5 talks",
     image: "/playlist-4.jpg",
     href: "/watch/playlists/creative",

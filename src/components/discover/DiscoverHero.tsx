@@ -9,7 +9,7 @@ export function DiscoverHero() {
           </p>
 
           <h1 className="text-4xl font-semibold leading-tight">
-            Big ideas. Real conversations.
+            Real Voices: Transformative Conversations.
           </h1>
 
           <p className="mt-4 text-black/70">
