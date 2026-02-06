@@ -14,6 +14,12 @@ export default async function DocumentariesPage() {
         <p className="text-white/70">
           Deep-dive visual stories capturing real campus challenges.
         </p>
+        <h1 className="text-4xl font-semibold mb-4 text-amber-300">
+          Coming Soon!!
+        </h1>
+        <p className="text-white/70">
+          We are curating impactful documentaries that spotlight real campus stories, challenges, and triumphs. Stay tuned for powerful visual narratives coming your way!
+        </p>
       </header>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">

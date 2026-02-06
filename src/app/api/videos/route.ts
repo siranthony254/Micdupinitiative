@@ -50,18 +50,18 @@ export async function GET(req: Request) {
 
     {
       id: "mui-podcast-002",
-      type: "podcast",
-      category: "Mental Health",
-      title: "Pressure, Expectations & Balance",
-      description: "Navigating mental health in campus spaces.",
+      type: "talk",
+      category: "Purpose & Meaning",
+      title: "Purpose in Campus",
+      description: "Navigating purpose and meaning during university life.",
       campus: "Muranga University of Technology",
       duration: "48 min",
-      thumbnail: "https://img.youtube.com/vi/YjrYed2sCz4/hqdefault.jpg",
+      thumbnail: "https://img.youtube.com/vi/NH4X8cWDFBo/hqdefault.jpg",
       primaryPlatform: "youtube",
-      youtubeId: "YjrYed2sCz4",
-      externalUrl: "https://youtu.be/YjrYed2sCz4",
+      youtubeId: "NH4X8cWDFBo",
+      externalUrl: "https://youtu.be/NH4X8cWDFBo",
       social: {
-        youtube: "https://youtu.be/YjrYed2sCz4",
+        youtube: "https://youtu.be/NH4X8cWDFBo",
       },
       showInRail: true,
     },
@@ -82,13 +82,13 @@ export async function GET(req: Request) {
       social: {
         youtube: "https://youtu.be/_Ngw2Houq68",
       },
-      showInRail: true,
+      showInRail: false,
     },
 
     // ===================== TALKS =====================
     {
       id: "muc-talk-001",
-      type: "podcast",
+      type: "talk",
       category: "Student Life",
       title: "Campus Reality Talk",
       description: "A short campus talk.",
@@ -112,7 +112,7 @@ export async function GET(req: Request) {
     filtered = filtered.filter(v => v.type === section);
   }
 
-  if (category && category !== "All") {
+  if (category && category !== "podcasts" && category !== "talks" && category !== "documentaries") {
     filtered = filtered.filter(v => v.category === category);
   }
 

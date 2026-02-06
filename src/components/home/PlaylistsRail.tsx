@@ -61,6 +61,12 @@ export async function PlaylistsRail({
               <h1 className="mt-3 text-4xl font-semibold">
                 Big ideas. Real campus conversations.
               </h1>
+              <p className="mt-4 text-white/70">
+                This episode marks the start of a new dialogues across and beyond campus. 
+                Dialogues that spark meaningful discussions about campus life, challenges, and growth.
+                Dive into our handpicked selection of videos that spark meaningful discussions 
+                about campus life, challenges, and growth.
+              </p>
             </div>
 
             <div className="relative aspect-video bg-black">
