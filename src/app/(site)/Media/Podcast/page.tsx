@@ -1,31 +1,25 @@
+// src/app/(site)/Media/Podcasts/page.tsx
+
 import { ExternalMediaCard } from "@/components/media/ExternalMediaCard";
 import { MediaItem } from "@/components/media/types/media";
 
-const episodes: MediaItem[] = [
-  {
-    id: "life-beyond-lectures",
-    title: "Life Beyond Lectures",
-    description: "Student life, ambition, pressure, and purpose.",
-    campus: "Multiple Campuses",
-    duration: "52 min",
-    thumbnail: "/images/media/podcast/episode-1.png",
-    platform: "Spotify",
-    externalUrl: "https://open.spotify.com/",
-  },
-  {
-    id: "finding-your-voice",
-    title: "Finding Your Voice on Campus",
-    description: "Why speaking up matters more than ever.",
-    campus: "Mic’d Up Initiative",
-    duration: "48 min",
-    thumbnail: "/images/media/podcast/episode-2.png",
-    platform: "Apple Podcasts",
-    externalUrl: "https://podcasts.apple.com/",
-    comingSoon: true,
-  },
-];
+async function getPodcastEpisodes(): Promise<MediaItem[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/videos?section=podcast`,
+    { cache: "no-store" }
+  );
 
-export default function CampusPodcastPage() {
+  if (!res.ok) {
+    throw new Error("Failed to fetch podcast episodes");
+  }
+
+  const data = await res.json();
+  return data.videos;
+}
+
+export default async function CampusPodcastPage() {
+  const episodes = await getPodcastEpisodes();
+
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 bg-slate-900 min-h-screen">
       <header className="max-w-3xl mb-14">

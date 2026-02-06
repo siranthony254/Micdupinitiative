@@ -1,26 +1,25 @@
-// components/discover/CategoryRail.tsx
 "use client";
 
 import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const categories = [
-  "All",
-  "Talent & Creativity",
-  "Research & Insights",
-  "Panels & Forums",
-  "Mental Health",
-  "Personal Growth",
-  "Policies & Education",
-  "Content & Media",
-  "Debates & Dialogues",
-  "Leadership & Influence",
+  { label: "All", value: "all" },
+  { label: "Talent & Creativity", value: "talent" },
+  { label: "Research & Insights", value: "research" },
+  { label: "Panels & Forums", value: "panels" },
+  { label: "Mental Health", value: "mental-health" },
+  { label: "Personal Growth", value: "growth" },
+  { label: "Policies & Education", value: "policy" },
+  { label: "Content & Media", value: "media" },
+  { label: "Debates & Dialogues", value: "debates" },
+  { label: "Leadership & Influence", value: "leadership" },
 ];
 
 function CategoryRailInner() {
   const router = useRouter();
   const params = useSearchParams();
-  const active = params.get("category") ?? "All";
+  const active = params.get("category") ?? "all";
 
   return (
     <div
@@ -35,13 +34,17 @@ function CategoryRailInner() {
       "
     >
       {categories.map((cat) => {
-        const isActive = active === cat;
+        const isActive = active === cat.value;
 
         return (
           <button
-            key={cat}
+            key={cat.value}
             onClick={() =>
-              router.push(`/discover?category=${cat === "All" ? "" : cat}`)
+              router.push(
+                cat.value === "all"
+                  ? "/discover"
+                  : `/discover?category=${cat.value}`
+              )
             }
             className={`
               whitespace-nowrap
@@ -65,7 +68,7 @@ function CategoryRailInner() {
               }
             `}
           >
-            {cat}
+            {cat.label}
           </button>
         );
       })}

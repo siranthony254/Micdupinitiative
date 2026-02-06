@@ -1,5 +1,4 @@
-// components/discover/DiscoverHero.tsx
-export function DiscoverHero() {
+export function DiscoverHero({ total }: { total?: number }) {
   return (
     <section className="border-b border-black/10 bg-slate-200">
       <div className="mx-auto max-w-7xl px-6 py-12 grid gap-10 lg:grid-cols-2">
@@ -19,7 +18,9 @@ export function DiscoverHero() {
         </div>
 
         <div className="bg-black text-white flex items-center justify-center aspect-video">
-          <span className="text-5xl font-semibold">1,000+</span>
+          <span className="text-5xl font-semibold">
+            {total ? `${total}+` : "—"}
+          </span>
         </div>
       </div>
     </section>
