@@ -11,27 +11,18 @@ import {
 const SOCIALS = [
   {
     label: "YouTube",
-    href: "https://youtube.com/@micdupinitiative",
+    href: "https://www.youtube.com/channel/UCo-eACs6cgB61LLosjSLjtQ",
     icon: Youtube,
   },
   {
     label: "Instagram",
-    href: "https://instagram.com/micdupinitiative",
+    href: "https://www.instagram.com/micdupinitiative?igsh=cmo3ZGhpN2k2dHYz",
     icon: Instagram,
   },
-  {
-    label: "X (Twitter)",
-    href: "https://x.com/micdupinitiative",
-    icon: Twitter,
-  },
-  {
-    label: "LinkedIn",
-    href: "https://linkedin.com/company/micdupinitiative",
-    icon: Linkedin,
-  },
+
   {
     label: "Facebook",
-    href: "https://facebook.com/micdupinitiative",
+    href: "https://www.facebook.com/profile.php?id=61578931864569",
     icon: Facebook,
   },
 ];
@@ -58,28 +49,28 @@ export function SiteFooter() {
         {/* Programs & Media */}
         <div>
           <h4 className="text-white font-medium mb-3">
-            Programs & Media
+            Quick Links
           </h4>
           <ul className="space-y-2">
-            <li><Link href="" className="hover:underline">Talent & Mentorship</Link></li>
-            <li><Link href="" className="hover:underline">Leadership Formation</Link></li>
-            <li><Link href="/Media/Podcast" className="hover:underline">Campus Podcast</Link></li>
-            <li><Link href="/Media/Talks" className="hover:underline">Campus Talks</Link></li>
-            <li><Link href="/Media/stories" className="hover:underline">Voices & Stories</Link></li>
+            <li><Link href="/" className="hover:underline">HOME</Link></li>
+            <li><Link href="/About/OurStory" className="hover:underline">ABOUT MUI</Link></li>
+            <li><Link href="/About/Vision-Mission" className="hover:underline">VISION & MISSION</Link></li>
+            <li><Link href="/Programs/Events" className="hover:underline">EVENTS & SUMMITS</Link></li>
+            <li><Link href="/Programs/campus-tours" className="hover:underline">CAMPUS TOURS</Link></li>
           </ul>
         </div>
 
         {/* Research & Governance */}
         <div>
           <h4 className="text-white font-medium mb-3">
-            Research & Governance
+            Content & Insights
           </h4>
           <ul className="space-y-2">
-            <li><Link href="" className="hover:underline">Campus Reports</Link></li>
-            <li><Link href="" className="hover:underline">Policy Briefs</Link></li>
-            <li><Link href="" className="hover:underline">Youth Trends</Link></li>
-            <li><Link href="About/MUI-Leardership" className="hover:underline">Governance & Ethics</Link></li>
-            <li><Link href="" className="hover:underline">Privacy Policy</Link></li>
+            <li><Link href="/Media/Podcast" className="hover:underline">PODCAST</Link></li>
+            <li><Link href="/Media/Talks" className="hover:underline">TALKS</Link></li>
+            <li><Link href="/Media/Documentaries" className="hover:underline">DOCUMENTARIES</Link></li>
+            <li><Link href="/Get-Involved/Partnerships" className="hover:underline">PARTNERSHIPS</Link></li>
+            <li><Link href="/Get-Involved/Ambassadors" className="hover:underline">AMBASSADORS</Link></li>
           </ul>
         </div>
 
