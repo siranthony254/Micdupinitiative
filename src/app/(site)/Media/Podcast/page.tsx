@@ -1,24 +1,8 @@
 import { ExternalMediaCard } from "@/components/media/ExternalMediaCard";
-import { MediaItem } from "@/components/media/types/media";
-
-async function getPodcastEpisodes(): Promise<MediaItem[]> {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/videos?section=podcast`,
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch podcast episodes");
-  }
-
-  const data = await res.json();
-
-  // ✅ EXTRACT ARRAY
-  return Array.isArray(data.videos) ? data.videos : [];
-}
+import { getVideos } from "@/app/lib/getVideos";
 
 export default async function PodcastsPage() {
-  const videos = await getPodcastEpisodes();
+  const data = await getVideos("podcast");
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 bg-slate-900 min-h-screen">
@@ -31,25 +15,11 @@ export default async function PodcastsPage() {
         </p>
       </header>
 
-      {videos.length === 0 ? (
-        <p className="text-white/60">No podcast episodes available.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {videos.map((v) => (
-            <ExternalMediaCard
-              key={v.id}
-              title={v.title}
-              description={v.description}
-              duration={v.duration}
-              thumbnail={v.thumbnail}
-              youtubeId={v.youtubeId}
-              externalUrl={v.externalUrl}
-              social={v.social}
-              comingSoon={v.comingSoon}
-            />
-          ))}
-        </div>
-      )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {data.videos.map((item: any) => (
+          <ExternalMediaCard key={item.id} {...item} />
+        ))}
+      </div>
     </section>
   );
 }
