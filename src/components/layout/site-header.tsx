@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { MegaMenu } from "./mega-menu";
 
@@ -40,12 +41,14 @@ const NAV_ITEMS = [
     items: [
       {
         title: "Campus Listening & Dialogue Tours",
-        description: "We visit campuses to listen, learn, and amplify student voices",
+        description:
+          "We visit campuses to listen, learn, and amplify student voices",
         href: "/Programs/campus-tours",
       },
       {
         title: "Mentorship & Leadership",
-        description: "Identifying and nurturing voices for global impact",
+        description:
+          "Identifying and nurturing voices for global impact",
         href: "/Get-Involved/ment-lead",
       },
       {
@@ -118,6 +121,8 @@ const NAV_ITEMS = [
 ];
 
 export function SiteHeader() {
+  const pathname = usePathname();
+
   const [active, setActive] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileActive, setMobileActive] = useState<string | null>(null);
@@ -133,13 +138,19 @@ export function SiteHeader() {
     timeoutRef.current = setTimeout(() => setActive(null), 120);
   };
 
+  const handleHomeClick = () => {
+    if (pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-black text-white border-b border-white/10">
       <div className="mx-auto max-w-7xl px-6 h-16 flex items-center">
-
         {/* Brand */}
         <Link
           href="/"
+          onClick={handleHomeClick}
           className="font-semibold text-lg tracking-tight text-amber-500"
         >
           Mic’d Up Initiative
@@ -147,6 +158,29 @@ export function SiteHeader() {
 
         {/* Desktop Navigation */}
         <nav className="ml-auto hidden lg:flex items-center gap-8">
+          {/* Home */}
+          <Link
+            href="/"
+            onClick={handleHomeClick}
+            className={`
+              relative text-sm font-medium transition
+              ${
+                pathname === "/"
+                  ? "text-amber-400"
+                  : "text-white/80 hover:text-white"
+              }
+              after:absolute after:left-0 after:-bottom-1
+              after:h-px after:bg-amber-400 after:transition-all
+              ${
+                pathname === "/"
+                  ? "after:w-full"
+                  : "after:w-0 hover:after:w-full"
+              }
+            `}
+          >
+            Home
+          </Link>
+
           {NAV_ITEMS.map((nav) => (
             <div
               key={nav.label}
@@ -155,7 +189,7 @@ export function SiteHeader() {
               onMouseLeave={handleLeave}
             >
               <Link
-                  href={nav.href || "#"}  
+                href={nav.href || "#"}
                 className={`
                   relative text-sm font-medium transition
                   ${
@@ -206,7 +240,6 @@ export function SiteHeader() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur">
           <div className="px-6 py-5">
-
             {/* Mobile Header */}
             <div className="flex items-center justify-between mb-6">
               <span className="font-semibold text-amber-500">
@@ -222,6 +255,18 @@ export function SiteHeader() {
 
             {/* Mobile Nav Items */}
             <div className="space-y-4">
+              {/* Home */}
+              <Link
+                href="/"
+                onClick={() => {
+                  handleHomeClick();
+                  setMobileOpen(false);
+                }}
+                className="block py-3 text-base font-medium text-white"
+              >
+                Home
+              </Link>
+
               {NAV_ITEMS.map((nav) => (
                 <div key={nav.label}>
                   <button

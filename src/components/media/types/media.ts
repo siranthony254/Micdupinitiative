@@ -1,34 +1,11 @@
-/* ----------------------------------
-   Flexible content descriptors
------------------------------------ */
+// src/components/media/types/mediaTypes.ts
+export type MediaType = "podcast" | "talk" | "documentary" | string;
 
-export type MediaType = string;
-/*
-  Examples:
-  "podcast" | "talk" | "documentary" | "playlist"
-*/
-
-export type MediaCategory = string;
-/*
-  Examples:
-  "Student Life"
-  "Campus Conversations"
-  "Faith & Spiritual Growth"
-*/
-
-/* ----------------------------------
-   Platforms
------------------------------------ */
-
-export type MediaPlatform =
-  | "youtube"
-  | "spotify"
-  | "apple"
-  | "instagram"
-  | "tiktok"
-  | "facebook"
-  | "x"
-  | "linkedin";
+export type MediaCategory =
+  | "Faith & Spiritual Growth"
+  | "Student Life"
+  | "Personal Growth"
+  | string;
 
 export interface MediaSocialLinks {
   youtube?: string | null;
@@ -41,38 +18,20 @@ export interface MediaSocialLinks {
   linkedin?: string | null;
 }
 
-/* ----------------------------------
-   Core Media Item
------------------------------------ */
-
 export interface MediaItem {
   id: string;
-
-  /** Content classification */
   type: MediaType;
   category: MediaCategory;
-
-  /** Core metadata */
   title: string;
   description: string;
   campus: string;
   duration?: string;
-
-  /** Video support */
   youtubeId?: string;
   thumbnail: string;
-
-  /** Distribution */
-  primaryPlatform: MediaPlatform;
+  primaryPlatform: keyof MediaSocialLinks;
   externalUrl?: string;
   social: MediaSocialLinks;
-
-  /** State & editorial control */
   comingSoon?: boolean;
-
-  /** Editorial hero control */
   featured?: boolean;
-
-  /** Visibility control (PlaylistsRail, homepage rails, etc.) */
   showInRail?: boolean;
 }
