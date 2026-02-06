@@ -3,6 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { ExternalMediaCard } from "@/components/media/ExternalMediaCard";
 
 interface PlaylistsRailProps {
@@ -14,11 +15,16 @@ interface PlaylistsRailProps {
 }
 
 async function getVideos(type: string, category?: string) {
-  const params = new URLSearchParams({ type });
+  const params = new URLSearchParams();
+  params.set("section", type);
   if (category) params.set("category", category);
 
+  const headersList = headers();
+  const host = headersList.get("host");
+  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/videos?${params.toString()}`,
+    `${protocol}://${host}/api/videos?${params.toString()}`,
     { cache: "no-store" }
   );
 
@@ -26,6 +32,7 @@ async function getVideos(type: string, category?: string) {
 
   return res.json();
 }
+
 
 export async function PlaylistsRail({
   title,
@@ -58,7 +65,7 @@ export async function PlaylistsRail({
   const gridVideos = playlists.filter((item: any) => item.youtubeId !== editorialVideo.youtubeId);
 
   return (
-    <section className="bg-slate-200 text-black">
+    <section className="bg-slate-300 text-black">
       <div className="mx-auto max-w-7xl px-6 py-14">
 
         {/* =======================
