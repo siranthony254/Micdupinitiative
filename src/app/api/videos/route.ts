@@ -50,7 +50,7 @@ export async function GET(req: Request) {
 
     {
       id: "mui-podcast-002",
-      type: "podcast",
+      type: "talk",
       category: "Mental Health",
       title: "Pressure, Expectations & Balance",
       description: "Navigating mental health in campus spaces.",
@@ -88,7 +88,7 @@ export async function GET(req: Request) {
     // ===================== TALKS =====================
     {
       id: "muc-talk-001",
-      type: "podcast",
+      type: "talk",
       category: "Student Life",
       title: "Campus Reality Talk",
       description: "A short campus talk.",
@@ -101,26 +101,23 @@ export async function GET(req: Request) {
       social: {
         youtube: "https://youtu.be/OKwxZonPRZc",
       },
-      showInRail: true, // 👈 exists, but NOT shown in rail
+      showInRail: false, // 👈 exists, but NOT shown in rail
     },
   ];
 
   // ===================== FILTERING =====================
   let filtered = videos;
 
-  if (section) {
-    filtered = filtered.filter(v => v.type === section);
-  }
+if (section) {
+  filtered = filtered.filter(v => v.type === section);
+}
 
-  if (category && category !== "All") {
-    filtered = filtered.filter(v => v.category === category);
-  }
+if (category && category !== "All") {
+  filtered = filtered.filter(v => v.category === category);
+}
 
-  // 👇 Editorial visibility control for rails
-  filtered = filtered.filter(v => v.showInRail !== false);
-
-  return NextResponse.json({
-    videos: filtered,
-    nextCursor: null,
-  });
+return NextResponse.json({
+  videos: filtered,
+  nextCursor: null,
+});
 }
