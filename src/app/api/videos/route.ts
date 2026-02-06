@@ -101,7 +101,7 @@ export async function GET(req: Request) {
       social: {
         youtube: "https://youtu.be/OKwxZonPRZc",
       },
-      showInRail: false, // 👈 exists, but NOT shown in rail
+      showInRail: true, // 👈 exists, but NOT shown in rail
     },
   ];
 
