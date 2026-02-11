@@ -218,19 +218,19 @@ function SupportForm() {
 ====================================================== */
 const ENDORSEMENT_LEVELS = [
   {
-    label: "Voice Ally",
+    label: "Builder Level",
     amount: "KES 500",
     description: "Supports basic recording and campus dialogue facilitation.",
   },
    {
-    label: "Voice Partner",
-    amount: "KES 1000",
-    description: "Supports basic recording and campus dialogue facilitation.",
+    label: "Steward Level",
+    amount: "KES 1,000",
+    description: "Strengthen research documentation and campus dialogue platforms.",
   },
   {
     label: "Voice Patron",
-    amount: "KES 1000",
-    description: "Supports basic recording and campus dialogue facilitation.",
+    amount: "KES 5,000",
+    description: "Substantially support equipment acquisition and long-term storytelling sustainability.",
   },
   {
     label: "Silver Endorsement",
