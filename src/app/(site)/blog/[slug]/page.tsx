@@ -31,8 +31,9 @@ export default async function BlogPostPage({
 
     const props = post.properties;
 
-    const title = props.Title.title[0]?.plain_text ?? "Untitled";
-    const excerpt = props.Excerpt?.rich_text[0]?.plain_text ?? "";
+    // --- Basic Fields ---
+    const title = props.Title?.title?.[0]?.plain_text ?? "Untitled";
+    const excerpt = props.Excerpt?.rich_text?.[0]?.plain_text ?? "";
     const coverUrl =
       props.Cover?.files?.[0]?.file?.url ||
       props.Cover?.files?.[0]?.external?.url ||
@@ -41,16 +42,17 @@ export default async function BlogPostPage({
       ? new Date(props.Published.date.start).toLocaleDateString()
       : "Draft";
 
-    // Optional author (safe: renders only if present later)
-    const author =
-      props.Author?.rich_text?.[0]?.plain_text ?? null;
+    // --- Optional Author ---
+    const author = props.Author?.rich_text?.[0]?.plain_text ?? null;
 
-    // Fetch Notion page content
+    // --- Fetch Notion page content safely ---
     let recordMap: any = null;
     try {
-      recordMap = await fetch(
+      const res = await fetch(
         `https://notion-api.splitbee.io/v1/page/${post.id}`
-      ).then((res) => res.json());
+      );
+      if (!res.ok) throw new Error("Notion page fetch failed");
+      recordMap = await res.json();
     } catch (err) {
       console.error("Error fetching Notion page:", err);
       recordMap = null;
