@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { MegaMenu } from "./mega-menu";
@@ -142,18 +143,35 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-black text-white border-b border-white/10">
       <div className="mx-auto max-w-7xl px-6 h-16 flex items-center">
-        {/* Brand */}
+        
+        {/* Brand with Logo */}
         <Link
           href="/"
           onClick={handleHomeClick}
-          className="font-semibold text-lg tracking-tight text-amber-500"
+          className="flex items-center gap-2 font-semibold text-lg tracking-tight text-amber-500"
         >
+          {/* Logo */}
+          <div className="relative w-8 h-8 rounded-full overflow-hidden">
+  <Image
+    src="/logo.jpeg"
+    alt="Mic’d Up Initiative Logo"
+    fill
+    sizes="32px"
+    className="object-cover"
+    priority
+  />
+</div>
+
+
+          {/* Fallback placeholder if logo removed */}
+          {/* Remove this if not needed */}
+          {/* <div className="w-8 h-8 rounded bg-amber-500/20 border border-amber-500/40" /> */}
+
           Mic’d Up Initiative
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="ml-auto hidden lg:flex items-center gap-8">
-          {/* Home */}
           <Link
             href="/"
             onClick={handleHomeClick}
@@ -208,14 +226,9 @@ export function SiteHeader() {
             </div>
           ))}
 
-          {/* Desktop CTA */}
           <Link
             href="/mic-the-campus"
-            className="
-              ml-4 px-4 py-1.5 text-sm rounded-full
-              border border-amber-400 text-amber-400
-              hover:bg-amber-400 hover:text-black transition
-            "
+            className="ml-4 px-4 py-1.5 text-sm rounded-full border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black transition"
           >
             Mic the Campus
           </Link>
@@ -235,22 +248,21 @@ export function SiteHeader() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur">
           <div className="px-6 py-5">
-            {/* Mobile Header */}
             <div className="flex items-center justify-between mb-6">
               <span className="font-semibold text-amber-500">
                 Mic’d Up Initiative
               </span>
               <button
-                onClick={() => setMobileOpen(false)}
-                aria-label="Close menu"
-              >
-                <X size={24} />
-              </button>
+              onClick={() => setMobileOpen(false)}
+              aria-label="Close menu"
+              title="Close menu"
+>
+  <X size={24} />
+</button>
+
             </div>
 
-            {/* Mobile Nav Items */}
             <div className="space-y-4">
-              {/* Home */}
               <Link
                 href="/"
                 onClick={() => {
@@ -298,18 +310,10 @@ export function SiteHeader() {
                 </div>
               ))}
 
-              {/* Mobile CTA */}
               <Link
                 href="/mic-the-campus"
                 onClick={() => setMobileOpen(false)}
-                className="
-                  mt-6 inline-block w-full text-center
-                  px-4 py-2 rounded-full
-                  border border-amber-400
-                  text-amber-400
-                  hover:bg-amber-400 hover:text-black
-                  transition
-                "
+                className="mt-6 inline-block w-full text-center px-4 py-2 rounded-full border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black transition"
               >
                 Mic the Campus
               </Link>

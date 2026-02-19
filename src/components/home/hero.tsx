@@ -79,7 +79,7 @@ export function HomePage() {
               px-5 py-2
             "
           >
-            TRANSFORMING CULTURE
+            SHAPING CULTURE
           </span>
         </h1>
 
