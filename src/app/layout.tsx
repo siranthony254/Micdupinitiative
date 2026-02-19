@@ -17,6 +17,8 @@ export const metadata: Metadata = {
     "Mic’d Up Initiative Kenya",
     "Mic’d Up Initiative Africa",
     "Mic’d Up Initiative | Campus Media, Research & Mentorship Platform in Kenya",
+    "MUI Kenya",
+    "MUI Africa",
     "campus talks",
     "African ideas",
     "student conversations",
