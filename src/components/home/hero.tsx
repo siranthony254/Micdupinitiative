@@ -28,7 +28,7 @@ export function HomePage() {
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Top-right brand label */}
       <div className="absolute top-6 left-6 text-emerald-500 font-semibold tracking-wide">
-        Mic'd Up Initiative
+        Mic’d Up Initiative | Campus Media, Insights &  Mentorship Platform in Kenya
       </div>
 
       {/* Background slideshow */}
