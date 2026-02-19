@@ -88,13 +88,13 @@ export function HomePage() {
           <p className="text-base md:text-lg text-white/90 leading-relaxed">
             Mic’d Up Initiative (MUI) is a mission-driven platform committed to transforming campus culture by
             amplifying authentic student voices, talents, and ideas through storytelling, mentorship, productions, and public conversations, raising a renewed
-            generation of young people formed into holistic excellence across campuses and beyond.
+            generation of young people formed into holistic excellence across Kenyan universities and beyond.
           </p>
 
           <p className="text-base md:text-lg text-white/75 leading-relaxed">
             Society is shaped by voices. We exist to amplify responsible ones
             across campus—and cultivate cultural influence that endures. Through dialogue, storytelling, and research, we preserve ideas
-            worthy of longevity.
+            worthy of longevity across higher education institutions.
           </p>
         </div>
 
