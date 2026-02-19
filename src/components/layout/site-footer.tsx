@@ -6,6 +6,7 @@ import {
   Twitter,
   Linkedin,
   Facebook,
+  LucideLinkedin
 } from "lucide-react";
 
 const SOCIALS = [
@@ -19,15 +20,11 @@ const SOCIALS = [
     href: "https://www.instagram.com/micdupinitiative?igsh=cmo3ZGhpN2k2dHYz",
     icon: Instagram,
   },
+
   {
     label: "Facebook",
     href: "https://www.facebook.com/profile.php?id=61578931864569",
     icon: Facebook,
-  },
-  {
-    label: "TikTok",
-    href: "https://tiktok.com/@micdupinitiative",
-    icon: "tiktok",
   },
 ];
 
@@ -50,7 +47,7 @@ export function SiteFooter() {
           </p>
         </div>
 
-        {/* Quick Links */}
+        {/* Programs & Media */}
         <div>
           <h4 className="text-white font-medium mb-3">
             Quick Links
@@ -64,7 +61,7 @@ export function SiteFooter() {
           </ul>
         </div>
 
-        {/* Content & Insights */}
+        {/* Research & Governance */}
         <div>
           <h4 className="text-white font-medium mb-3">
             Content & Insights
@@ -106,6 +103,7 @@ export function SiteFooter() {
                 text-sm font-medium
                 hover:bg-neutral-200 transition
               "
+              
             >
               Join
             </button>
@@ -113,48 +111,37 @@ export function SiteFooter() {
 
           {/* Social Platforms */}
           <div className="mt-6">
-            <p className="mb-3 text-xs uppercase tracking-wide text-white/50">
-              Follow MUI
-            </p>
+          <p className="mb-3 text-xs uppercase tracking-wide text-white/50">
+            Follow MUI
+          </p>
 
-            <div className="flex items-center gap-4">
-              {SOCIALS.map(({ label, href, icon }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="
-                    p-2 rounded-full
-                    border border-white/20
-                    text-white/60
-                    hover:text-white
-                    hover:border-white
-                    transition
-                  "
-                >
-                  {icon === "tiktok" ? (
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-4 h-4"
-                      aria-hidden="true"
+          <div className="flex items-center gap-4">
+            {SOCIALS.map(({ label, href, icon: Icon }) => (
+              <Link
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="
+                  p-2 rounded-full
+                  border border-white/20
+                  text-white/60
+                  hover:text-white
+                  hover:border-white
+                  transition
+                   "
                     >
-                      <path d="M21 8.5a7.5 7.5 0 01-4.5-1.5v6.2a5.2 5.2 0 11-4.5-5.1v2.2a3 3 0 103 3V2h2a5.5 5.5 0 003 3.5v3z"/>
-                    </svg>
-                  ) : (
-                    // @ts-ignore
-                    icon && icon({ size: 16 })
-                  )}
-                </Link>
-              ))}
-            </div>
-          </div>
+                      <Icon size={16} />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
 
           <div className="mt-4 flex gap-4 text-xs">
             <Link href="/contact" className="hover:underline">Contact</Link>
-            <Link href="/Get-Involved" className="hover:underline">Get Involved</Link>
+            <Link href="@/GetInvolved" className="hover:underline">Get Involved</Link>
           </div>
         </div>
       </div>
