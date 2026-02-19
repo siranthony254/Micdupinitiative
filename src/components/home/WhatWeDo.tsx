@@ -45,7 +45,7 @@ export function WhatWeDo() {
       <p className="mt-4 text-lg text-white/70">
         Mic’d Up Initiative is a campus-centered movement that discovers
         voices, shapes leaders, hosts dialogue, and produces insight—turning
-        youth expression into societal impact accross Africa.
+        youth expression into societal impact across Africa.
       </p>
     </div>
 
