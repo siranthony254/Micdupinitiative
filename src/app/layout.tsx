@@ -14,6 +14,9 @@ export const metadata: Metadata = {
     "Mic’d Up Initiative (MUI) is a campus-based platform amplifying authentic voices, fostering mentorship, and shaping culture across higher education institutions.",
   keywords: [
     "Mic’d Up Initiative",
+    "Mic’d Up Initiative Kenya",
+    "Mic’d Up Initiative Africa",
+    "Mic’d Up Initiative | Campus Media, Research & Mentorship Platform in Kenya",
     "campus talks",
     "African ideas",
     "student conversations",
@@ -21,6 +24,9 @@ export const metadata: Metadata = {
     "documentaries",
     "podcasts",
     "university events",
+    "African Universitis",
+    "Campus Podcasts",
+    
   ],
   authors: [{ name: "Mic’d Up Initiative" }],
   creator: "Mic’d Up Initiative",
