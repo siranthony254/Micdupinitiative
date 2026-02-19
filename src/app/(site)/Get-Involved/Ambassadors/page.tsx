@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const fadeUp = {
@@ -8,9 +9,68 @@ const fadeUp = {
 };
 
 export default function AmbassadorsPage() {
+  const totalSteps = 3;
+
+  const [step, setStep] = useState(1);
+  const [hasApplied, setHasApplied] = useState(false);
+
+  const [formData, setFormData] = useState({
+    campusType: "",
+    campusName: "",
+    year: "",
+    course: "",
+    motivation: "",
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  // ✅ Check localStorage on load
+  useEffect(() => {
+    const applied = localStorage.getItem("ambassadorApplied");
+    if (applied === "true") {
+      setHasApplied(true);
+      setStep(totalSteps + 2); // Already applied state
+    }
+  }, []);
+
+  const handleNext = () => setStep(step + 1);
+  const handleBack = () => setStep(step - 1);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const endpoint = "https://formspree.io/f/xbdknweo";
+
+    try {
+      await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      // ✅ Save status
+      localStorage.setItem("ambassadorApplied", "true");
+      setHasApplied(true);
+
+      // show thank you
+      setStep(totalSteps + 1);
+    } catch (err) {
+      console.error("Submission failed", err);
+      alert("Submission failed. Please try again.");
+    }
+  };
+
   return (
     <section className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-4xl px-6 py-20">
+
         {/* Header */}
         <motion.header
           variants={fadeUp}
@@ -79,103 +139,177 @@ export default function AmbassadorsPage() {
           </div>
         </motion.section>
 
-        {/* Application Form */}
-        <motion.section
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg"
-        >
-          <h2 className="text-2xl font-medium mb-6">
-            Campus Ambassador Application
-          </h2>
 
-          <form
-            action="https://formspree.io/f/xbdknweo"
-            method="POST"
-            className="space-y-6"
+        {/* Hide entire form if already applied */}
+        {!hasApplied && (
+          <motion.section
+            variants={fadeUp}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg"
           >
-            {/* Redirect */}
-            <input type="hidden" name="_redirect" value="/thank-you" />
+            {/* Progress */}
+            {step <= totalSteps && (
+              <div className="mb-6 text-center text-sm text-white/60">
+                Step {step} of {totalSteps}
+                <div className="mt-2 h-2 w-full bg-white/20 rounded-full">
+                  <div
+                    className="h-2 bg-amber-400 rounded-full"
+                    style={{ width: `${(step / totalSteps) * 100}%` }}
+                  />
+                </div>
+              </div>
+            )}
 
-            {/* Honeypot */}
-            <div className="hidden">
-              <label htmlFor="company" className="sr-only">
-                Company
-              </label>
-              <input
-                type="text"
-                id="company"
-                name="_gotcha"
-                tabIndex={-1}
-                autoComplete="off"
-                aria-hidden="true"
-              />
-            </div>
+            {/* STEP 1 */}
+            {step === 1 && (
+              <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); handleNext(); }}>
+                <div className="space-y-2">
+                  <label htmlFor="campusType" className="text-sm text-white/70">
+                    Select Campus Type
+                  </label>
+                  <select
+                    id="campusType"
+                    name="campusType"
+                    required
+                    value={formData.campusType}
+                    onChange={handleChange}
+                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                  >
+                    <option value="">Select campus type</option>
+                    <option value="TVET">TVET</option>
+                    <option value="College">College</option>
+                    <option value="KMTC">KMTC</option>
+                    <option value="University">University</option>
+                  </select>
+                </div>
 
-            {/* Name */}
-            <div className="space-y-2">
-              <label className="text-sm text-white/70">Full Name</label>
-              <input
-                name="name"
-                required
-                placeholder="Enter your full name"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
-              />
-            </div>
+                <input
+                  name="campusName"
+                  required
+                  value={formData.campusName}
+                  onChange={handleChange}
+                  placeholder="Campus Name (e.g., University of Nairobi)"
+                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                />
 
-            {/* Email */}
-            <div className="space-y-2">
-              <label className="text-sm text-white/70">Email Address</label>
-              <input
-                name="email"
-                type="email"
-                required
-                placeholder="you@example.com"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
-              />
-            </div>
+                <input
+                  name="year"
+                  required
+                  value={formData.year}
+                  onChange={handleChange}
+                  placeholder="Year of Study"
+                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                />
 
-            {/* University */}
-            <div className="space-y-2">
-              <label className="text-sm text-white/70">University</label>
-              <input
-                name="university"
-                required
-                placeholder="Enter your university name"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
-              />
-            </div>
+                <button type="submit" className="w-full bg-amber-400 text-black py-3 rounded-xl font-semibold">
+                  Next
+                </button>
+              </form>
+            )}
 
-            {/* Motivation */}
-            <div className="space-y-2">
-              <label className="text-sm text-white/70">
-                Motivation Statement
-              </label>
-              <textarea
-                name="motivation"
-                rows={5}
-                placeholder="Why do you want to be a Campus Ambassador?"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
-              />
-            </div>
+            {/* STEP 2 */}
+            {step === 2 && (
+              <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); handleNext(); }}>
+                <input
+                  name="course"
+                  required
+                  value={formData.course}
+                  onChange={handleChange}
+                  placeholder="Course"
+                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                />
 
-            {/* Submit */}
-            <button
-              type="submit"
-              className="inline-flex w-full items-center justify-center rounded-xl bg-amber-400 px-6 py-3 text-sm font-semibold text-black transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-400/40"
-            >
-              Apply Now
-            </button>
+                <textarea
+                  name="motivation"
+                  required
+                  minLength={100}
+                  value={formData.motivation}
+                  onChange={handleChange}
+                  rows={6}
+                  placeholder="Why do you want to be an ambassador?"
+                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                />
 
-            <p className="text-xs text-white/50 leading-relaxed">
-              Applications are reviewed on a rolling basis. Successful
-              ambassadors will be contacted within 7–14 days.
+                <div className="flex justify-between gap-4">
+                  <button type="button" onClick={handleBack} className="border px-6 py-3 rounded-xl">
+                    Back
+                  </button>
+                  <button type="submit" className="bg-amber-400 text-black px-6 py-3 rounded-xl font-semibold">
+                    Next
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* STEP 3 */}
+            {step === 3 && (
+              <form className="space-y-6" onSubmit={handleSubmit}>
+                <input
+                  name="name"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Full Name"
+                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                />
+
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Email"
+                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                />
+
+                <input
+                  name="phone"
+                  required
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="+2547XXXXXXXX"
+                  pattern="^\+2547\07\01\d{8}$"
+                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                />
+
+                <div className="flex justify-between gap-4">
+                  <button type="button" onClick={handleBack} className="border px-6 py-3 rounded-xl">
+                    Back
+                  </button>
+                  <button type="submit" className="bg-amber-400 text-black px-6 py-3 rounded-xl font-semibold">
+                    Submit
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* THANK YOU */}
+            {step === totalSteps + 1 && (
+              <div className="text-center space-y-4">
+                <h2 className="text-2xl font-medium">Thank you!</h2>
+                <p className="text-white/70">
+                  You will be contacted and added to the cohort group soon.
+                </p>
+              </div>
+            )}
+          </motion.section>
+        )}
+
+        {/* ALREADY APPLIED */}
+        {hasApplied && step === totalSteps + 2 && (
+          <div className="text-center space-y-4 mt-10">
+            <h2 className="text-2xl font-medium text-amber-400">
+              You’ve already applied
+            </h2>
+            <p className="text-white/70">
+              Your application is under review. We will contact you soon.
             </p>
-          </form>
-        </motion.section>
+          </div>
+        )}
+
       </div>
     </section>
   );
