@@ -27,7 +27,7 @@ export function HomePage() {
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Top-right brand label */}
-      <div className="absolute top-6 right-6 text-emerald-500 font-semibold tracking-wide">
+      <div className="absolute top-6 left-6 text-emerald-500 font-semibold tracking-wide">
         Mic'd Up Initiative
       </div>
 
