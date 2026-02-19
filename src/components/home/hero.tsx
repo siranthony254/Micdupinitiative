@@ -26,6 +26,11 @@ export function HomePage() {
 
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Top-right brand label */}
+      <div className="absolute top-6 right-6 text-emerald-500 font-semibold tracking-wide">
+        Mic'd Up Initiative
+      </div>
+
       {/* Background slideshow */}
       <div className="absolute inset-0 -z-10">
         <AnimatePresence mode="wait">
