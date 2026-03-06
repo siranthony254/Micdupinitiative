@@ -34,6 +34,16 @@ export default function AdminCoursesPage() {
     thumbnail: ''
   })
   const [submitting, setSubmitting] = useState(false)
+  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null)
+  const [lessons, setLessons] = useState<Lesson[]>([])
+  const [lessonForm, setLessonForm] = useState({
+    title: '',
+    content: '',
+    order_index: 0,
+  })
+  const [editingLesson, setEditingLesson] = useState<Lesson | null>(null)
+  const [lessonsLoading, setLessonsLoading] = useState(false)
+  const [lessonSubmitting, setLessonSubmitting] = useState(false)
 
   useEffect(() => {
     if (!loading && (!isAdmin || !user)) {
@@ -128,6 +138,97 @@ export default function AdminCoursesPage() {
 
       if (error) throw error
       await fetchCourses()
+    } catch (error) {
+      // Silent error handling
+    }
+  }
+
+  const openLessonManager = async (course: Course) => {
+    setSelectedCourse(course)
+    setEditingLesson(null)
+    setLessonForm({ title: '', content: '', order_index: 0 })
+    setLessonsLoading(true)
+
+    try {
+      const { data, error } = await supabase
+        .from('lessons')
+        .select('*')
+        .eq('course_id', course.id)
+        .order('order_index', { ascending: true })
+
+      if (error) return
+      setLessons(data || [])
+    } catch (error) {
+      // Silent error handling
+      setLessons([])
+    } finally {
+      setLessonsLoading(false)
+    }
+  }
+
+  const handleLessonSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedCourse) return
+    setLessonSubmitting(true)
+
+    try {
+      if (editingLesson) {
+        const { error } = await supabase
+          .from('lessons')
+          .update({
+            title: lessonForm.title,
+            content: lessonForm.content,
+            order_index: lessonForm.order_index,
+          })
+          .eq('id', editingLesson.id)
+
+        if (error) throw error
+      } else {
+        const { error } = await supabase
+          .from('lessons')
+          .insert({
+            course_id: selectedCourse.id,
+            title: lessonForm.title,
+            content: lessonForm.content,
+            order_index: lessonForm.order_index,
+          })
+
+        if (error) throw error
+      }
+
+      setLessonForm({ title: '', content: '', order_index: 0 })
+      setEditingLesson(null)
+      await openLessonManager(selectedCourse)
+    } catch (error) {
+      // Silent error handling
+    } finally {
+      setLessonSubmitting(false)
+    }
+  }
+
+  const handleLessonEdit = (lesson: Lesson) => {
+    setEditingLesson(lesson)
+    setLessonForm({
+      title: lesson.title,
+      content: lesson.content || '',
+      order_index: lesson.order_index,
+    })
+  }
+
+  const handleLessonDelete = async (lessonId: string) => {
+    if (!selectedCourse) return
+    if (!confirm('Delete this lesson? This will also remove associated progress records.')) {
+      return
+    }
+
+    try {
+      const { error } = await supabase
+        .from('lessons')
+        .delete()
+        .eq('id', lessonId)
+
+      if (error) throw error
+      await openLessonManager(selectedCourse)
     } catch (error) {
       // Silent error handling
     }
@@ -263,40 +364,204 @@ export default function AdminCoursesPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((course) => (
-              <div key={course.id} className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-amber-500 mb-2">{course.title}</h3>
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">{course.description}</p>
-                
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
-                  <span>{course.lessons?.length || 0} lessons</span>
-                  <span>Created {new Date(course.created_at).toLocaleDateString()}</span>
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {courses.map((course) => (
+                <div key={course.id} className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+                  <h3 className="text-lg font-semibold text-amber-500 mb-2">{course.title}</h3>
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-3">{course.description}</p>
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                    <span>{course.lessons?.length || 0} lessons</span>
+                    <span>Created {new Date(course.created_at).toLocaleDateString()}</span>
+                  </div>
+
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => openLessonManager(course)}
+                      className="flex-1 px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600 transition text-center text-sm"
+                    >
+                      Manage Lessons
+                    </button>
+                    <button
+                      onClick={() => handleEdit(course)}
+                      className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(course.id)}
+                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition text-sm"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {selectedCourse && (
+              <div className="mt-10 bg-gray-900 border border-amber-500/60 rounded-lg p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h2 className="text-2xl font-bold text-amber-500">
+                      Manage Lessons – {selectedCourse.title}
+                    </h2>
+                    <p className="text-gray-400 text-sm">
+                      Create, edit, and reorder lessons for this course.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedCourse(null)
+                      setLessons([])
+                      setEditingLesson(null)
+                      setLessonForm({ title: '', content: '', order_index: 0 })
+                    }}
+                    className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition text-sm"
+                  >
+                    Close
+                  </button>
                 </div>
 
-                <div className="flex gap-2">
-                  <Link
-                    href={`/mui-portal/admin/courses/${course.id}/lessons`}
-                    className="flex-1 px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600 transition text-center text-sm"
-                  >
-                    Manage Lessons
-                  </Link>
-                  <button
-                    onClick={() => handleEdit(course)}
-                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleDelete(course.id)}
-                    className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition text-sm"
-                  >
-                    Delete
-                  </button>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div>
+                    <h3 className="text-lg font-semibold text-amber-500 mb-3">
+                      {editingLesson ? 'Edit Lesson' : 'Add Lesson'}
+                    </h3>
+                    <form onSubmit={handleLessonSubmit} className="space-y-4">
+                      <div>
+                        <label htmlFor="lessonTitle" className="block text-sm font-medium text-gray-300 mb-2">
+                          Title
+                        </label>
+                        <input
+                          id="lessonTitle"
+                          type="text"
+                          required
+                          value={lessonForm.title}
+                          onChange={(e) =>
+                            setLessonForm({ ...lessonForm, title: e.target.value })
+                          }
+                          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                          placeholder="Lesson title"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="lessonContent" className="block text-sm font-medium text-gray-300 mb-2">
+                          Content
+                        </label>
+                        <textarea
+                          id="lessonContent"
+                          rows={4}
+                          value={lessonForm.content}
+                          onChange={(e) =>
+                            setLessonForm({ ...lessonForm, content: e.target.value })
+                          }
+                          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                          placeholder="Lesson content or notes"
+                        />
+                      </div>
+
+                      <div>
+                        <label htmlFor="lessonOrder" className="block text-sm font-medium text-gray-300 mb-2">
+                          Order Index
+                        </label>
+                        <input
+                          id="lessonOrder"
+                          type="number"
+                          value={lessonForm.order_index}
+                          onChange={(e) =>
+                            setLessonForm({
+                              ...lessonForm,
+                              order_index: Number(e.target.value),
+                            })
+                          }
+                          className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                        />
+                      </div>
+
+                      <div className="flex gap-3">
+                        <button
+                          type="submit"
+                          disabled={lessonSubmitting}
+                          className="px-6 py-2 bg-amber-500 text-black rounded-lg hover:bg-amber-400 disabled:opacity-50 disabled:cursor-not-allowed transition"
+                        >
+                          {lessonSubmitting
+                            ? 'Saving...'
+                            : editingLesson
+                            ? 'Update Lesson'
+                            : 'Add Lesson'}
+                        </button>
+                        {editingLesson && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingLesson(null)
+                              setLessonForm({ title: '', content: '', order_index: 0 })
+                            }}
+                            className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-semibold text-amber-500 mb-3">Existing Lessons</h3>
+                    {lessonsLoading ? (
+                      <p className="text-gray-400 text-sm">Loading lessons...</p>
+                    ) : lessons.length === 0 ? (
+                      <p className="text-gray-400 text-sm">
+                        No lessons yet. Create the first lesson for this course.
+                      </p>
+                    ) : (
+                      <div className="space-y-3">
+                        {lessons.map((lesson) => (
+                          <div
+                            key={lesson.id}
+                            className="border border-gray-800 rounded-lg p-4 bg-gray-950/40 flex items-start justify-between gap-3"
+                          >
+                            <div>
+                              <p className="text-sm text-gray-500 mb-1">
+                                #{lesson.order_index + 1}
+                              </p>
+                              <p className="text-white font-medium">{lesson.title}</p>
+                              {lesson.content && (
+                                <p className="text-xs text-gray-400 mt-1 line-clamp-2">
+                                  {lesson.content}
+                                </p>
+                              )}
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleLessonEdit(lesson)}
+                                className="px-3 py-1 bg-gray-700 text-white rounded hover:bg-gray-600 transition text-xs"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleLessonDelete(lesson.id)}
+                                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition text-xs"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
     </div>

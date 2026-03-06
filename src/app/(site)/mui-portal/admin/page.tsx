@@ -173,7 +173,7 @@ export default function AdminDashboard() {
           </Link>
 
           <Link 
-            href="/mui-portal/admin/cohorts"
+            href="/mui-portal/cohorts"
             className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition group"
           >
             <h3 className="text-xl font-semibold text-amber-500 mb-2 group-hover:text-amber-400">
@@ -183,7 +183,7 @@ export default function AdminDashboard() {
           </Link>
 
           <Link 
-            href="/mui-portal/admin/users"
+            href="/mui-portal/admin"
             className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition group"
           >
             <h3 className="text-xl font-semibold text-amber-500 mb-2 group-hover:text-amber-400">
