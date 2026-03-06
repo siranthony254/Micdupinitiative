@@ -9,9 +9,17 @@ export async function middleware(req: NextRequest) {
     },
   })
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Supabase environment variables are missing in middleware.')
+    return res
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         get(name: string) {
@@ -55,31 +63,35 @@ export async function middleware(req: NextRequest) {
     }
   )
 
-  // Protected routes
-  const protectedRoutes = ['/mui-portal/dashboard', '/mui-portal/courses', '/mui-portal/cohorts', '/mui-portal/admin']
-  const isProtectedRoute = protectedRoutes.some(route => 
-    req.nextUrl.pathname.startsWith(route)
-  )
+  try {
+    // Protected routes
+    const protectedRoutes = ['/mui-portal/dashboard', '/mui-portal/courses', '/mui-portal/cohorts', '/mui-portal/admin']
+    const isProtectedRoute = protectedRoutes.some(route =>
+      req.nextUrl.pathname.startsWith(route)
+    )
 
-  const { data: { session } } = await supabase.auth.getSession()
+    const { data: { session } } = await supabase.auth.getSession()
 
-  if (isProtectedRoute && !session) {
-    const redirectUrl = new URL('/mui-portal/login', req.url)
-    redirectUrl.searchParams.set('redirect', req.nextUrl.pathname)
-    return NextResponse.redirect(redirectUrl)
-  }
-
-  // Additional check for admin routes
-  if (session && req.nextUrl.pathname.startsWith('/mui-portal/admin')) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', session.user.id)
-      .single()
-
-    if (!profile || profile.role !== 'admin') {
-      return NextResponse.redirect(new URL('/mui-portal/dashboard', req.url))
+    if (isProtectedRoute && !session) {
+      const redirectUrl = new URL('/mui-portal/login', req.url)
+      redirectUrl.searchParams.set('redirect', req.nextUrl.pathname)
+      return NextResponse.redirect(redirectUrl)
     }
+
+    // Additional check for admin routes
+    if (session && req.nextUrl.pathname.startsWith('/mui-portal/admin')) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single()
+
+      if (!profile || profile.role !== 'admin') {
+        return NextResponse.redirect(new URL('/mui-portal/dashboard', req.url))
+      }
+    }
+  } catch (error) {
+    console.error('Middleware error:', error)
   }
 
   return res
