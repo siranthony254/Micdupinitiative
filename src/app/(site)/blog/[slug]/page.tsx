@@ -2,20 +2,7 @@
 import { notFound } from "next/navigation";
 import { getPostBySlug } from "@/libs/notion";
 import { PageShell } from "@/components/layout/PageShell";
-import dynamic from "next/dynamic";
-
-// Client-only Notion renderer
-const NotionContent = dynamic(
-  () => import("@/components/notion/NotionRenderer"),
-  {
-    ssr: false,
-    loading: () => (
-      <p className="mt-12 text-center text-sm text-white/50">
-        Loading content…
-      </p>
-    ),
-  }
-);
+import NotionContentClient from "@/components/notion/NotionContentClient";
 
 export const runtime = "nodejs";
 
@@ -34,24 +21,31 @@ export default async function BlogPostPage({
     // --- Basic Fields ---
     const title = props.Title?.title?.[0]?.plain_text ?? "Untitled";
     const excerpt = props.Excerpt?.rich_text?.[0]?.plain_text ?? "";
+
     const coverUrl =
       props.Cover?.files?.[0]?.file?.url ||
       props.Cover?.files?.[0]?.external?.url ||
       null;
+
     const publishedDate = props.Published?.date?.start
       ? new Date(props.Published.date.start).toLocaleDateString()
       : "Draft";
 
-    // --- Optional Author ---
     const author = props.Author?.rich_text?.[0]?.plain_text ?? null;
 
-    // --- Fetch Notion page content safely ---
+    // --- Fetch Notion Page Content ---
     let recordMap: any = null;
+
     try {
       const res = await fetch(
-        `https://notion-api.splitbee.io/v1/page/${post.id}`
+        `https://notion-api.splitbee.io/v1/page/${post.id}`,
+        {
+          next: { revalidate: 60 }, // cache for 60 seconds
+        }
       );
+
       if (!res.ok) throw new Error("Notion page fetch failed");
+
       recordMap = await res.json();
     } catch (err) {
       console.error("Error fetching Notion page:", err);
@@ -83,14 +77,14 @@ export default async function BlogPostPage({
             {title}
           </h1>
 
-          {/* Author byline */}
+          {/* Author */}
           {author && (
             <p className="mb-6 text-sm text-white/60">
               By <span className="text-white/80">{author}</span>
             </p>
           )}
 
-          {/* Excerpt / Dek */}
+          {/* Excerpt */}
           {excerpt && (
             <p className="mb-10 max-w-2xl text-lg leading-relaxed text-white/75">
               {excerpt}
@@ -108,7 +102,6 @@ export default async function BlogPostPage({
               prose-headings:text-white
               prose-a:text-amber-400 hover:prose-a:text-amber-300
 
-              /* Pull quotes */
               prose-blockquote:border-l-amber-400/40
               prose-blockquote:bg-white/5
               prose-blockquote:py-4
@@ -117,7 +110,6 @@ export default async function BlogPostPage({
               prose-blockquote:text-white/85
               prose-blockquote:rounded-r-xl
 
-              /* Footnotes / references */
               prose-ol:text-sm
               prose-ul:text-sm
               prose-li:text-white/60
@@ -126,7 +118,7 @@ export default async function BlogPostPage({
             "
           >
             {recordMap && Object.keys(recordMap).length > 0 ? (
-              <NotionContent recordMap={recordMap} />
+              <NotionContentClient recordMap={recordMap} />
             ) : (
               <p className="mt-8 text-center text-sm text-white/50">
                 Content unavailable.
@@ -138,6 +130,7 @@ export default async function BlogPostPage({
     );
   } catch (error) {
     console.error("Failed to load blog content:", error);
+
     return (
       <PageShell title="Error">
         <p className="mt-12 text-center text-sm text-red-400">
