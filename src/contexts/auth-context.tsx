@@ -29,11 +29,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
+  const [profileLoading, setProfileLoading] = useState(false)
 
   // Auto-detect admin by email
   const isAdmin = profile?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL || profile?.role === 'admin'
 
   const fetchProfile = async (userId: string) => {
+    if (profileLoading) return // Prevent multiple simultaneous calls
+    
+    console.log('Fetching profile for user:', userId)
+    setProfileLoading(true)
+    
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -41,38 +47,48 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', userId)
         .maybeSingle()
 
-      if (error) {
-        // If profile doesn't exist, create a default one
-        if (error.code === 'PGRST116') {
-          const defaultProfile: Profile = {
-            id: userId,
-            full_name: session?.user?.user_metadata?.full_name || session?.user?.email || 'User',
-            email: session?.user?.email || null,
-            role: 'student',
-            created_at: new Date().toISOString(),
-          }
-          setProfile(defaultProfile)
-          return
-        }
+      console.log('Profile query result:', { data, error })
+
+      if (error && error.code !== 'PGRST116') {
+        console.error('Profile fetch error:', error)
         return
       }
 
-      if (!data) {
-        // Create default profile if none exists
-        const defaultProfile: Profile = {
+      if (error?.code === 'PGRST116' || !data) {
+        // Profile doesn't exist, create one
+        console.log('Profile does not exist, creating new one')
+        const { data: userData } = await supabase.auth.getUser()
+        const userMetadata = userData?.user?.user_metadata || {}
+        
+        const newProfile = {
           id: userId,
-          full_name: session?.user?.user_metadata?.full_name || session?.user?.email || 'User',
-          email: session?.user?.email || null,
-          role: 'student',
-          created_at: new Date().toISOString(),
+          full_name: userMetadata.full_name || userData?.user?.email || 'User',
+          email: userData?.user?.email || null,
+          role: 'student'
         }
-        setProfile(defaultProfile)
+        
+        console.log('Creating profile:', newProfile)
+        
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert(newProfile)
+        
+        if (insertError) {
+          console.error('Profile creation error:', insertError)
+          // Set temporary profile locally
+          setProfile(newProfile as Profile)
+          return
+        }
+        
+        console.log('Profile created successfully')
+        setProfile(newProfile as Profile)
         return
       }
 
       // Auto-promote to admin if email matches
       const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL
       if (data.email === adminEmail && data.role !== 'admin') {
+        console.log('Promoting user to admin:', data.email)
         const { error: updateError } = await supabase
           .from('profiles')
           .update({ role: 'admin' })
@@ -83,9 +99,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       }
 
+      console.log('Setting profile:', data)
       setProfile(data as Profile)
     } catch (error) {
-      // Silent error handling
+      console.error('Profile fetch error:', error)
+    } finally {
+      setProfileLoading(false)
     }
   }
 
@@ -96,38 +115,70 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
+    let mounted = true
+    let authSubscription: any = null
+
     // Get initial session
     const getInitialSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      setSession(session)
-      setUser(session?.user ?? null)
+      if (!mounted) return
       
-      if (session?.user) {
-        await fetchProfile(session.user.id)
+      try {
+        const { data: { session } } = await supabase.auth.getSession()
+        
+        if (!mounted) return
+        
+        setSession(session)
+        setUser(session?.user ?? null)
+        
+        if (session?.user && mounted) {
+          await fetchProfile(session.user.id)
+        }
+      } catch (error) {
+        console.error('Initial session error:', error)
+      } finally {
+        if (mounted) {
+          setLoading(false)
+        }
       }
-      
-      setLoading(false)
     }
 
     getInitialSession()
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session)
-        setUser(session?.user ?? null)
-        
-        if (session?.user) {
-          await fetchProfile(session.user.id)
-        } else {
-          setProfile(null)
+    const setupAuthListener = () => {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        async (event, session) => {
+          if (!mounted) return
+          
+          console.log('Auth state changed:', event, session?.user?.email)
+          
+          setSession(session)
+          setUser(session?.user ?? null)
+          
+          if (session?.user && mounted) {
+            await fetchProfile(session.user.id)
+          } else if (mounted) {
+            setProfile(null)
+          }
+          
+          if (mounted) {
+            setLoading(false)
+          }
         }
-        
-        setLoading(false)
-      }
-    )
+      )
+      
+      authSubscription = subscription
+      return subscription
+    }
 
-    return () => subscription.unsubscribe()
+    authSubscription = setupAuthListener()
+
+    return () => {
+      mounted = false
+      if (authSubscription) {
+        authSubscription.unsubscribe()
+      }
+    }
   }, [])
 
   const signOut = async () => {

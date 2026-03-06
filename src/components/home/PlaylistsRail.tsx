@@ -9,9 +9,10 @@ interface PlaylistsRailProps {
 }
 
 async function getRailVideos() {
-  const headersList = headers();
+  const headersList = await headers();
   const host = headersList.get("host");
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const protocol =
+    process.env.NODE_ENV === "development" ? "http" : "https";
 
   const res = await fetch(
     `${protocol}://${host}/api/videos?rail=true`,

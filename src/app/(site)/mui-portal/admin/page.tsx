@@ -30,7 +30,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!loading && (!isAdmin || !user)) {
-      router.push('/dashboard')
+      router.push('/mui-portal/dashboard')
       return
     }
 

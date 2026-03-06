@@ -33,7 +33,9 @@ export async function middleware(req: NextRequest) {
   )
 
   // Protected routes
-  const protectedRoutes = ['/mui-portal/dashboard', '/mui-portal/courses', '/mui-portal/cohorts', '/mui-portal/admin']
+  // NOTE: We only protect admin on the server side.
+  // Other MUI Portal pages use client-side auth guards via AuthProvider.
+  const protectedRoutes = ['/mui-portal/admin']
   const isProtectedRoute = protectedRoutes.some(route => 
     req.nextUrl.pathname.startsWith(route)
   )

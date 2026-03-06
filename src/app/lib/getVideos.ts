@@ -9,9 +9,10 @@ export async function getVideos(
   params.set("section", section);
   if (category) params.set("category", category);
 
-  const headersList = headers();
+  const headersList = await headers();
   const host = headersList.get("host");
-  const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
+  const protocol =
+    process.env.NODE_ENV === "development" ? "http" : "https";
 
   const res = await fetch(
     `${protocol}://${host}/api/videos?${params.toString()}`,

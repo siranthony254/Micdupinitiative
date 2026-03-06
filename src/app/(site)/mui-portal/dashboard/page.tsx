@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useAuth } from '@/contexts/auth-context'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import { ProgressBar } from '@/components/progress-bar'
 
 interface Course {
   id: string
@@ -30,23 +31,22 @@ export default function DashboardPage() {
   const [overallProgress, setOverallProgress] = useState(0)
   const [dataLoading, setDataLoading] = useState(true)
 
+  console.log('Dashboard state:', { user: user?.email, profile, loading, dataLoading })
+
   const getFirstName = (fullName: string | null) => {
     if (!fullName) return 'User'
     return fullName.split(' ')[0]
   }
 
-  useEffect(() => {
-    if (user) {
-      fetchUserData()
-    }
-  }, [user])
-
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
+    if (!user) return
+    console.log('Fetching dashboard data for user:', user.id)
     try {
       setDataLoading(true)
 
       // Fetch enrollments with cohort details
-      const { data: enrollmentsData } = await supabase
+      console.log('Fetching enrollments...')
+      const { data: enrollmentsData, error: enrollmentsError } = await supabase
         .from('enrollments')
         .select(`
           cohort_id,
@@ -59,15 +59,32 @@ export default function DashboardPage() {
         `)
         .eq('user_id', user!.id)
 
+      if (enrollmentsError) {
+        console.error('Enrollments error:', enrollmentsError)
+      } else {
+        console.log('Enrollments fetched:', enrollmentsData?.length || 0)
+      }
+
       // Fetch all courses
-      const { data: coursesData } = await supabase
+      console.log('Fetching courses...')
+      const { data: coursesData, error: coursesError } = await supabase
         .from('courses')
         .select('*')
 
+      if (coursesError) {
+        console.error('Courses error:', coursesError)
+      } else {
+        console.log('Courses fetched:', coursesData?.length || 0)
+      }
+
       // Format enrollments
       if (enrollmentsData) {
-        const formattedEnrollments = enrollmentsData.map(enrollment => ({
-          cohort: enrollment.cohorts,
+        const formattedEnrollments = enrollmentsData.map((enrollment: any) => ({
+          cohort: {
+            id: enrollment.cohorts.id,
+            name: enrollment.cohorts.name,
+            description: enrollment.cohorts.description
+          },
           enrolled_at: enrollment.enrolled_at
         }))
         setEnrollments(formattedEnrollments)
@@ -75,15 +92,88 @@ export default function DashboardPage() {
       
       if (coursesData) setCourses(coursesData)
 
-      // Calculate overall progress (simplified)
-      const progressPercentage = coursesData && coursesData.length > 0 ? 25 : 0
+      // Calculate overall progress based on actual course progress
+      let totalProgress = 0
+      let courseCount = 0
+      
+      if (coursesData && coursesData.length > 0) {
+        for (const course of coursesData) {
+          const { data: courseProgress } = await supabase
+            .rpc('calculate_course_progress', { 
+              user_uuid: user!.id, 
+              course_uuid: course.id 
+            })
+          
+          if (courseProgress !== null) {
+            totalProgress += courseProgress
+            courseCount++
+          }
+        }
+      }
+      
+      const progressPercentage = courseCount > 0 ? Math.round(totalProgress / courseCount) : 0
       setOverallProgress(progressPercentage)
+      console.log('Overall progress calculated:', progressPercentage)
     } catch (error) {
-      // Silent error handling
+      console.error('Dashboard data fetch error:', error)
     } finally {
       setDataLoading(false)
     }
-  }
+  }, [user])
+
+  useEffect(() => {
+    if (!user) return
+
+    // Initial load
+    fetchUserData()
+
+    // Real-time updates for this user’s dashboard
+    const channel = supabase
+      .channel(`dashboard-realtime-${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'enrollments',
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          console.log('Realtime update: enrollments changed')
+          fetchUserData()
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'courses',
+        },
+        () => {
+          console.log('Realtime update: courses changed')
+          fetchUserData()
+        },
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'progress',
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          console.log('Realtime update: progress changed')
+          fetchUserData()
+        },
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [user, fetchUserData])
 
   if (loading || dataLoading) {
     return (
@@ -127,12 +217,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
             <h3 className="text-lg font-semibold text-amber-500 mb-2">Overall Progress</h3>
-            <div className="w-full bg-gray-700 rounded-full h-3 mb-2">
-              <div 
-                className="bg-amber-500 h-3 rounded-full transition-all duration-300"
-                style={{ width: `${overallProgress}%` }}
-              ></div>
-            </div>
+            <ProgressBar progress={overallProgress} size="md" />
             <p className="text-gray-400 text-sm">{overallProgress}% Complete</p>
           </div>
 

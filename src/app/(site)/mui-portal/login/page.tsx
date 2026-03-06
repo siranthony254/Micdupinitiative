@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -18,16 +19,25 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log('Attempting login with:', email)
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) throw error
+      if (error) {
+        console.error('Login error:', error)
+        throw error
+      }
 
-      router.push('/mui-portal/dashboard')
+      console.log('Login successful:', data)
+
+      // Use redirect param if present, otherwise go to dashboard
+      const redirectTo = searchParams.get('redirect') || '/mui-portal/dashboard'
+      router.push(redirectTo)
     } catch (error: any) {
-      setError(error.message)
+      console.error('Login catch error:', error)
+      setError(error.message || 'Login failed. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -94,6 +104,11 @@ export default function LoginPage() {
               Sign up
             </Link>
           </p>
+          {typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('message') && (
+            <p className="mt-4 text-green-400 text-sm">
+              {new URLSearchParams(window.location.search).get('message')}
+            </p>
+          )}
         </div>
       </div>
     </div>

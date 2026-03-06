@@ -5,6 +5,7 @@ import { useAuth } from '@/contexts/auth-context'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ProgressBar } from '@/components/progress-bar'
 
 interface Course {
   id: string
@@ -23,7 +24,7 @@ interface Lesson {
 export default function CoursesPage() {
   const { user, loading } = useAuth()
   const [courses, setCourses] = useState<Course[]>([])
-  const [userProgress, setUserProgress] = useState<Record<string, Lesson[]>>({})
+  const [userProgress, setUserProgress] = useState<Record<string, boolean>>({})
   const [dataLoading, setDataLoading] = useState(true)
 
   useEffect(() => {
@@ -70,16 +71,9 @@ export default function CoursesPage() {
       if (error) return
 
       // Group progress by course
-      const progressByCourse: Record<string, Lesson[]> = {}
+      const progressByCourse: Record<string, boolean> = {}
       data?.forEach(item => {
-        if (!progressByCourse[item.lesson.id]) {
-          progressByCourse[item.lesson.id] = []
-        }
-        progressByCourse[item.lesson.id].push({
-          id: item.lesson_id,
-          title: item.lesson.title,
-          completed: item.completed
-        })
+        progressByCourse[item.lesson_id] = item.completed
       })
 
       setUserProgress(progressByCourse)
@@ -94,7 +88,7 @@ export default function CoursesPage() {
     if (!course.lessons || course.lessons.length === 0) return 0
     
     const completedLessons = course.lessons.filter(lesson => 
-      userProgress[lesson.id]?.some(l => l.completed) || false
+      userProgress[lesson.id] || false
     ).length
     
     return Math.round((completedLessons / course.lessons.length) * 100)
@@ -196,17 +190,12 @@ export default function CoursesPage() {
                         <span>Progress</span>
                         <span>{progress}%</span>
                       </div>
-                      <div className="w-full bg-gray-700 rounded-full h-2">
-                        <div 
-                          className="bg-amber-500 h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${progress}%` }}
-                        ></div>
-                      </div>
+                      <ProgressBar progress={progress} size="sm" />
                       <div className="flex justify-between text-xs text-gray-500">
                         <span>{course.lessons?.length || 0} lessons</span>
                         <span>
                           {course.lessons?.filter(lesson => 
-                            userProgress[lesson.id]?.some(l => l.completed) || false
+                            userProgress[lesson.id] || false
                           ).length || 0} completed
                         </span>
                       </div>
