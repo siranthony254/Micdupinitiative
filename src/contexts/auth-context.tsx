@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Auto-detect admin by email
   const isAdmin = profile?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL || profile?.role === 'admin'
 
-  const fetchProfile = async (userId: string) => {
+  const fetchProfile = async (userId: string, userEmail?: string, fullName?: string) => {
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -41,49 +41,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', userId)
         .maybeSingle()
 
-      if (error) {
-        // If profile doesn't exist, create a default one
-        if (error.code === 'PGRST116') {
-          const defaultProfile: Profile = {
-            id: userId,
-            full_name: session?.user?.user_metadata?.full_name || session?.user?.email || 'User',
-            email: session?.user?.email || null,
-            role: 'student',
-            created_at: new Date().toISOString(),
-          }
-          setProfile(defaultProfile)
-          return
-        }
+      if (error && error.code !== 'PGRST116') {
+        console.error('Error fetching profile:', error)
         return
       }
+
+      const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL
+      const shouldBeAdmin = userEmail === adminEmail
 
       if (!data) {
-        // Create default profile if none exists
-        const defaultProfile: Profile = {
+        // Create profile if none exists
+        const newProfile = {
           id: userId,
-          full_name: session?.user?.user_metadata?.full_name || session?.user?.email || 'User',
-          email: session?.user?.email || null,
-          role: 'student',
+          full_name: fullName || userEmail || 'User',
+          email: userEmail || null,
+          role: shouldBeAdmin ? 'admin' : 'student',
           created_at: new Date().toISOString(),
         }
-        setProfile(defaultProfile)
+
+        const { data: createdProfile, error: insertError } = await supabase
+          .from('profiles')
+          .insert([newProfile])
+          .select()
+          .single()
+
+        if (insertError) {
+          console.error('Error creating profile:', insertError)
+          setProfile(newProfile as Profile)
+        } else {
+          setProfile(createdProfile as Profile)
+        }
         return
       }
 
-      // Auto-promote to admin if email matches
-      const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL
-      if (data.email === adminEmail && data.role !== 'admin') {
-        const { error: updateError } = await supabase
+      // Auto-promote to admin if email matches and not already admin
+      if (shouldBeAdmin && data.role !== 'admin') {
+        const { data: updatedProfile, error: updateError } = await supabase
           .from('profiles')
           .update({ role: 'admin' })
           .eq('id', userId)
+          .select()
+          .single()
         
-        if (!updateError) {
-          data.role = 'admin'
+        if (!updateError && updatedProfile) {
+          setProfile(updatedProfile as Profile)
+        } else {
+          setProfile({ ...data, role: 'admin' } as Profile)
         }
+      } else {
+        setProfile(data as Profile)
       }
-
-      setProfile(data as Profile)
     } catch (error) {
       // Silent error handling
     }
@@ -91,7 +98,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const refreshProfile = async () => {
     if (user) {
-      await fetchProfile(user.id)
+      await fetchProfile(user.id, user.email, user.user_metadata?.full_name)
     }
   }
 
@@ -103,7 +110,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(session?.user ?? null)
       
       if (session?.user) {
-        await fetchProfile(session.user.id)
+        await fetchProfile(
+          session.user.id,
+          session.user.email,
+          session.user.user_metadata?.full_name
+        )
       }
       
       setLoading(false)
@@ -118,7 +129,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(session?.user ?? null)
         
         if (session?.user) {
-          await fetchProfile(session.user.id)
+          await fetchProfile(
+            session.user.id,
+            session.user.email,
+            session.user.user_metadata?.full_name
+          )
         } else {
           setProfile(null)
         }

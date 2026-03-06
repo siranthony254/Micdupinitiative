@@ -6,13 +6,25 @@ import { useAuth } from '@/contexts/auth-context'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
 
+interface RecentUser {
+  full_name: string | null
+  email: string | null
+  created_at: string
+}
+
+interface RecentCompletion {
+  completed_at: string
+  user: { full_name: string | null }
+  lesson: { title: string; course: { title: string } }
+}
+
 interface DashboardStats {
   totalUsers: number
   totalCourses: number
   totalCohorts: number
   totalEnrollments: number
-  recentUsers: any[]
-  recentCompletions: any[]
+  recentUsers: RecentUser[]
+  recentCompletions: RecentCompletion[]
 }
 
 export default function AdminDashboard() {
@@ -45,10 +57,10 @@ export default function AdminDashboard() {
 
       // Fetch total counts with error handling
       const [
-        { count: totalUsers },
-        { count: totalCourses },
-        { count: totalCohorts },
-        { count: totalEnrollments }
+        usersRes,
+        coursesRes,
+        cohortsRes,
+        enrollmentsRes
       ] = await Promise.allSettled([
         supabase.from('profiles').select('*', { count: 'exact', head: true }),
         supabase.from('courses').select('*', { count: 'exact', head: true }),
@@ -77,12 +89,12 @@ export default function AdminDashboard() {
         .limit(5)
 
       setStats({
-        totalUsers: totalUsers.status === 'fulfilled' ? totalUsers.value || 0 : 0,
-        totalCourses: totalCourses.status === 'fulfilled' ? totalCourses.value || 0 : 0,
-        totalCohorts: totalCohorts.status === 'fulfilled' ? totalCohorts.value || 0 : 0,
-        totalEnrollments: totalEnrollments.status === 'fulfilled' ? totalEnrollments.value || 0 : 0,
-        recentUsers: recentUsers || [],
-        recentCompletions: recentCompletions || []
+        totalUsers: usersRes.status === 'fulfilled' ? usersRes.value.count || 0 : 0,
+        totalCourses: coursesRes.status === 'fulfilled' ? coursesRes.value.count || 0 : 0,
+        totalCohorts: cohortsRes.status === 'fulfilled' ? cohortsRes.value.count || 0 : 0,
+        totalEnrollments: enrollmentsRes.status === 'fulfilled' ? enrollmentsRes.value.count || 0 : 0,
+        recentUsers: (recentUsers as unknown as RecentUser[]) || [],
+        recentCompletions: (recentCompletions as unknown as RecentCompletion[]) || []
       })
     } catch (error) {
       // Silent error handling - set default values
@@ -224,7 +236,7 @@ export default function AdminDashboard() {
               <p className="text-gray-400">No recent completions</p>
             ) : (
               <div className="space-y-3">
-                {stats.recentCompletions.map((completion: any, index) => (
+                {stats.recentCompletions.map((completion, index) => (
                   <div key={index} className="py-2 border-b border-gray-800">
                     <p className="text-white font-medium">{completion.lesson?.title || 'Unknown Lesson'}</p>
                     <p className="text-gray-400 text-sm">
