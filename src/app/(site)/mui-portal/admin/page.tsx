@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/contexts/auth-context'
-import { supabase } from '@/lib/supabase'
-import Link from 'next/link'
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/contexts/auth-context"
+import { supabase } from "@/lib/supabase"
+import Link from "next/link"
 
 interface DashboardStats {
   totalUsers: number
@@ -18,19 +18,21 @@ interface DashboardStats {
 export default function AdminDashboard() {
   const { user, profile, isAdmin, loading } = useAuth()
   const router = useRouter()
+
   const [stats, setStats] = useState<DashboardStats>({
     totalUsers: 0,
     totalCourses: 0,
     totalCohorts: 0,
     totalEnrollments: 0,
     recentUsers: [],
-    recentCompletions: []
+    recentCompletions: [],
   })
+
   const [statsLoading, setStatsLoading] = useState(true)
 
   useEffect(() => {
     if (!loading && (!isAdmin || !user)) {
-      router.push('/mui-portal/dashboard')
+      router.push("/mui-portal/dashboard")
       return
     }
 
@@ -43,56 +45,61 @@ export default function AdminDashboard() {
     try {
       setStatsLoading(true)
 
-      // Fetch total counts with error handling
-      const [
-        { count: totalUsers },
-        { count: totalCourses },
-        { count: totalCohorts },
-        { count: totalEnrollments }
-      ] = await Promise.allSettled([
-        supabase.from('profiles').select('*', { count: 'exact', head: true }),
-        supabase.from('courses').select('*', { count: 'exact', head: true }),
-        supabase.from('cohorts').select('*', { count: 'exact', head: true }),
-        supabase.from('enrollments').select('*', { count: 'exact', head: true })
+      const results = await Promise.allSettled([
+        supabase.from("profiles").select("*", { count: "exact", head: true }),
+        supabase.from("courses").select("*", { count: "exact", head: true }),
+        supabase.from("cohorts").select("*", { count: "exact", head: true }),
+        supabase.from("enrollments").select("*", { count: "exact", head: true }),
       ])
 
-      // Fetch recent users
+      const totalUsers =
+        results[0].status === "fulfilled" ? results[0].value.count ?? 0 : 0
+
+      const totalCourses =
+        results[1].status === "fulfilled" ? results[1].value.count ?? 0 : 0
+
+      const totalCohorts =
+        results[2].status === "fulfilled" ? results[2].value.count ?? 0 : 0
+
+      const totalEnrollments =
+        results[3].status === "fulfilled" ? results[3].value.count ?? 0 : 0
+
       const { data: recentUsers } = await supabase
-        .from('profiles')
-        .select('full_name, email, created_at')
-        .order('created_at', { ascending: false })
+        .from("profiles")
+        .select("full_name, email, created_at")
+        .order("created_at", { ascending: false })
         .limit(5)
 
-      // Fetch recent lesson completions
       const { data: recentCompletions } = await supabase
-        .from('progress')
+        .from("progress")
         .select(`
           completed_at,
           user:profiles (full_name),
-          lesson:lessons (title),
-          lesson:lessons (course:courses (title))
+          lesson:lessons (
+            title,
+            course:courses (title)
+          )
         `)
-        .eq('completed', true)
-        .order('completed_at', { ascending: false })
+        .eq("completed", true)
+        .order("completed_at", { ascending: false })
         .limit(5)
 
       setStats({
-        totalUsers: totalUsers.status === 'fulfilled' ? totalUsers.value || 0 : 0,
-        totalCourses: totalCourses.status === 'fulfilled' ? totalCourses.value || 0 : 0,
-        totalCohorts: totalCohorts.status === 'fulfilled' ? totalCohorts.value || 0 : 0,
-        totalEnrollments: totalEnrollments.status === 'fulfilled' ? totalEnrollments.value || 0 : 0,
+        totalUsers,
+        totalCourses,
+        totalCohorts,
+        totalEnrollments,
         recentUsers: recentUsers || [],
-        recentCompletions: recentCompletions || []
+        recentCompletions: recentCompletions || [],
       })
     } catch (error) {
-      // Silent error handling - set default values
       setStats({
         totalUsers: 0,
         totalCourses: 0,
         totalCohorts: 0,
         totalEnrollments: 0,
         recentUsers: [],
-        recentCompletions: []
+        recentCompletions: [],
       })
     } finally {
       setStatsLoading(false)
@@ -116,7 +123,10 @@ export default function AdminDashboard() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-red-400">Access Denied</h1>
           <p className="mt-2 text-gray-400">Admin access required.</p>
-          <Link href="/mui-portal/dashboard" className="mt-4 inline-block px-6 py-2 bg-amber-500 text-black rounded-lg hover:bg-amber-400 transition">
+          <Link
+            href="/mui-portal/dashboard"
+            className="mt-4 inline-block px-6 py-2 bg-amber-500 text-black rounded-lg hover:bg-amber-400 transition"
+          >
             Back to Dashboard
           </Link>
         </div>
@@ -127,119 +137,110 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="max-w-7xl mx-auto px-6 py-8">
+
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-amber-500 mb-2">Admin Dashboard</h1>
-          <p className="text-gray-400">Manage courses, cohorts, and users</p>
+          <h1 className="text-3xl font-bold text-amber-500 mb-2">
+            Admin Dashboard
+          </h1>
+          <p className="text-gray-400">
+            Manage courses, cohorts, and users
+          </p>
         </div>
 
-        {/* Stats Grid */}
+        {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-amber-500 mb-2">Total Users</h3>
-            <p className="text-3xl font-bold text-white">{stats.totalUsers}</p>
-            <p className="text-gray-400 text-sm">Registered users</p>
-          </div>
-
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-amber-500 mb-2">Courses</h3>
-            <p className="text-3xl font-bold text-white">{stats.totalCourses}</p>
-            <p className="text-gray-400 text-sm">Available courses</p>
-          </div>
-
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-amber-500 mb-2">Cohorts</h3>
-            <p className="text-3xl font-bold text-white">{stats.totalCohorts}</p>
-            <p className="text-gray-400 text-sm">Active cohorts</p>
-          </div>
-
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-amber-500 mb-2">Enrollments</h3>
-            <p className="text-3xl font-bold text-white">{stats.totalEnrollments}</p>
-            <p className="text-gray-400 text-sm">Total enrollments</p>
-          </div>
+          <StatCard title="Total Users" value={stats.totalUsers} subtitle="Registered users" />
+          <StatCard title="Courses" value={stats.totalCourses} subtitle="Available courses" />
+          <StatCard title="Cohorts" value={stats.totalCohorts} subtitle="Active cohorts" />
+          <StatCard title="Enrollments" value={stats.totalEnrollments} subtitle="Total enrollments" />
         </div>
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Link 
-            href="/mui-portal/admin/courses"
-            className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition group"
-          >
-            <h3 className="text-xl font-semibold text-amber-500 mb-2 group-hover:text-amber-400">
-              Manage Courses
-            </h3>
-            <p className="text-gray-400">Create, edit, and manage courses</p>
-          </Link>
-
-          <Link 
-            href="/mui-portal/cohorts"
-            className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition group"
-          >
-            <h3 className="text-xl font-semibold text-amber-500 mb-2 group-hover:text-amber-400">
-              Manage Cohorts
-            </h3>
-            <p className="text-gray-400">Create cohorts and manage enrollments</p>
-          </Link>
-
-          <Link 
-            href="/mui-portal/admin"
-            className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition group"
-          >
-            <h3 className="text-xl font-semibold text-amber-500 mb-2 group-hover:text-amber-400">
-              Manage Users
-            </h3>
-            <p className="text-gray-400">View and manage user profiles</p>
-          </Link>
+          <AdminLink href="/mui-portal/admin/courses" title="Manage Courses" desc="Create, edit, and manage courses" />
+          <AdminLink href="/mui-portal/cohorts" title="Manage Cohorts" desc="Create cohorts and manage enrollments" />
+          <AdminLink href="/mui-portal/admin" title="Manage Users" desc="View and manage user profiles" />
         </div>
 
-        {/* Recent Activity */}
+        {/* Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
           {/* Recent Users */}
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-amber-500 mb-4">Recent Users</h3>
+          <ActivityCard title="Recent Users">
             {stats.recentUsers.length === 0 ? (
               <p className="text-gray-400">No recent users</p>
             ) : (
-              <div className="space-y-3">
-                {stats.recentUsers.map((user, index) => (
-                  <div key={index} className="flex justify-between items-center py-2 border-b border-gray-800">
-                    <div>
-                      <p className="text-white font-medium">{user.full_name || 'Unknown'}</p>
-                      <p className="text-gray-400 text-sm">{user.email}</p>
-                    </div>
-                    <p className="text-gray-500 text-xs">
-                      {new Date(user.created_at).toLocaleDateString()}
-                    </p>
+              stats.recentUsers.map((user, i) => (
+                <div key={i} className="flex justify-between py-2 border-b border-gray-800">
+                  <div>
+                    <p className="text-white font-medium">{user.full_name || "Unknown"}</p>
+                    <p className="text-gray-400 text-sm">{user.email}</p>
                   </div>
-                ))}
-              </div>
+                  <p className="text-gray-500 text-xs">
+                    {new Date(user.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              ))
             )}
-          </div>
+          </ActivityCard>
 
           {/* Recent Completions */}
-          <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold text-amber-500 mb-4">Recent Lesson Completions</h3>
+          <ActivityCard title="Recent Lesson Completions">
             {stats.recentCompletions.length === 0 ? (
               <p className="text-gray-400">No recent completions</p>
             ) : (
-              <div className="space-y-3">
-                {stats.recentCompletions.map((completion: any, index) => (
-                  <div key={index} className="py-2 border-b border-gray-800">
-                    <p className="text-white font-medium">{completion.lesson?.title || 'Unknown Lesson'}</p>
-                    <p className="text-gray-400 text-sm">
-                      by {completion.user?.full_name || 'Unknown User'}
-                    </p>
-                    <p className="text-gray-500 text-xs">
-                      {new Date(completion.completed_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              stats.recentCompletions.map((completion: any, i) => (
+                <div key={i} className="py-2 border-b border-gray-800">
+                  <p className="text-white font-medium">
+                    {completion.lesson?.title || "Unknown Lesson"}
+                  </p>
+                  <p className="text-gray-400 text-sm">
+                    by {completion.user?.full_name || "Unknown User"}
+                  </p>
+                  <p className="text-gray-500 text-xs">
+                    {new Date(completion.completed_at).toLocaleDateString()}
+                  </p>
+                </div>
+              ))
             )}
-          </div>
+          </ActivityCard>
+
         </div>
       </div>
+    </div>
+  )
+}
+
+function StatCard({ title, value, subtitle }: any) {
+  return (
+    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+      <h3 className="text-lg font-semibold text-amber-500 mb-2">{title}</h3>
+      <p className="text-3xl font-bold text-white">{value}</p>
+      <p className="text-gray-400 text-sm">{subtitle}</p>
+    </div>
+  )
+}
+
+function AdminLink({ href, title, desc }: any) {
+  return (
+    <Link
+      href={href}
+      className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition group"
+    >
+      <h3 className="text-xl font-semibold text-amber-500 mb-2 group-hover:text-amber-400">
+        {title}
+      </h3>
+      <p className="text-gray-400">{desc}</p>
+    </Link>
+  )
+}
+
+function ActivityCard({ title, children }: any) {
+  return (
+    <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+      <h3 className="text-xl font-semibold text-amber-500 mb-4">{title}</h3>
+      <div className="space-y-3">{children}</div>
     </div>
   )
 }
