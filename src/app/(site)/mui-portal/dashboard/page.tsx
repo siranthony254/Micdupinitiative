@@ -38,6 +38,30 @@ export default function DashboardPage() {
   useEffect(() => {
     if (user) {
       fetchUserData()
+
+      // Real-time subscriptions
+      const enrollmentsSubscription = supabase
+        .channel('enrollments-realtime')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'enrollments', filter: `user_id=eq.${user.id}` },
+          () => fetchUserData()
+        )
+        .subscribe()
+
+      const coursesSubscription = supabase
+        .channel('courses-realtime')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'courses' },
+          () => fetchUserData()
+        )
+        .subscribe()
+
+      return () => {
+        supabase.removeChannel(enrollmentsSubscription)
+        supabase.removeChannel(coursesSubscription)
+      }
     }
   }, [user])
 
@@ -66,8 +90,8 @@ export default function DashboardPage() {
 
       // Format enrollments
       if (enrollmentsData) {
-        const formattedEnrollments = enrollmentsData.map(enrollment => ({
-          cohort: enrollment.cohorts,
+        const formattedEnrollments = enrollmentsData.map((enrollment: any) => ({
+          cohort: enrollment.cohorts as Cohort,
           enrolled_at: enrollment.enrolled_at
         }))
         setEnrollments(formattedEnrollments)

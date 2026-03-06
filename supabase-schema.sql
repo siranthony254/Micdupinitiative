@@ -80,7 +80,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
   -- Check if profile already exists
-  IF NOT EXISTS (SELECT 1 FROM public.profiles WHERE id = NEW.id) THEN
+  IF EXISTS (SELECT 1 FROM public.profiles WHERE id = NEW.id) THEN
     RETURN NEW;
   END IF;
   

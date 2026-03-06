@@ -71,7 +71,7 @@ export default function CoursesPage() {
 
       // Group progress by course
       const progressByCourse: Record<string, Lesson[]> = {}
-      data?.forEach(item => {
+      data?.forEach((item: any) => {
         if (!progressByCourse[item.lesson.id]) {
           progressByCourse[item.lesson.id] = []
         }

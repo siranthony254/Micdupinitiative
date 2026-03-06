@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { MegaMenu } from "./mega-menu";
+import { useAuth } from "@/contexts/auth-context";
 
 /* -----------------------------
    Navigation Structure
@@ -118,6 +119,7 @@ const NAV_ITEMS = [
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const [active, setActive] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -227,7 +229,7 @@ export function SiteHeader() {
           ))}
 
           <Link
-            href="/mui-portal/signup"
+            href={user ? "/mui-portal/dashboard" : "/mui-portal/signup"}
             className="ml-4 px-4 py-1.5 text-sm rounded-full border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black transition"
           >
             MUI Portal
@@ -311,7 +313,7 @@ export function SiteHeader() {
               ))}
 
               <Link
-                href="/mui-portal/signup"
+                href={user ? "/mui-portal/dashboard" : "/mui-portal/signup"}
                 onClick={() => setMobileOpen(false)}
                 className="mt-6 inline-block w-full text-center px-4 py-2 rounded-full border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black transition"
               >
