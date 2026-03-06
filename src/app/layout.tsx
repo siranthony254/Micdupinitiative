@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
 import  { SiteFooter }from "@/components/layout/site-footer";
+import { AuthProvider } from "@/contexts/auth-context";
 
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s | Mic’d Up Initiative",
   },
   description:
-    "Mic’d Up Initiative (MUI) is a campus-based platform amplifying authentic voices, fostering mentorship, and shaping culture across higher education institutions.",
+    "A campus-driven platform amplifying powerful ideas, conversations, and stories. Discover bold campus conversations and ideas shaping society from higher education institutions and beyond. Join us in amplifying the voices of students and fostering a culture of open dialogue and intellectual exchange.",
   keywords: [
     "Mic’d Up Initiative",
     "Mic’d Up Initiative Kenya",
@@ -92,9 +93,11 @@ export default function SiteLayout({
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-grey text-orange">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <AuthProvider>
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </AuthProvider>
       </body>
     </html>
   );
