@@ -67,11 +67,10 @@ export function SiteFooter() {
             Content & Insights
           </h4>
           <ul className="space-y-2">
-            <li><Link href="/Media/Podcast" className="hover:underline">PODCAST</Link></li>
-            <li><Link href="/Media/Talks" className="hover:underline">TALKS</Link></li>
-            <li><Link href="/Media/Documentaries" className="hover:underline">DOCUMENTARIES</Link></li>
-            <li><Link href="/Get-Involved/Partnerships" className="hover:underline">PARTNERSHIPS</Link></li>
-            <li><Link href="/Get-Involved/Ambassadors" className="hover:underline">AMBASSADORS</Link></li>
+           <li><Link href="/contact" className="hover:underline">Contact</Link></li>
+            <li><Link href="/Get-Involved" className="hover:underline">Get Involved</Link></li>
+            <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
+            <li><Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link></li>
           </ul>
         </div>
 
@@ -137,14 +136,6 @@ export function SiteFooter() {
                   ))}
                 </div>
               </div>
-
-
-          <div className="mt-4 flex gap-4 text-xs">
-            <Link href="/contact" className="hover:underline">Contact</Link>
-            <Link href="/Get-Involved" className="hover:underline">Get Involved</Link>
-            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
-            <Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link>
-          </div>
         </div>
       </div>
     </footer>
