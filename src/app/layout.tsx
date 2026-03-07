@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { AuthProvider } from "@/contexts/auth-context";
-import CookieBanner from "@/components/CookieBanner";
+import { CookieConsent } from "@/components/cookie-consent";
 
 export const metadata: Metadata = {
   title: {
@@ -102,7 +102,7 @@ export default function SiteLayout({
           <SiteFooter />
 
           {/* Cookie Consent Banner */}
-          <CookieBanner />
+          <CookieConsent />
         </AuthProvider>
       </body>
     </html>

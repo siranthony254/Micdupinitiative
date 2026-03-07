@@ -141,7 +141,9 @@ export function SiteFooter() {
 
           <div className="mt-4 flex gap-4 text-xs">
             <Link href="/contact" className="hover:underline">Contact</Link>
-            <Link href="@/GetInvolved" className="hover:underline">Get Involved</Link>
+            <Link href="/Get-Involved" className="hover:underline">Get Involved</Link>
+            <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+            <Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link>
           </div>
         </div>
       </div>

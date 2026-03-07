@@ -29,8 +29,7 @@ export default function CookieBanner() {
       }}
       expires={150}
     >
-      This website uses cookies to improve your experience and analyze site
-      traffic. You can choose to accept or reject non-essential cookies.
+      This website uses cookies. Read our <a href="/privacy">Privacy Policy</a> and our <a href="/cookie-policy">Cookie Policy</a>.
     </CookieConsent>
   )
 }
