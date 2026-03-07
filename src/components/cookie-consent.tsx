@@ -38,7 +38,7 @@ export function CookieConsent() {
           <div className="flex-1">
             <p className="text-sm text-gray-300">
               <span className="text-amber-400 font-semibold">Cookie Notice:</span> We use cookies to enhance your experience, 
-              maintain your login sessions, and improve our platform. By continuing to use MUI Portal, 
+              maintain your login sessions, and improve our platform. By continuing to use MUI Website, 
               you agree to our use of cookies.
             </p>
             <div className="flex gap-4 mt-2">
