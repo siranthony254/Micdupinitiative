@@ -180,6 +180,9 @@ export default function PrivacyPolicy() {
             <Link href="/cookie-policy" className="text-amber-400 hover:text-amber-300 underline">
               Cookie Policy
             </Link>
+            <Link href="/data-protection" className="text-amber-400 hover:text-amber-300 underline">
+              Data Protection Policy
+            </Link>
           </div>
         </div>
       </div>

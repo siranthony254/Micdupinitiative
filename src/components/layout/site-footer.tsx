@@ -57,6 +57,7 @@ export function SiteFooter() {
             <li><Link href="/contact" className="hover:underline">Contact</Link></li>
             <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
             <li><Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link></li>
+            <li><Link href="/data-protection" className="hover:underline">Data Protection Policy</Link></li>
             <li><Link href="/About/OurStory" className="hover:underline">About MUI</Link></li>
           </ul>
         </div>
