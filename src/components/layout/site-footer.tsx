@@ -53,11 +53,11 @@ export function SiteFooter() {
             Quick Links
           </h4>
           <ul className="space-y-2">
-            <li><Link href="/" className="hover:underline">HOME</Link></li>
-            <li><Link href="/About/OurStory" className="hover:underline">ABOUT MUI</Link></li>
-            <li><Link href="/About/Vision-Mission" className="hover:underline">VISION & MISSION</Link></li>
-            <li><Link href="/Programs/Events" className="hover:underline">EVENTS & SUMMITS</Link></li>
-            <li><Link href="/Programs/campus-tours" className="hover:underline">CAMPUS TOURS</Link></li>
+            <li><Link href="/" className="hover:underline">Home</Link></li>
+            <li><Link href="/About/OurStory" className="hover:underline">About MUI</Link></li>
+            <li><Link href="/About/Vision-Mission" className="hover:underline">Vision & Mission</Link></li>
+            <li><Link href="/Programs/Events" className="hover:underline">Events and Summits</Link></li>
+            <li><Link href="/Programs/campus-tours" className="hover:underline">Campus Tours</Link></li>
           </ul>
         </div>
 
