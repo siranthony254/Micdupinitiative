@@ -2,9 +2,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
-import  { SiteFooter }from "@/components/layout/site-footer";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { AuthProvider } from "@/contexts/auth-context";
-
+import CookieBanner from "@/components/CookieBanner";
 
 export const metadata: Metadata = {
   title: {
@@ -29,13 +29,12 @@ export const metadata: Metadata = {
     "university events",
     "African Universitis",
     "Campus Podcasts",
-    
   ],
   authors: [{ name: "Mic’d Up Initiative" }],
   creator: "Mic’d Up Initiative",
   publisher: "Mic’d Up Initiative",
 
-  metadataBase: new URL("https://micdupinitiative.site"), 
+  metadataBase: new URL("https://micdupinitiative.site"),
   manifest: "/site.webmanifest",
 
   openGraph: {
@@ -95,8 +94,15 @@ export default function SiteLayout({
       <body className="min-h-screen flex flex-col bg-grey text-orange">
         <AuthProvider>
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          
+          <main className="flex-1">
+            {children}
+          </main>
+
           <SiteFooter />
+
+          {/* Cookie Consent Banner */}
+          <CookieBanner />
         </AuthProvider>
       </body>
     </html>
