@@ -4,10 +4,10 @@ import { supabase } from '@/lib/supabase'
 // POST /api/blog/posts/[slug]/view - Track post view
 export async function POST(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params
+    const { slug } = await params
     const { searchParams } = new URL(request.url)
     const viewerIp = searchParams.get('ip') || request.ip
     const userAgent = request.headers.get('user-agent') || undefined

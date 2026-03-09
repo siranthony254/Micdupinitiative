@@ -4,10 +4,10 @@ import { supabase } from '@/lib/supabase'
 // POST /api/blog/posts/[slug]/share - Track post share
 export async function POST(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   try {
-    const { slug } = params
+    const { slug } = await params
     const body = await request.json()
     const platform = body.platform || 'unknown'
 
