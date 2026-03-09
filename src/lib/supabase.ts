@@ -1,2 +1,15 @@
-// Re-export from the optimized client
-export { supabase, supabaseAdmin } from './supabase-client'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing Supabase environment variables. Please check your .env.local file.')
+  console.error('Required: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY')
+  console.error('See .env.local.example for reference')
+}
+
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder.supabase.co',
+  supabaseAnonKey || 'placeholder-key'
+)

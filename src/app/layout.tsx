@@ -2,9 +2,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/layout/site-header";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { AuthProvider } from "@/contexts/auth-context";
-import { CookieConsent } from "@/components/cookie-consent";
+import { Inter } from 'next/font/google'
+import './globals.css'
+import { AuthProvider } from '@/contexts/auth-context'
+import SessionTimeoutWarning from '@/components/session-timeout-warning'
+import { useAuth } from '@/contexts/auth-context'
+import { SiteFooter } from '@/components/layout/site-footer'
+import { CookieConsent } from '@/components/cookie-consent'
 
 export const metadata: Metadata = {
   title: {
@@ -93,6 +97,7 @@ export default function SiteLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-grey text-orange">
         <AuthProvider>
+          <SessionTimeoutWarning />
           <SiteHeader />
           
           <main className="flex-1">

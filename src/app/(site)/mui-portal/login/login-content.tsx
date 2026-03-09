@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
@@ -14,27 +14,75 @@ export default function LoginPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  // Check if user is admin by email or name
+  const checkIfAdmin = (userEmail: string | undefined, userName: string | undefined) => {
+    if (!userEmail) return false
+    
+    // Check admin emails from environment
+    const adminEmails = [
+      process.env.NEXT_PUBLIC_ADMIN_EMAIL,
+      process.env.ADMIN_EMAIL
+    ].filter(Boolean)
+    
+    if (adminEmails.includes(userEmail)) return true
+    
+    // Check admin names from environment
+    const adminNames = [
+      process.env.ADMIN_NAME
+    ].filter(Boolean)
+    
+    if (userName && adminNames.includes(userName)) return true
+    
+    return false
+  }
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
 
     try {
+      console.log('Attempting login for:', email)
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) throw error
+      if (error) {
+        console.error('Login error:', error)
+        throw error
+      }
 
-      const redirectTo =
-        searchParams.get("redirect") || "/mui-portal/dashboard"
+      console.log('Login successful, user:', data.user?.email)
+      console.log('Session:', data.session)
 
-      router.push(redirectTo)
+      // Check if user is admin for auto-redirect
+      const isAdmin = checkIfAdmin(data.user?.email, data.user?.user_metadata?.full_name)
+      console.log('Admin check result:', { email: data.user?.email, isAdmin })
+
+      // Determine redirect target
+      let redirectTo = searchParams.get("redirect")
+      
+      // Auto-redirect admins to admin dashboard if no specific redirect
+      if (!redirectTo && isAdmin) {
+        redirectTo = "/mui-portal/admin"
+        console.log('Auto-redirecting admin to dashboard')
+      } else if (!redirectTo) {
+        redirectTo = "/mui-portal/dashboard"
+      }
+
+      console.log('Redirecting to:', redirectTo)
+      
+      // Small delay to ensure auth state is set
+      setTimeout(() => {
+        router.push(redirectTo)
+      }, 500)
+      
     } catch (error: any) {
+      console.error('Login failed:', error)
       setError(error.message || "Login failed. Please try again.")
-    } finally {
-      setLoading(false)
+      setLoading(false) // Only set loading to false on error
     }
   }
 

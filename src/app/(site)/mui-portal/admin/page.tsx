@@ -11,8 +11,37 @@ interface DashboardStats {
   totalCourses: number
   totalCohorts: number
   totalEnrollments: number
-  recentUsers: any[]
-  recentCompletions: any[]
+  recentUsers: Array<{
+    full_name: string | null
+    email: string | null
+    created_at: string
+  }>
+  recentCompletions: Array<{
+    completed_at: string
+    user: {
+      full_name: string
+    }
+    lesson: {
+      title: string
+      course: {
+        title: string
+      }
+    }
+  }>
+}
+
+interface UserProfile {
+  full_name: string | null
+  email: string | null
+  created_at: string
+}
+
+interface Course {
+  title: string
+}
+
+interface ProfileCount {
+  count: number
 }
 
 export default function AdminDashboard() {
@@ -31,58 +60,122 @@ export default function AdminDashboard() {
   const [statsLoading, setStatsLoading] = useState(true)
 
   useEffect(() => {
+    console.log('Admin dashboard effect:', { 
+      user: user?.email, 
+      profile, 
+      isAdmin, 
+      loading,
+      userExists: !!user,
+      profileExists: !!profile 
+    })
+    
+    // Redirect if not authenticated or not admin
     if (!loading && (!isAdmin || !user)) {
+      console.log('Redirecting to dashboard - not admin or no user')
       router.push("/mui-portal/dashboard")
       return
     }
 
-    if (isAdmin && user) {
+    // Only fetch stats if we have a confirmed admin user
+    if (isAdmin && user && profile) {
+      console.log('Fetching admin dashboard stats for:', user.email)
       fetchDashboardStats()
+    } else {
+      console.log('Not fetching admin stats - admin:', isAdmin, 'user:', !!user, 'profile:', !!profile)
     }
-  }, [isAdmin, user, loading, router])
+  }, [isAdmin, user, loading, profile, router])
 
   const fetchDashboardStats = async () => {
     try {
       setStatsLoading(true)
+      console.log('Fetching admin dashboard stats...')
 
-      const results = await Promise.allSettled([
-        supabase.from("profiles").select("*", { count: "exact", head: true }),
-        supabase.from("courses").select("*", { count: "exact", head: true }),
-        supabase.from("cohorts").select("*", { count: "exact", head: true }),
-        supabase.from("enrollments").select("*", { count: "exact", head: true }),
-      ])
+      // Fetch stats with error handling for missing tables
+      let totalUsers = 0
+      let totalCourses = 0
+      let totalCohorts = 0
+      let totalEnrollments = 0
+      let recentUsers = []
+      let recentCompletions = []
 
-      const totalUsers =
-        results[0].status === "fulfilled" ? results[0].value.count ?? 0 : 0
+      try {
+        const result = await supabase.from("profiles").select("*", { count: "exact", head: true })
+        if (result.data && typeof result.data === 'object' && 'count' in result.data) {
+          totalUsers = (result.data as ProfileCount).count ?? 0
+        }
+      } catch (error) {
+        console.log('Profiles table not found or error:', error)
+      }
 
-      const totalCourses =
-        results[1].status === "fulfilled" ? results[1].value.count ?? 0 : 0
+      try {
+        const result = await supabase.from("courses").select("*", { count: "exact", head: true })
+        if (result.data && typeof result.data === 'object' && 'count' in result.data) {
+          totalCourses = (result.data as ProfileCount).count ?? 0
+        }
+      } catch (error) {
+        console.log('Courses table not found or error:', error)
+      }
 
-      const totalCohorts =
-        results[2].status === "fulfilled" ? results[2].value.count ?? 0 : 0
+      try {
+        const result = await supabase.from("cohorts").select("*", { count: "exact", head: true })
+        if (result.data && typeof result.data === 'object' && 'count' in result.data) {
+          totalCohorts = (result.data as ProfileCount).count ?? 0
+        }
+      } catch (error) {
+        console.log('Cohorts table not found or error:', error)
+      }
 
-      const totalEnrollments =
-        results[3].status === "fulfilled" ? results[3].value.count ?? 0 : 0
+      try {
+        const result = await supabase.from("enrollments").select("*", { count: "exact", head: true })
+        if (result.data && typeof result.data === 'object' && 'count' in result.data) {
+          totalEnrollments = (result.data as ProfileCount).count ?? 0
+        }
+      } catch (error) {
+        console.log('Enrollments table not found or error:', error)
+      }
 
-      const { data: recentUsers } = await supabase
-        .from("profiles")
-        .select("full_name, email, created_at")
-        .order("created_at", { ascending: false })
-        .limit(5)
+      try {
+        const result = await supabase
+          .from("profiles")
+          .select("full_name, email, created_at")
+          .order("created_at", { ascending: false })
+          .limit(5)
+        if (result.data) {
+          recentUsers = result.data as UserProfile[]
+        }
+      } catch (error) {
+        console.log('Recent users query error:', error)
+      }
 
-      const { data: recentCompletions } = await supabase
-        .from("progress")
-        .select(`
-          completed_at,
-          user:profiles (full_name),
-          lesson:lessons (
-            title,
-            course:courses (title)
-          )
-        `)
-        .eq("completed", true)
-        .order("completed_at", { ascending: false })
-        .limit(5)
+      try {
+        const result = await supabase
+          .from("progress")
+          .select(`
+            completed_at,
+            user:profiles (full_name),
+            lesson:lessons (
+              title,
+              course:courses (title)
+            )
+          `)
+          .eq("completed", true)
+          .order("completed_at", { ascending: false })
+          .limit(5)
+        if (result.data) {
+          recentCompletions = result.data as DashboardStats['recentCompletions']
+        }
+      } catch (error) {
+        console.log('Recent completions query error:', error)
+      }
+
+      console.log('Admin stats fetched:', {
+        totalUsers,
+        totalCourses,
+        totalCohorts,
+        totalEnrollments,
+        recentUsersCount: recentUsers.length,
+        recentCompletionsCount: recentCompletions.length
+      })
 
       setStats({
         totalUsers,
@@ -146,6 +239,13 @@ export default function AdminDashboard() {
           <p className="text-gray-400">
             Manage courses, cohorts, and users
           </p>
+          
+          {/* Debug Info */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-2 text-xs text-gray-500">
+              Debug Admin Status: {isAdmin ? '✅ Yes' : '❌ No'} | User: {user?.email} | Profile: {profile?.full_name} | Role: {profile?.role} | Blog Role: {profile?.blog_role}
+            </div>
+          )}
         </div>
 
         {/* Stats */}

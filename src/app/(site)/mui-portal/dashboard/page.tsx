@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/auth-context'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
@@ -19,13 +20,25 @@ interface Cohort {
   description: string
 }
 
-interface Enrollment {
-  cohort: Cohort
+interface EnrollmentData {
+  cohort: {
+    id: string
+    name: string
+    description: string
+  }
   enrolled_at: string
+}
+
+interface CourseData {
+  id: string
+  title: string
+  description: string
+  thumbnail?: string
 }
 
 export default function DashboardPage() {
   const { user, profile, loading, isAdmin } = useAuth()
+  const router = useRouter()
   const [enrollments, setEnrollments] = useState<Enrollment[]>([])
   const [courses, setCourses] = useState<Course[]>([])
   const [overallProgress, setOverallProgress] = useState(0)
@@ -44,37 +57,63 @@ export default function DashboardPage() {
     try {
       setDataLoading(true)
 
-      // Fetch enrollments with cohort details
+      // Fetch enrollments with cohort details (with error handling)
       console.log('Fetching enrollments...')
-      const { data: enrollmentsData, error: enrollmentsError } = await supabase
-        .from('enrollments')
-        .select(`
-          cohort_id,
-          enrolled_at,
-          cohorts!inner (
-            id,
-            name,
-            description
-          )
-        `)
-        .eq('user_id', user!.id)
-
-      if (enrollmentsError) {
-        console.error('Enrollments error:', enrollmentsError)
-      } else {
-        console.log('Enrollments fetched:', enrollmentsData?.length || 0)
+      let enrollmentsData: EnrollmentData[] = []
+      let enrollmentsError: any = null
+      
+      try {
+        const result = await supabase
+          .from('enrollments')
+          .select(`
+            cohort_id,
+            enrolled_at,
+            cohorts!inner (
+              id,
+              name,
+              description
+            )
+          `)
+          .eq('user_id', user!.id)
+        
+        enrollmentsData = result.data || []
+        enrollmentsError = result.error
+      } catch (err) {
+        console.log('Enrollments table not found or other error:', err)
+        enrollmentsError = err
       }
 
-      // Fetch all courses
+      if (enrollmentsError) {
+        console.log('Enrollments table not found or error:', enrollmentsError)
+        // Don't fail the whole dashboard if enrollments table doesn't exist
+      } else {
+        console.log('Enrollments fetched:', enrollmentsData?.length || 0)
+        setEnrollments(enrollmentsData || [])
+      }
+
+      // Fetch all courses (with error handling)
       console.log('Fetching courses...')
-      const { data: coursesData, error: coursesError } = await supabase
-        .from('courses')
-        .select('*')
+      let coursesData = []
+      let coursesError = null
+      
+      try {
+        const result = await supabase
+          .from('courses')
+          .select('*')
+        
+        coursesData = result.data || []
+        coursesError = result.error
+      } catch (err) {
+        console.log('Courses table not found or other error:', err)
+        coursesError = err
+      }
 
       if (coursesError) {
-        console.error('Courses error:', coursesError)
+        console.log('Courses table not found or error:', coursesError)
+        // Don't fail the whole dashboard if courses table doesn't exist
       } else {
         console.log('Courses fetched:', coursesData?.length || 0)
+        setCourses(coursesData || [])
       }
 
       // Format enrollments
@@ -98,15 +137,20 @@ export default function DashboardPage() {
       
       if (coursesData && coursesData.length > 0) {
         for (const course of coursesData) {
-          const { data: courseProgress } = await supabase
-            .rpc('calculate_course_progress', { 
-              user_uuid: user!.id, 
-              course_uuid: course.id 
-            })
-          
-          if (courseProgress !== null) {
-            totalProgress += courseProgress
-            courseCount++
+          try {
+            const { data: courseProgress, error: progressError } = await supabase
+              .rpc('calculate_course_progress', { 
+                user_uuid: user!.id, 
+                course_uuid: course.id 
+              })
+            
+            if (!progressError && courseProgress !== null) {
+              totalProgress += courseProgress
+              courseCount++
+            }
+          } catch (progressError) {
+            console.log('Progress calculation function not found or error:', progressError)
+            // Continue without progress calculation for this course
           }
         }
       }
@@ -115,7 +159,7 @@ export default function DashboardPage() {
       setOverallProgress(progressPercentage)
       console.log('Overall progress calculated:', progressPercentage)
     } catch (error) {
-      console.error('Dashboard data fetch error:', error)
+      console.log('Dashboard data fetch error:', error)
     } finally {
       setDataLoading(false)
     }
@@ -124,10 +168,23 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!user) return
 
-    // Initial load
-    fetchUserData()
+    // Auto-redirect admins to admin dashboard
+    if (isAdmin && !loading) {
+      console.log('Admin user detected on dashboard, redirecting to admin dashboard')
+      router.push('/mui-portal/admin')
+      return
+    }
 
-    // Real-time updates for this user’s dashboard
+    // Initial load for non-admin users
+    if (!isAdmin) {
+      fetchUserData()
+    }
+  }, [user, isAdmin, loading, router, fetchUserData])
+
+  useEffect(() => {
+    if (!user) return
+
+    // Real-time updates for this user's dashboard
     const channel = supabase
       .channel(`dashboard-realtime-${user.id}`)
       .on(
@@ -160,11 +217,11 @@ export default function DashboardPage() {
         {
           event: '*',
           schema: 'public',
-          table: 'progress',
+          table: 'course_progress',
           filter: `user_id=eq.${user.id}`,
         },
         () => {
-          console.log('Realtime update: progress changed')
+          console.log('Realtime update: course progress changed')
           fetchUserData()
         },
       )
@@ -175,7 +232,7 @@ export default function DashboardPage() {
     }
   }, [user, fetchUserData])
 
-  if (loading || dataLoading) {
+  if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
@@ -186,7 +243,7 @@ export default function DashboardPage() {
     )
   }
 
-  if (!user || !profile) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
@@ -206,11 +263,22 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-amber-500 mb-2">
-            Welcome back, {getFirstName(profile.full_name)}!
+            Welcome back, {getFirstName(profile?.full_name)}!
           </h1>
           <p className="text-gray-400">
-            {isAdmin ? 'Administrator' : 'Student'} • Overall Progress: {overallProgress}%
+            {isAdmin ? (
+              <span className="text-amber-400 font-semibold">Administrator</span>
+            ) : (
+              'Student'
+            )} • Overall Progress: {overallProgress}%
           </p>
+          
+          {/* Debug Info */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-2 text-xs text-gray-500">
+              Debug: User: {user?.email} | Role: {profile?.role} | Blog Role: {profile?.blog_role} | Admin: {isAdmin ? 'Yes' : 'No'}
+            </div>
+          )}
         </div>
 
         {/* Progress Overview */}
@@ -258,7 +326,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Enrolled Cohorts */}
-        {enrollments.length > 0 && (
+        {enrollments.length > 0 ? (
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-amber-500 mb-4">Your Cohorts</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -279,19 +347,40 @@ export default function DashboardPage() {
               ))}
             </div>
           </div>
+        ) : (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-amber-500 mb-4">Your Cohorts</h2>
+            <div className="bg-gray-900 border border-gray-800 rounded-lg p-8 text-center">
+              <p className="text-gray-400 mb-4">No cohorts enrolled yet</p>
+              <Link
+                href="/mui-portal/cohorts"
+                className="inline-block px-4 py-2 bg-amber-500 text-black rounded-lg hover:bg-amber-400 transition"
+              >
+                Browse Cohorts
+              </Link>
+            </div>
+          </div>
         )}
 
         {/* Admin Section */}
         {isAdmin && (
           <div className="mt-8 pt-8 border-t border-gray-800">
             <h2 className="text-2xl font-bold text-amber-500 mb-4">Admin Panel</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <Link 
                 href="/mui-portal/admin/courses"
                 className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition"
               >
                 <h3 className="text-lg font-semibold text-amber-500 mb-2">Manage Courses</h3>
                 <p className="text-gray-400 text-sm">Create and edit courses</p>
+              </Link>
+
+              <Link 
+                href="/mui-portal/admin/blog"
+                className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition"
+              >
+                <h3 className="text-lg font-semibold text-amber-500 mb-2">Manage Blog</h3>
+                <p className="text-gray-400 text-sm">Create and edit blog posts</p>
               </Link>
 
               <Link 
