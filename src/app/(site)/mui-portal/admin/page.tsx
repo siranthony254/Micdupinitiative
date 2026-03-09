@@ -95,8 +95,8 @@ export default function AdminDashboard() {
       let totalCourses = 0
       let totalCohorts = 0
       let totalEnrollments = 0
-      let recentUsers = []
-      let recentCompletions = []
+      let recentUsers: DashboardStats['recentUsers'] = []
+      let recentCompletions: DashboardStats['recentCompletions'] = []
 
       try {
         const result = await supabase.from("profiles").select("*", { count: "exact", head: true })
