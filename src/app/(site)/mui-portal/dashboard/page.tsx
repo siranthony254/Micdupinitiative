@@ -66,7 +66,7 @@ export default function DashboardPage() {
           `)
           .eq('user_id', user!.id)
         
-        enrollmentsData = result.data || []
+        enrollmentsData = (result.data || []) as Enrollment[]
         enrollmentsError = result.error
       } catch (err) {
         console.log('Enrollments table not found or other error:', err)
