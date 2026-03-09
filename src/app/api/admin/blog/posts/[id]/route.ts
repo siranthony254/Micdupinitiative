@@ -4,10 +4,10 @@ import { supabase } from '@/lib/supabase'
 // PUT /api/admin/blog/posts/[id] - Update post (admin only)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
     
     const postData = {
@@ -80,10 +80,10 @@ export async function PUT(
 // DELETE /api/admin/blog/posts/[id] - Delete post (admin only)
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await params
 
     const { error } = await supabase
       .from('blog_posts')
