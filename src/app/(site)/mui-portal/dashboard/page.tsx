@@ -20,20 +20,9 @@ interface Cohort {
   description: string
 }
 
-interface EnrollmentData {
-  cohort: {
-    id: string
-    name: string
-    description: string
-  }
+interface Enrollment {
+  cohort: Cohort
   enrolled_at: string
-}
-
-interface CourseData {
-  id: string
-  title: string
-  description: string
-  thumbnail?: string
 }
 
 export default function DashboardPage() {
@@ -59,8 +48,8 @@ export default function DashboardPage() {
 
       // Fetch enrollments with cohort details (with error handling)
       console.log('Fetching enrollments...')
-      let enrollmentsData: EnrollmentData[] = []
-      let enrollmentsError: any = null
+      let enrollmentsData = []
+      let enrollmentsError = null
       
       try {
         const result = await supabase
@@ -84,7 +73,7 @@ export default function DashboardPage() {
       }
 
       if (enrollmentsError) {
-        console.log('Enrollments table not found or error:', enrollmentsError)
+        console.error('Enrollments error:', enrollmentsError)
         // Don't fail the whole dashboard if enrollments table doesn't exist
       } else {
         console.log('Enrollments fetched:', enrollmentsData?.length || 0)
@@ -109,7 +98,7 @@ export default function DashboardPage() {
       }
 
       if (coursesError) {
-        console.log('Courses table not found or error:', coursesError)
+        console.error('Courses error:', coursesError)
         // Don't fail the whole dashboard if courses table doesn't exist
       } else {
         console.log('Courses fetched:', coursesData?.length || 0)
@@ -159,7 +148,7 @@ export default function DashboardPage() {
       setOverallProgress(progressPercentage)
       console.log('Overall progress calculated:', progressPercentage)
     } catch (error) {
-      console.log('Dashboard data fetch error:', error)
+      console.error('Dashboard data fetch error:', error)
     } finally {
       setDataLoading(false)
     }
@@ -272,13 +261,6 @@ export default function DashboardPage() {
               'Student'
             )} • Overall Progress: {overallProgress}%
           </p>
-          
-          {/* Debug Info */}
-          {process.env.NODE_ENV === 'development' && (
-            <div className="mt-2 text-xs text-gray-500">
-              Debug: User: {user?.email} | Role: {profile?.role} | Blog Role: {profile?.blog_role} | Admin: {isAdmin ? 'Yes' : 'No'}
-            </div>
-          )}
         </div>
 
         {/* Progress Overview */}
