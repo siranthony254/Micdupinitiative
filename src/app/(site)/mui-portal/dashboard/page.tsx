@@ -48,7 +48,7 @@ export default function DashboardPage() {
 
       // Fetch enrollments with cohort details (with error handling)
       console.log('Fetching enrollments...')
-      let enrollmentsData = []
+      let enrollmentsData: Enrollment[] = []
       let enrollmentsError = null
       
       try {
