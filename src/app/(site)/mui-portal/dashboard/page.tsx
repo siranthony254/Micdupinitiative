@@ -21,8 +21,9 @@ interface Cohort {
 }
 
 interface Enrollment {
-  cohort: Cohort
+  cohort_id: string
   enrolled_at: string
+  cohorts: Cohort[]
 }
 
 export default function DashboardPage() {
