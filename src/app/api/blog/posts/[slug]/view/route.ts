@@ -9,7 +9,10 @@ export async function POST(
   try {
     const { slug } = await params
     const { searchParams } = new URL(request.url)
-    const viewerIp = searchParams.get('ip') || request.ip
+    const viewerIp = searchParams.get('ip') || 
+                     request.headers.get('x-forwarded-for') || 
+                     request.headers.get('x-real-ip') || 
+                     'unknown'
     const userAgent = request.headers.get('user-agent') || undefined
 
     // Increment view count using RPC function

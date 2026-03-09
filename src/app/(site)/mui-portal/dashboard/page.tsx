@@ -36,7 +36,7 @@ export default function DashboardPage() {
 
   console.log('Dashboard state:', { user: user?.email, profile, loading, dataLoading })
 
-  const getFirstName = (fullName: string | null) => {
+  const getFirstName = (fullName: string | null | undefined) => {
     if (!fullName) return 'User'
     return fullName.split(' ')[0]
   }
@@ -109,12 +109,9 @@ export default function DashboardPage() {
       // Format enrollments
       if (enrollmentsData) {
         const formattedEnrollments = enrollmentsData.map((enrollment: any) => ({
-          cohort: {
-            id: enrollment.cohorts.id,
-            name: enrollment.cohorts.name,
-            description: enrollment.cohorts.description
-          },
-          enrolled_at: enrollment.enrolled_at
+          cohort_id: enrollment.cohort_id,
+          enrolled_at: enrollment.enrolled_at,
+          cohorts: enrollment.cohorts
         }))
         setEnrollments(formattedEnrollments)
       }
@@ -315,14 +312,14 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {enrollments.map((enrollment) => (
                 <Link 
-                  key={enrollment.cohort.id}
-                  href={`/mui-portal/cohorts/${enrollment.cohort.id}`}
+                  key={enrollment.cohorts[0]?.id}
+                  href={`/mui-portal/cohorts/${enrollment.cohorts[0]?.id}`}
                   className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition"
                 >
                   <h3 className="text-lg font-semibold text-amber-500 mb-2">
-                    {enrollment.cohort.name}
+                    {enrollment.cohorts[0]?.name}
                   </h3>
-                  <p className="text-gray-400 text-sm mb-3">{enrollment.cohort.description}</p>
+                  <p className="text-gray-400 text-sm mb-3">{enrollment.cohorts[0]?.description}</p>
                   <p className="text-gray-500 text-xs">
                     Enrolled {new Date(enrollment.enrolled_at).toLocaleDateString()}
                   </p>

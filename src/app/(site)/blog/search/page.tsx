@@ -1,13 +1,13 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { searchBlogPosts } from '@/lib/blog'
 import type { BlogPostWithRelations } from '@/types/blog'
 
-export default function BlogSearchPage() {
+function BlogSearchPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [posts, setPosts] = useState<BlogPostWithRelations[]>([])
@@ -187,5 +187,15 @@ function SearchResult({ post }: { post: BlogPostWithRelations }) {
         </div>
       </div>
     </Link>
+  )
+}
+
+export default function BlogSearchPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="text-amber-500">Loading search...</div>
+    </div>}>
+      <BlogSearchPageContent />
+    </Suspense>
   )
 }
