@@ -20,13 +20,13 @@ interface DashboardStats {
     completed_at: string
     user: {
       full_name: string
-    }
+    }[]
     lesson: {
       title: string
       course: {
         title: string
-      }
-    }
+      }[]
+    }[]
   }>
 }
 
