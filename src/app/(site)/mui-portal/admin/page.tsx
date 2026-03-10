@@ -257,7 +257,14 @@ export default function AdminDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+          <AdminCard
+            title="Manage Blog"
+            description="Create and manage blog posts"
+            icon="📝"
+            action={() => router.push('/mui-portal/admin/blog')}
+          />
+        
           <AdminCard
             title="Manage Courses"
             description="Create courses with rich content sections"

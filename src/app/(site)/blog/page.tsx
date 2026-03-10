@@ -265,18 +265,6 @@ export default function BlogPage() {
           )}
         </div>
       </div>
-
-      {/* Admin Link */}
-      {isAdmin && (
-        <div className="mt-16 text-center">
-          <Link
-            href="/mui-portal/admin/blog"
-            className="inline-flex items-center gap-2 bg-amber-500 text-black px-6 py-3 rounded-lg hover:bg-amber-400 transition-colors"
-          >
-            Manage Blog
-          </Link>
-        </div>
-      )}
     </div>
   )
 }
