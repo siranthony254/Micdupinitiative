@@ -126,7 +126,7 @@ export default function AdminCoursesEnhanced() {
       const sectionData = {
         lesson_id: selectedLesson.id,
         title: sectionForm.title,
-        subtitle: sectionForm.subtitle || null,
+        subtitle: sectionForm.subtitle || undefined,
         content: sectionForm.content,
         order_index: sections.length
       }
@@ -346,24 +346,25 @@ export default function AdminCoursesEnhanced() {
               <h3 className="text-lg font-semibold text-white mb-4">Lessons</h3>
               <div className="space-y-3">
                 {selectedCourse.lessons.map((lesson) => (
-                  <Card
+                  <div
                     key={lesson.id}
-                    hover
-                    className={`cursor-pointer ${selectedLesson?.id === lesson.id ? 'border-amber-500' : ''}`}
                     onClick={() => setSelectedLesson(lesson)}
+                    className={`cursor-pointer ${selectedLesson?.id === lesson.id ? 'border-amber-500' : ''}`}
                   >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h4 className="font-medium text-white">{lesson.title}</h4>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Order: {lesson.order_index + 1}
-                        </p>
+                    <Card hover>
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-medium text-white">{lesson.title}</h4>
+                          <p className="text-xs text-gray-500 mt-1">
+                            Order: {lesson.order_index + 1}
+                          </p>
+                        </div>
+                        <div className="text-amber-500">
+                          {selectedLesson?.id === lesson.id && '→'}
+                        </div>
                       </div>
-                      <div className="text-amber-500">
-                        {selectedLesson?.id === lesson.id && '→'}
-                      </div>
-                    </div>
-                  </Card>
+                    </Card>
+                  </div>
                 ))}
               </div>
             </div>

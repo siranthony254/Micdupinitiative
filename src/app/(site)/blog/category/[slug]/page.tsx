@@ -18,7 +18,7 @@ export default function BlogCategoryPage() {
   const [loading, setLoading] = useState(true)
 
   // Check if user has blog admin permissions
-  const isBlogAdmin = isAdmin || profile?.blog_role === 'admin' || profile?.blog_role === 'editor'
+  const isBlogAdmin = isAdmin
 
   useEffect(() => {
     if (slug) {

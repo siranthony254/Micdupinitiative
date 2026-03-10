@@ -243,7 +243,7 @@ export default function AdminDashboard() {
           {/* Debug Info */}
           {process.env.NODE_ENV === 'development' && (
             <div className="mt-2 text-xs text-gray-500">
-              Debug Admin Status: {isAdmin ? '✅ Yes' : '❌ No'} | User: {user?.email} | Profile: {profile?.full_name} | Role: {profile?.role} | Blog Role: {profile?.blog_role}
+              Debug Admin Status: {isAdmin ? '✅ Yes' : '❌ No'} | User: {user?.email} | Profile: {profile?.full_name} | Role: {profile?.role}
             </div>
           )}
         </div>

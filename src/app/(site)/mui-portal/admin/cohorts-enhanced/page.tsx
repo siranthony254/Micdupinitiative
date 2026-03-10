@@ -92,7 +92,7 @@ export default function AdminCohortsEnhanced() {
       const sectionData = {
         cohort_id: selectedCohort.id,
         title: sectionForm.title,
-        subtitle: sectionForm.subtitle || null,
+        subtitle: sectionForm.subtitle || undefined,
         content: sectionForm.content,
         order_index: sections.length
       }

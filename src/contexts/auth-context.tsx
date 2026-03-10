@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { User, Session } from '@supabase/supabase-js'
-import { supabase, Profile } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
+import { Profile } from '@/lib/mui-portal'
 
 interface AuthContextType {
   user: User | null

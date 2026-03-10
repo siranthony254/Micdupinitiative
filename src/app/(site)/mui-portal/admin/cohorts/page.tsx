@@ -266,30 +266,35 @@ export default function AdminCohortsPage() {
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Cohort Name *</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="cohort-name">Cohort Name *</label>
                 <input
                   type="text"
+                  id="cohort-name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                  placeholder="Enter cohort name"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="cohort-description">Description</label>
                 <textarea
+                  id="cohort-description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={4}
                   className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
+                  placeholder="Enter cohort description (optional)"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">Secret Key *</label>
+                <label className="block text-sm font-medium text-gray-300 mb-2" htmlFor="cohort-secret-key">Secret Key *</label>
                 <input
                   type="text"
+                  id="cohort-secret-key"
                   value={formData.secret_key}
                   onChange={(e) => setFormData({ ...formData, secret_key: e.target.value })}
                   className="w-full px-4 py-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
