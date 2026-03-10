@@ -258,9 +258,34 @@ export default function AdminDashboard() {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <AdminLink href="/mui-portal/admin/courses" title="Manage Courses" desc="Create, edit, and manage courses" />
-          <AdminLink href="/mui-portal/cohorts" title="Manage Cohorts" desc="Create cohorts and manage enrollments" />
-          <AdminLink href="/mui-portal/admin" title="Manage Users" desc="View and manage user profiles" />
+          <AdminCard
+            title="Manage Courses"
+            description="Create courses with rich content sections"
+            icon="📚"
+            action={() => router.push('/mui-portal/admin/courses-enhanced')}
+          />
+        
+          <AdminCard
+            title="Manage Cohorts"
+            description="Create cohorts with rich content sections"
+            icon="👥"
+            action={() => router.push('/mui-portal/admin/cohorts-enhanced')}
+          />
+        
+          <AdminCard
+            title="Classic Course Management"
+            description="Basic course management (legacy)"
+            icon="📖"
+            action={() => router.push('/mui-portal/admin/courses')}
+          />
+        
+          <AdminCard
+            title="Classic Cohort Management"
+            description="Basic cohort management (legacy)"
+            icon="🔄"
+            action={() => router.push('/mui-portal/admin/cohorts')}
+          />
+
         </div>
 
         {/* Activity */}
@@ -318,6 +343,23 @@ function StatCard({ title, value, subtitle }: any) {
       <h3 className="text-lg font-semibold text-amber-500 mb-2">{title}</h3>
       <p className="text-3xl font-bold text-white">{value}</p>
       <p className="text-gray-400 text-sm">{subtitle}</p>
+    </div>
+  )
+}
+
+function AdminCard({ title, description, icon, action }: any) {
+  return (
+    <div 
+      className="bg-gray-900 border border-gray-800 rounded-lg p-6 hover:border-amber-500 transition cursor-pointer group"
+      onClick={action}
+    >
+      <div className="text-center">
+        <div className="text-4xl mb-4 group-hover:scale-110 transition-transform">{icon}</div>
+        <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-amber-400">
+          {title}
+        </h3>
+        <p className="text-gray-400 text-sm">{description}</p>
+      </div>
     </div>
   )
 }

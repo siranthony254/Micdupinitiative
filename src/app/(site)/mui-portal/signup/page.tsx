@@ -19,7 +19,9 @@ export default function SignupPage() {
     setError('')
 
     try {
-      const { error } = await supabase.auth.signUp({
+      console.log('Attempting signup with:', { email, fullName })
+      
+      const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -29,11 +31,17 @@ export default function SignupPage() {
         },
       })
 
-      if (error) throw error
+      console.log('Signup response:', { data, error })
+
+      if (error) {
+        console.error('Supabase signup error:', error)
+        throw error
+      }
 
       router.push('/mui-portal/login?message=Account created successfully')
     } catch (error: any) {
-      setError(error.message)
+      console.error('Signup error:', error)
+      setError(error.message || 'An error occurred during signup')
     } finally {
       setLoading(false)
     }

@@ -4,17 +4,16 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/auth-context'
 import { supabase } from '@/lib/supabase'
+import { getCohorts } from '@/lib/mui-portal'
 import Link from 'next/link'
 
 interface Cohort {
   id: string
   name: string
-  description: string
+  description: string | null
   secret_key: string
-  is_active: boolean
   created_at: string
-  enrollments?: Enrollment[]
-  courses?: Course[]
+  updated_at: string
 }
 
 interface Enrollment {
@@ -55,8 +54,7 @@ export default function AdminCohortsPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    secret_key: '',
-    is_active: true
+    secret_key: ''
   })
   const [submitting, setSubmitting] = useState(false)
   const [analyticsLoading, setAnalyticsLoading] = useState(false)
@@ -74,36 +72,11 @@ export default function AdminCohortsPage() {
 
   const fetchCohorts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('cohorts')
-        .select(`
-          *,
-          enrollments (
-            id,
-            user_id,
-            enrolled_at,
-            status,
-            progress,
-            user:profiles (
-              full_name,
-              email
-            )
-          ),
-          courses (
-            id,
-            title,
-            description
-          )
-        `)
-        .order('created_at', { ascending: false })
-
-      if (error) {
-        console.error('Error fetching cohorts:', error)
-      } else {
-        setCohorts(data || [])
-      }
+      const data = await getCohorts()
+      console.log('Fetched cohorts:', data)
+      setCohorts(data)
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error fetching cohorts:', error)
     }
   }
 
@@ -202,23 +175,23 @@ export default function AdminCohortsPage() {
     setFormData({
       name: '',
       description: '',
-      secret_key: '',
-      is_active: true
+      secret_key: ''
     })
   }
 
   const editCohort = (cohort: Cohort) => {
+    console.log('Editing cohort:', cohort)
     setEditingCohort(cohort)
     setFormData({
       name: cohort.name,
-      description: cohort.description,
-      secret_key: cohort.secret_key,
-      is_active: cohort.is_active
+      description: cohort.description || '',
+      secret_key: cohort.secret_key
     })
     setShowCreateForm(true)
   }
 
   const deleteCohort = async (cohortId: string) => {
+    console.log('Deleting cohort:', cohortId)
     if (!confirm('Are you sure you want to delete this cohort? This action cannot be undone.')) {
       return
     }
@@ -242,23 +215,7 @@ export default function AdminCohortsPage() {
     }
   }
 
-  const toggleCohortStatus = async (cohortId: string, currentStatus: boolean) => {
-    try {
-      const { error } = await supabase
-        .from('cohorts')
-        .update({ is_active: !currentStatus })
-        .eq('id', cohortId)
-
-      if (error) {
-        console.error('Error updating cohort status:', error)
-      } else {
-        await fetchCohorts()
-      }
-    } catch (error) {
-      console.error('Error:', error)
-    }
-  }
-
+  
   if (loading) {
     return (
       <div className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -341,19 +298,7 @@ export default function AdminCohortsPage() {
                 />
               </div>
 
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  id="is_active"
-                  checked={formData.is_active}
-                  onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
-                  className="w-4 h-4 text-amber-500 bg-black border-gray-700 rounded focus:ring-amber-500"
-                />
-                <label htmlFor="is_active" className="ml-2 text-sm text-gray-300">
-                  Active (available for enrollment)
-                </label>
-              </div>
-
+              
               <div className="flex gap-4">
                 <button
                   type="submit"
@@ -380,108 +325,72 @@ export default function AdminCohortsPage() {
 
         {/* Cohorts List */}
         <div className="space-y-6">
-          {cohorts.map((cohort) => (
-            <div key={cohort.id} className="bg-gray-900 border border-gray-800 rounded-lg p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-white mb-2">{cohort.name}</h3>
-                  <p className="text-gray-400 mb-2">{cohort.description}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span>Secret Key: <code className="bg-gray-800 px-2 py-1 rounded">{cohort.secret_key}</code></span>
-                    <span>Status: {cohort.is_active ? 'Active' : 'Inactive'}</span>
-                    <span>Created: {new Date(cohort.created_at).toLocaleDateString()}</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => fetchAnalytics(cohort.id)}
-                    className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition"
-                  >
-                    Analytics
-                  </button>
-                  <button
-                    onClick={() => editCohort(cohort)}
-                    className="px-3 py-1 bg-amber-600 text-white text-xs rounded hover:bg-amber-700 transition"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => toggleCohortStatus(cohort.id, cohort.is_active)}
-                    className={`px-3 py-1 text-xs rounded transition ${
-                      cohort.is_active
-                        ? 'bg-orange-600 text-white hover:bg-orange-700'
-                        : 'bg-green-600 text-white hover:bg-green-700'
-                    }`}
-                  >
-                    {cohort.is_active ? 'Deactivate' : 'Activate'}
-                  </button>
-                  <button
-                    onClick={() => deleteCohort(cohort.id)}
-                    className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-
-              {/* Analytics Display */}
-              {selectedCohort?.id === cohort.id && analytics && (
-                <div className="mt-4 p-4 bg-gray-800 rounded-lg">
-                  <h4 className="text-lg font-semibold text-amber-400 mb-3">Analytics Dashboard</h4>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="text-center">
-                      <p className="text-2xl font-bold text-white">{analytics.total_enrolled}</p>
-                      <p className="text-sm text-gray-400">Total Enrolled</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-2xl font-bold text-green-400">{analytics.active_learners}</p>
-                      <p className="text-sm text-gray-400">Active Learners</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-2xl font-bold text-blue-400">{analytics.completed_learners}</p>
-                      <p className="text-sm text-gray-400">Completed</p>
-                    </div>
-                    <div className="text-center">
-                      <p className="text-2xl font-bold text-amber-400">{analytics.average_progress}%</p>
-                      <p className="text-sm text-gray-400">Avg Progress</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Enrollments */}
-              {cohort.enrollments && cohort.enrollments.length > 0 && (
-                <div className="mt-4">
-                  <h4 className="text-lg font-semibold text-amber-400 mb-2">Enrolled Students ({cohort.enrollments.length})</h4>
-                  <div className="space-y-2">
-                    {cohort.enrollments.slice(0, 5).map((enrollment) => (
-                      <div key={enrollment.id} className="flex items-center justify-between p-2 bg-gray-800 rounded">
-                        <div>
-                          <p className="text-white">{enrollment.user?.full_name}</p>
-                          <p className="text-sm text-gray-400">{enrollment.user?.email}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className={`px-2 py-1 text-xs rounded ${
-                            enrollment.status === 'active' ? 'bg-green-600 text-white' :
-                            enrollment.status === 'completed' ? 'bg-blue-600 text-white' :
-                            'bg-gray-600 text-white'
-                          }`}>
-                            {enrollment.status}
-                          </span>
-                          {enrollment.progress !== undefined && (
-                            <span className="text-sm text-gray-400">{enrollment.progress}%</span>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                    {cohort.enrollments.length > 5 && (
-                      <p className="text-sm text-gray-400 text-center">... and {cohort.enrollments.length - 5} more</p>
-                    )}
-                  </div>
-                </div>
-              )}
+          {cohorts.length === 0 ? (
+            <div className="bg-gray-900 border border-gray-800 rounded-lg p-8 text-center">
+              <p className="text-gray-400">No cohorts found.</p>
+              <p className="text-sm text-gray-500 mt-2">Create your first cohort to get started.</p>
             </div>
-          ))}
+          ) : (
+            cohorts.map((cohort) => (
+              <div key={cohort.id} className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-xl font-bold text-white mb-2">{cohort.name}</h3>
+                    <p className="text-gray-400 mb-2">{cohort.description || 'No description'}</p>
+                    <div className="flex items-center gap-4 text-sm text-gray-500">
+                      <span>Secret Key: <code className="bg-gray-800 px-2 py-1 rounded">{cohort.secret_key}</code></span>
+                      <span>Created: {new Date(cohort.created_at).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 flex-wrap">
+                    <button
+                      onClick={() => fetchAnalytics(cohort.id)}
+                      className="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition"
+                    >
+                      Analytics
+                    </button>
+                    <button
+                      onClick={() => editCohort(cohort)}
+                      className="px-4 py-2 bg-amber-600 text-white text-sm rounded hover:bg-amber-700 transition"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteCohort(cohort.id)}
+                      className="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+
+                {/* Analytics Display */}
+                {selectedCohort?.id === cohort.id && analytics && (
+                  <div className="mt-4 p-4 bg-gray-800 rounded-lg">
+                    <h4 className="text-lg font-semibold text-amber-400 mb-3">Analytics Dashboard</h4>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-white">{analytics.total_enrolled}</p>
+                        <p className="text-sm text-gray-400">Total Enrolled</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-green-400">{analytics.active_learners}</p>
+                        <p className="text-sm text-gray-400">Active Learners</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-blue-400">{analytics.completed_learners}</p>
+                        <p className="text-sm text-gray-400">Completed</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-amber-400">{analytics.average_progress}%</p>
+                        <p className="text-sm text-gray-400">Avg Progress</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>

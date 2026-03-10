@@ -58,14 +58,13 @@ export function SiteFooter() {
             <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
             <li><Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link></li>
             <li><Link href="/data-protection" className="hover:underline">Data Protection Policy</Link></li>
-            <li><Link href="/About/OurStory" className="hover:underline">About MUI</Link></li>
           </ul>
         </div>
 
         {/* Research & Governance */}
         <div>
           <h4 className="text-white font-medium mb-3">
-            Content & Insights
+            About MUI
           </h4>
           <ul className="space-y-2">
             <li><Link href="/About/OurStory" className="hover:underline">About MUI</Link></li>
