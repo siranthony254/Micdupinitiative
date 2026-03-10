@@ -44,7 +44,6 @@ export default function AdminBlogPage() {
   const [activeTab, setActiveTab] = useState<"posts" | "categories" | "tags">("posts")
 
   useEffect(() => {
-
     if (!isAdmin) {
       router.push("/mui-portal/dashboard")
       return
@@ -56,6 +55,14 @@ export default function AdminBlogPage() {
     fetchAuthors()
 
   }, [isAdmin])
+
+  // Refresh categories and tags when switching tabs to ensure they're up to date
+  useEffect(() => {
+    if (activeTab === "posts") {
+      fetchCategories()
+      fetchTags()
+    }
+  }, [activeTab])
 
   const fetchPosts = async () => {
     setLoading(true)
@@ -463,12 +470,25 @@ export default function AdminBlogPage() {
       <div className="max-w-7xl mx-auto px-6 py-10">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold">Blog Admin</h1>
-          <button
-            onClick={() => setShowEditor(true)}
-            className="bg-amber-500 text-black px-4 py-2 rounded"
-          >
-            New Post
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => {
+                fetchPosts()
+                fetchCategories()
+                fetchTags()
+                fetchAuthors()
+              }}
+              className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
+            >
+              Refresh
+            </button>
+            <button
+              onClick={() => setShowEditor(true)}
+              className="bg-amber-500 text-black px-4 py-2 rounded"
+            >
+              New Post
+            </button>
+          </div>
         </div>
 
         {/* Tabs */}
@@ -1089,35 +1109,47 @@ export default function AdminBlogPage() {
                 onSubmit={async (e) => {
                   e.preventDefault()
                   const formData = new FormData(e.currentTarget)
+                  const name = formData.get('name') as string
                   const categoryData = {
-                    name: formData.get('name') as string,
-                    slug: formData.get('slug') as string,
+                    name: name,
+                    slug: formData.get('slug') as string || generateSlug(name),
                     description: formData.get('description') as string
                   }
                   
-                  await supabase
-                    .from('blog_categories')
-                    .insert(categoryData)
-                  
-                  fetchCategories()
-                  e.currentTarget.reset()
+                  try {
+                    const { error } = await supabase
+                      .from('blog_categories')
+                      .insert(categoryData)
+                    
+                    if (error) throw error
+                    
+                    fetchCategories()
+                    e.currentTarget.reset()
+                    
+                    // Show success message
+                    alert('Category added successfully!')
+                  } catch (error) {
+                    console.error('Error adding category:', error)
+                    alert('Error adding category. Please try again.')
+                  }
                 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                className="space-y-4"
               >
-                <input
-                  name="name"
-                  type="text"
-                  placeholder="Category name"
-                  required
-                  className="p-3 bg-black border border-gray-700 rounded text-white"
-                />
-                <input
-                  name="slug"
-                  type="text"
-                  placeholder="category-slug"
-                  required
-                  className="p-3 bg-black border border-gray-700 rounded text-white"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    name="name"
+                    type="text"
+                    placeholder="Category name *"
+                    required
+                    className="p-3 bg-black border border-gray-700 rounded text-white"
+                  />
+                  <input
+                    name="slug"
+                    type="text"
+                    placeholder="category-slug (optional, auto-generated)"
+                    className="p-3 bg-black border border-gray-700 rounded text-white"
+                  />
+                </div>
                 <input
                   name="description"
                   type="text"
@@ -1126,7 +1158,7 @@ export default function AdminBlogPage() {
                 />
                 <button
                   type="submit"
-                  className="bg-amber-500 text-black px-4 py-2 rounded hover:bg-amber-400"
+                  className="bg-amber-500 text-black px-6 py-2 rounded hover:bg-amber-400"
                 >
                   Add Category
                 </button>
@@ -1183,37 +1215,49 @@ export default function AdminBlogPage() {
                 onSubmit={async (e) => {
                   e.preventDefault()
                   const formData = new FormData(e.currentTarget)
+                  const name = formData.get('name') as string
                   const tagData = {
-                    name: formData.get('name') as string,
-                    slug: formData.get('slug') as string
+                    name: name,
+                    slug: formData.get('slug') as string || generateSlug(name)
                   }
                   
-                  await supabase
-                    .from('blog_tags')
-                    .insert(tagData)
-                  
-                  fetchTags()
-                  e.currentTarget.reset()
+                  try {
+                    const { error } = await supabase
+                      .from('blog_tags')
+                      .insert(tagData)
+                    
+                    if (error) throw error
+                    
+                    fetchTags()
+                    e.currentTarget.reset()
+                    
+                    // Show success message
+                    alert('Tag added successfully!')
+                  } catch (error) {
+                    console.error('Error adding tag:', error)
+                    alert('Error adding tag. Please try again.')
+                  }
                 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                className="space-y-4"
               >
-                <input
-                  name="name"
-                  type="text"
-                  placeholder="Tag name"
-                  required
-                  className="p-3 bg-black border border-gray-700 rounded text-white"
-                />
-                <input
-                  name="slug"
-                  type="text"
-                  placeholder="tag-slug"
-                  required
-                  className="p-3 bg-black border border-gray-700 rounded text-white"
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <input
+                    name="name"
+                    type="text"
+                    placeholder="Tag name *"
+                    required
+                    className="p-3 bg-black border border-gray-700 rounded text-white"
+                  />
+                  <input
+                    name="slug"
+                    type="text"
+                    placeholder="tag-slug (optional, auto-generated)"
+                    className="p-3 bg-black border border-gray-700 rounded text-white"
+                  />
+                </div>
                 <button
                   type="submit"
-                  className="bg-amber-500 text-black px-4 py-2 rounded hover:bg-amber-400"
+                  className="bg-amber-500 text-black px-6 py-2 rounded hover:bg-amber-400"
                 >
                   Add Tag
                 </button>
