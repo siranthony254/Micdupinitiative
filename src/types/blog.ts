@@ -1,3 +1,14 @@
+export interface BlogAuthor {
+  id: string
+  name: string
+  bio?: string
+  avatar_url?: string
+  twitter?: string
+  linkedin?: string
+  created_at: string
+  updated_at: string
+}
+
 export interface BlogProfile {
   id: string
   full_name?: string
@@ -33,20 +44,16 @@ export interface BlogPost {
   content: string
   excerpt?: string
   featured_image?: string
-  status: 'draft' | 'published' | 'scheduled'
-  is_featured: boolean
-  reading_time: number
-  view_count: number
-  share_count: number
-  meta_title?: string
-  meta_description?: string
-  keywords?: string[]
+  status: 'draft' | 'published'
+  featured: boolean
+  read_time: number
+  views: number
   author_id?: string
   category_id?: string
-  publish_at?: string
+  published_at?: string
   created_at: string
   updated_at: string
-  author?: BlogProfile
+  author?: BlogAuthor
   category?: BlogCategory
   tags?: BlogTag[]
 }
@@ -77,7 +84,7 @@ export interface BlogPostShare {
 }
 
 export interface BlogPostWithRelations extends BlogPost {
-  author?: BlogProfile
+  author?: BlogAuthor
   category?: BlogCategory
   tags?: BlogTag[]
   comments?: BlogComment[]

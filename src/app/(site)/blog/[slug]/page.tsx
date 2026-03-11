@@ -198,7 +198,7 @@ export default function BlogPostPage() {
                 fill
                 className="object-cover"
               />
-              {post.is_featured && (
+              {post.featured && (
                 <div className="absolute top-4 left-4">
                   <span className="px-3 py-1 bg-amber-500 text-black text-sm font-semibold rounded-full">
                     Featured
@@ -220,7 +220,7 @@ export default function BlogPostPage() {
               </span>
               <span className="text-gray-400">•</span>
               <span className="text-gray-400">
-                {post.reading_time || getReadingTime(post.content)} min read
+                {post.read_time || getReadingTime(post.content)} min read
               </span>
             </div>
 
@@ -240,7 +240,7 @@ export default function BlogPostPage() {
                 {post.author.avatar_url && (
                   <Image
                     src={post.author.avatar_url}
-                    alt={post.author.full_name || ''}
+                    alt={post.author.name || ''}
                     width={48}
                     height={48}
                     className="rounded-full"
@@ -248,11 +248,13 @@ export default function BlogPostPage() {
                 )}
                 <div>
                   <p className="font-semibold text-white">
-                    {post.author.full_name || 'Anonymous'}
+                    {post.author.name || 'Anonymous'}
                   </p>
-                  <p className="text-gray-400 capitalize">
-                    {post.author.role}
-                  </p>
+                  {post.author.bio && (
+                    <p className="text-gray-400 text-sm">
+                      {post.author.bio}
+                    </p>
+                  )}
                 </div>
               </div>
             )}
@@ -291,8 +293,7 @@ export default function BlogPostPage() {
             </button>
             
             <div className="ml-auto flex items-center gap-4 text-gray-400">
-              <span>{post.view_count} views</span>
-              <span>{post.share_count} shares</span>
+              <span>{post.views || 0} views</span>
             </div>
           </div>
         </header>

@@ -157,7 +157,7 @@ function SearchResult({ post }: { post: BlogPostWithRelations }) {
               </span>
               <span className="text-gray-400 text-sm">•</span>
               <span className="text-gray-400 text-sm">
-                {post.reading_time || 5} min read
+                {post.read_time || 5} min read
               </span>
             </div>
             
@@ -173,14 +173,14 @@ function SearchResult({ post }: { post: BlogPostWithRelations }) {
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {post.author?.full_name && (
+                {post.author?.name && (
                   <span className="text-gray-400 text-sm">
-                    By {post.author.full_name}
+                    By {post.author.name}
                   </span>
                 )}
               </div>
               <div className="flex items-center gap-4 text-gray-400 text-sm">
-                <span>{post.view_count} views</span>
+                <span>{post.views || 0} views</span>
               </div>
             </div>
           </div>

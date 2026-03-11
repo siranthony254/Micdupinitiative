@@ -90,7 +90,7 @@ export default function BlogPage() {
           category:blog_categories(id, name, slug)
         `)
         .eq('status', 'published')
-        .eq('is_featured', true)
+        .eq('featured', true)
         .order('created_at', { ascending: false })
         .limit(3)
 
@@ -204,7 +204,7 @@ export default function BlogPage() {
                         </p>
                         <div className="flex items-center justify-between text-sm text-gray-500">
                           <span>{formatDate(post.created_at)}</span>
-                          <span>{post.view_count || 0} views</span>
+                          <span>{post.views || 0} views</span>
                         </div>
                       </div>
                     </div>
@@ -242,7 +242,7 @@ export default function BlogPage() {
                           {post.category && (
                             <span className="text-gray-400 text-sm">{post.category.name}</span>
                           )}
-                          {post.is_featured && (
+                          {post.featured && (
                             <span className="bg-amber-500 text-black text-xs px-2 py-1 rounded">Featured</span>
                           )}
                         </div>
@@ -254,7 +254,7 @@ export default function BlogPage() {
                         </p>
                         <div className="flex items-center justify-between text-sm text-gray-500">
                           <span>{formatDate(post.created_at)}</span>
-                          <span>{post.view_count || 0} views</span>
+                          <span>{post.views || 0} views</span>
                         </div>
                       </div>
                     </div>

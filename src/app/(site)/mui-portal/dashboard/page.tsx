@@ -204,7 +204,7 @@ export default function DashboardPage() {
         {
           event: '*',
           schema: 'public',
-          table: 'course_progress',
+          table: 'progress',
           filter: `user_id=eq.${user.id}`,
         },
         () => {

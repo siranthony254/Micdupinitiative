@@ -29,50 +29,27 @@ export default function BlogCategoryPage() {
 
   const fetchCategory = async () => {
     try {
-      const { data, error } = await getBlogCategories()
-      if (error) {
-        console.error('Error fetching categories:', error)
-        return
-      }
-
-      const foundCategory = data?.find(cat => cat.slug === slug)
-      if (foundCategory) {
-        setCategory(foundCategory)
-      } else {
-        router.push('/blog')
-      }
+      const result = await getBlogCategories()
+      const found = result.data?.find((cat: BlogCategory) => cat.slug === slug)
+      setCategory(found || null)
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error fetching category:', error)
     }
   }
 
   const fetchPosts = async () => {
     try {
-      setLoading(true)
-      
-      const { data, error } = await getBlogPosts({
-        status: 'published',
-        category_id: category?.id
-      })
-
-      if (error) {
-        console.error('Error fetching posts:', error)
-      } else {
-        setPosts(data || [])
-      }
+      const result = await getBlogPosts()
+      const filtered = result.data?.filter((post: BlogPostWithRelations) => 
+        post.status === 'published' && 
+        post.category?.slug === slug
+      ) || []
+      setPosts(filtered)
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error fetching posts:', error)
     } finally {
       setLoading(false)
     }
-  }
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
   }
 
   if (loading) {
@@ -170,7 +147,7 @@ function PostCard({ post }: { post: BlogPostWithRelations }) {
               fill
               className="object-cover group-hover:scale-105 transition duration-300"
             />
-            {post.is_featured && (
+            {post.featured && (
               <div className="absolute top-4 left-4">
                 <span className="px-3 py-1 bg-amber-500 text-black text-xs font-semibold rounded-full">
                   Featured
@@ -182,11 +159,15 @@ function PostCard({ post }: { post: BlogPostWithRelations }) {
         <div className="p-6">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-gray-400 text-sm">
-              {new Date(post.created_at).toLocaleDateString()}
+              {new Date(post.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}
             </span>
             <span className="text-gray-400 text-sm">•</span>
             <span className="text-gray-400 text-sm">
-              {post.reading_time || 5} min read
+              {post.read_time} min read
             </span>
           </div>
           <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-amber-400 transition">
@@ -199,14 +180,14 @@ function PostCard({ post }: { post: BlogPostWithRelations }) {
           )}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              {post.author?.full_name && (
+              {post.author?.name && (
                 <span className="text-gray-400 text-sm">
-                  By {post.author.full_name}
+                  By {post.author.name}
                 </span>
               )}
             </div>
             <div className="flex items-center gap-4 text-gray-400 text-sm">
-              <span>{post.view_count} views</span>
+              <span>{post.views || 0} views</span>
             </div>
           </div>
         </div>

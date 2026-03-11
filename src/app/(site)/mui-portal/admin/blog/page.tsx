@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import { useAuth } from "@/contexts/auth-context"
-import type { BlogPost, BlogCategory, BlogTag, BlogProfile } from "@/types/blog"
+import type { BlogPost, BlogCategory, BlogTag, BlogAuthor } from '@/types/blog'
 
 export default function AdminBlogPage() {
 
@@ -17,7 +17,7 @@ export default function AdminBlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [categories, setCategories] = useState<BlogCategory[]>([])
   const [tags, setTags] = useState<BlogTag[]>([])
-  const [authors, setAuthors] = useState<BlogProfile[]>([])
+  const [authors, setAuthors] = useState<BlogAuthor[]>([])
   const [loading, setLoading] = useState(true)
   const [showEditor, setShowEditor] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
@@ -33,7 +33,7 @@ export default function AdminBlogPage() {
     meta_title: "",
     meta_description: "",
     keywords: [] as string[],
-    status: "draft" as "draft" | "published" | "scheduled",
+    status: "draft" as "draft" | "published",
     is_featured: false,
     category_id: "",
     tag_ids: [] as string[],
@@ -71,7 +71,7 @@ export default function AdminBlogPage() {
       .from("blog_posts")
       .select(`
         *,
-        author:blog_profiles(id, full_name, avatar_url, role),
+        author:blog_authors(id, name, avatar_url),
         category:blog_categories(id, name, slug),
         tags:blog_post_tags(
           blog_tags(id, name, slug)
@@ -103,12 +103,11 @@ export default function AdminBlogPage() {
 
   const fetchAuthors = async () => {
     const { data, error } = await supabase
-      .from("blog_profiles")
+      .from("blog_authors")
       .select("*")
-      .in("role", ["admin", "editor", "author"])
-      .order("full_name")
+      .order("name")
 
-    if (!error && data) setAuthors(data as BlogProfile[])
+    if (!error && data) setAuthors(data as BlogAuthor[])
   }
 
   const generateSlug = (title: string) => {
@@ -266,63 +265,17 @@ export default function AdminBlogPage() {
       content: formData.content,
       excerpt: formData.excerpt,
       featured_image: formData.featured_image,
-      meta_title: formData.meta_title,
-      meta_description: formData.meta_description,
-      keywords: formData.keywords,
       status: formData.status,
-      is_featured: formData.is_featured,
+      featured: formData.is_featured,
       category_id: formData.category_id || null,
-      author_id: formData.author_id || user?.id,
-      publish_at: formData.status === 'scheduled' ? formData.publish_at : null
+      author_id: formData.author_id || null,
+      published_at: formData.status === 'published' ? new Date().toISOString() : null
     }
 
     try {
       let postId: string
       
-      // First, ensure the user has a blog profile (with error handling)
-      if (user && !formData.author_id) {
-        try {
-          // Try to create or get the user's blog profile
-          const { data: profileData, error: profileError } = await supabase
-            .from('blog_profiles')
-            .upsert({
-              id: user.id,
-              full_name: profile?.full_name || user.email,
-              email: user.email,
-              role: 'author',
-              created_at: new Date().toISOString()
-            }, {
-              onConflict: 'id'
-            })
-            .select()
-            .single()
-
-          if (profileError) {
-            console.log('Blog profile creation failed, trying direct insert:', profileError)
-            // Try direct insert without upsert
-            const { error: insertError } = await supabase
-              .from('blog_profiles')
-              .insert({
-                id: user.id,
-                full_name: profile?.full_name || user.email,
-                email: user.email,
-                role: 'author',
-                created_at: new Date().toISOString()
-              })
-            
-            if (insertError) {
-              console.log('Direct insert also failed:', insertError)
-              throw new Error('Cannot create blog profile for user')
-            }
-          }
-          
-          console.log('Blog profile created/verified:', profileData)
-        } catch (profileErr) {
-          console.log('Blog profile table not accessible:', profileErr)
-          // Continue anyway and let the database handle the foreign key
-        }
-      }
-      
+      // Create the post
       if (editingPost) {
         const { data, error } = await supabase
           .from("blog_posts")
@@ -340,13 +293,7 @@ export default function AdminBlogPage() {
           .select()
           .single()
 
-        if (error) {
-          if (error.code === '23503') {
-            // Foreign key constraint violation - profile doesn't exist
-            throw new Error('Author profile not found. Please ensure your profile is created first.')
-          }
-          throw error
-        }
+        if (error) throw error
         postId = data.id
       }
 
@@ -412,15 +359,15 @@ export default function AdminBlogPage() {
       content: post.content,
       excerpt: post.excerpt || "",
       featured_image: post.featured_image || "",
-      meta_title: post.meta_title || "",
-      meta_description: post.meta_description || "",
-      keywords: post.keywords || [],
+      meta_title: "",
+      meta_description: "",
+      keywords: [],
       status: post.status,
-      is_featured: post.is_featured || false,
+      is_featured: post.featured || false,
       category_id: post.category_id || "",
       tag_ids: post.tags?.map(tag => tag.id) || [],
       author_id: post.author_id || "",
-      publish_at: post.publish_at || ""
+      publish_at: post.published_at || ""
     })
 
     setShowEditor(true)
@@ -535,12 +482,12 @@ export default function AdminBlogPage() {
                       <td className="py-3 px-2">
                         <div>
                           <div className="font-medium">{post.title}</div>
-                          {post.is_featured && (
+                          {post.featured && (
                             <span className="text-xs bg-amber-500 text-black px-2 py-1 rounded">Featured</span>
                           )}
                         </div>
                       </td>
-                      <td className="py-3 px-2">{post.author?.full_name || 'Unknown'}</td>
+                      <td className="py-3 px-2">{post.author?.name || 'Unknown'}</td>
                       <td className="py-3 px-2">
                         <span className={`text-xs px-2 py-1 rounded ${
                           post.status === 'published' ? 'bg-green-500 text-white' :
@@ -550,7 +497,7 @@ export default function AdminBlogPage() {
                           {post.status}
                         </span>
                       </td>
-                      <td className="py-3 px-2">{post.view_count || 0}</td>
+                      <td className="py-3 px-2">{post.views || 0}</td>
                       <td className="py-3 px-2">{new Date(post.created_at).toLocaleDateString()}</td>
                       <td className="py-3 px-2">
                         <div className="flex gap-2">
@@ -595,13 +542,13 @@ export default function AdminBlogPage() {
                 <h3 className="font-semibold mb-3">Most Viewed</h3>
                 <div className="space-y-2">
                   {posts
-                    .filter(p => p.view_count > 0)
-                    .sort((a, b) => (b.view_count || 0) - (a.view_count || 0))
+                    .filter(p => p.views > 0)
+                    .sort((a, b) => (b.views || 0) - (a.views || 0))
                     .slice(0, 5)
                     .map(post => (
                       <div key={post.id} className="text-sm">
                         <div className="font-medium">{post.title}</div>
-                        <div className="text-gray-400">{post.view_count} views</div>
+                        <div className="text-gray-400">{post.views} views</div>
                       </div>
                     ))}
                 </div>
@@ -610,16 +557,7 @@ export default function AdminBlogPage() {
               <div className="border border-gray-800 p-4 rounded">
                 <h3 className="font-semibold mb-3">Most Shared</h3>
                 <div className="space-y-2">
-                  {posts
-                    .filter(p => p.share_count > 0)
-                    .sort((a, b) => (b.share_count || 0) - (a.share_count || 0))
-                    .slice(0, 5)
-                    .map(post => (
-                      <div key={post.id} className="text-sm">
-                        <div className="font-medium">{post.title}</div>
-                        <div className="text-gray-400">{post.share_count} shares</div>
-                      </div>
-                    ))}
+                  <p className="text-gray-400 text-sm">No share data available</p>
                 </div>
               </div>
 
@@ -627,7 +565,7 @@ export default function AdminBlogPage() {
                 <h3 className="font-semibold mb-3">Featured Posts</h3>
                 <div className="space-y-2">
                   {posts
-                    .filter(p => p.is_featured)
+                    .filter(p => p.featured)
                     .slice(0, 5)
                     .map(post => (
                       <div key={post.id} className="text-sm">
@@ -982,24 +920,8 @@ export default function AdminBlogPage() {
                     >
                       <option value="draft">Draft</option>
                       <option value="published">Published</option>
-                      <option value="scheduled">Scheduled</option>
                     </select>
                   </div>
-
-                  {formData.status === 'scheduled' && (
-                    <div>
-                      <label htmlFor="publish_at" className="block text-sm font-medium mb-2">
-                        Publish Date
-                      </label>
-                      <input
-                        id="publish_at"
-                        type="datetime-local"
-                        value={formData.publish_at}
-                        onChange={e => handleInputChange("publish_at", e.target.value)}
-                        className="w-full p-3 bg-black border border-gray-700 rounded text-white"
-                      />
-                    </div>
-                  )}
 
                   <div>
                     <label htmlFor="author" className="block text-sm font-medium mb-2">
@@ -1014,7 +936,7 @@ export default function AdminBlogPage() {
                       <option value="">Select author</option>
                       {authors.map(author => (
                         <option key={author.id} value={author.id}>
-                          {author.full_name}
+                          {author.name}
                         </option>
                       ))}
                     </select>
