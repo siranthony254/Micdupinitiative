@@ -107,7 +107,22 @@ export async function POST(request: NextRequest) {
       if (categories && categories.length > 0) {
         categoryId = categories[0].id
       } else {
-        return NextResponse.json({ error: 'category_id is required and no categories available' }, { status: 400 })
+        // Create a default category if none exists
+        const { data: newCategory } = await supabase
+          .from('blog_categories')
+          .insert({
+            name: 'General',
+            slug: 'general',
+            description: 'General category for blog posts'
+          })
+          .select('id')
+          .single()
+        
+        if (newCategory) {
+          categoryId = newCategory.id
+        } else {
+          return NextResponse.json({ error: 'Failed to create default category' }, { status: 500 })
+        }
       }
     }
     

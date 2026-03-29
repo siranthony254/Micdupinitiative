@@ -18,30 +18,13 @@ ORDER BY ordinal_position;
 -- - category_id (UUID NOT NULL)
 -- ============================================
 
--- Fix 1: Set proper defaults for author_id and category_id
+-- Fix 1: Set proper default for author_id only (category_id will be handled in trigger)
 ALTER TABLE public.blog_posts 
 ALTER COLUMN author_id 
 SET DEFAULT auth.uid();
 
--- Get the first category ID to use as default
-DO $$
-DECLARE
-    default_category_id UUID;
-BEGIN
-    SELECT id INTO default_category_id 
-    FROM public.blog_categories 
-    LIMIT 1;
-    
-    IF default_category_id IS NOT NULL THEN
-        ALTER TABLE public.blog_posts 
-        ALTER COLUMN category_id 
-        SET DEFAULT default_category_id;
-        
-        RAISE NOTICE 'Set default category_id to: %', default_category_id;
-    ELSE
-        RAISE NOTICE 'No categories found - please create categories first';
-    END IF;
-END $$;
+-- Note: category_id cannot have a dynamic default, so we'll handle it in the trigger
+-- The trigger will automatically set category_id to the first available category
 
 -- Fix 2: Add a comprehensive trigger to handle all required fields
 CREATE OR REPLACE FUNCTION validate_blog_post_data()

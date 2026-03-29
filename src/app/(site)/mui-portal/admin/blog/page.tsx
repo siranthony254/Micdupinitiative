@@ -41,6 +41,9 @@ export default function AdminBlogPage() {
     publish_at: ""
   })
 
+  const [newCategoryName, setNewCategoryName] = useState("")
+  const [showNewCategoryForm, setShowNewCategoryForm] = useState(false)
+
   const [activeTab, setActiveTab] = useState<"posts" | "categories" | "tags">("posts")
 
   useEffect(() => {
@@ -248,6 +251,48 @@ export default function AdminBlogPage() {
     }))
   }
 
+  const handleAddCategory = async () => {
+    if (!newCategoryName.trim()) {
+      alert("Please enter a category name")
+      return
+    }
+
+    try {
+      const slug = newCategoryName.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim('-')
+
+      const { data, error } = await supabase
+        .from('blog_categories')
+        .insert({
+          name: newCategoryName.trim(),
+          slug: slug,
+          description: `Category for ${newCategoryName}`
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+
+      // Update categories list
+      await fetchCategories()
+      
+      // Set the new category as selected
+      setFormData(prev => ({ ...prev, category_id: data.id }))
+      
+      // Reset form
+      setNewCategoryName("")
+      setShowNewCategoryForm(false)
+      
+      alert(`Category "${newCategoryName}" created successfully!`)
+    } catch (error) {
+      console.error('Error creating category:', error)
+      alert('Error creating category. Please try again.')
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -275,13 +320,20 @@ export default function AdminBlogPage() {
 
     // Ensure category_id is set - use first available category if none selected
     let categoryId = formData.category_id
+    
+    // Handle create-new option
+    if (categoryId === 'create-new') {
+      alert("Please create the new category first using the form below, or select an existing category.")
+      return
+    }
+    
     if (!categoryId && categories.length > 0) {
       categoryId = categories[0].id
       alert(`Category automatically set to: ${categories[0].name}`)
     }
 
     if (!categoryId) {
-      alert("Please select a category for the post, or create a category first.")
+      alert("Please select a category for post, or create a category first.")
       return
     }
 
@@ -386,6 +438,8 @@ export default function AdminBlogPage() {
       author_id: "",
       publish_at: ""
     })
+    setNewCategoryName("")
+    setShowNewCategoryForm(false)
   }
 
   const editPost = (post: BlogPost) => {
@@ -906,7 +960,7 @@ export default function AdminBlogPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="category" className="block text-sm font-medium mb-2">
-                      Category
+                      Category *
                     </label>
                     <select
                       id="category"
@@ -920,7 +974,39 @@ export default function AdminBlogPage() {
                           {category.name}
                         </option>
                       ))}
+                      <option value="create-new">+ Create New Category</option>
                     </select>
+                    
+                    {formData.category_id === 'create-new' && (
+                      <div className="mt-3 p-3 bg-gray-800 rounded">
+                        <input
+                          type="text"
+                          placeholder="New category name"
+                          value={newCategoryName}
+                          onChange={e => setNewCategoryName(e.target.value)}
+                          className="w-full p-2 bg-black border border-gray-700 rounded text-white mb-2"
+                        />
+                        <div className="flex gap-2">
+                          <button
+                            type="button"
+                            onClick={handleAddCategory}
+                            className="bg-amber-500 text-black px-4 py-2 rounded hover:bg-amber-400 text-sm"
+                          >
+                            Create & Select
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFormData(prev => ({ ...prev, category_id: "" }))
+                              setNewCategoryName("")
+                            }}
+                            className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500 text-sm"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   <div>
