@@ -72,7 +72,21 @@ export async function GET(request: NextRequest) {
 // POST /api/admin/blog/posts - Create new post (admin only)
 export async function POST(request: NextRequest) {
   try {
+    // Get the current user
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const body = await request.json()
+    
+    // Ensure author_id is set to current user if not provided
+    const authorId = body.author_id || user.id
+    
+    if (!authorId) {
+      return NextResponse.json({ error: 'author_id is required' }, { status: 400 })
+    }
     
     const postData = {
       title: body.title,
@@ -87,7 +101,7 @@ export async function POST(request: NextRequest) {
       status: body.status || 'draft',
       is_featured: body.is_featured || false,
       category_id: body.category_id || null,
-      author_id: body.author_id,
+      author_id: authorId,
       publish_at: body.status === 'scheduled' ? body.publish_at : null
     }
 

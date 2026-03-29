@@ -258,6 +258,14 @@ export default function AdminBlogPage() {
 
     setLoading(true)
 
+    // Ensure author_id is set to current user if not provided
+    const authorId = formData.author_id || user?.id
+
+    if (!authorId) {
+      alert("You must be logged in to create a post.")
+      return
+    }
+
     const postData = {
       title: formData.title,
       subtitle: formData.subtitle,
@@ -268,7 +276,7 @@ export default function AdminBlogPage() {
       status: formData.status,
       featured: formData.is_featured,
       category_id: formData.category_id || null,
-      author_id: formData.author_id || null,
+      author_id: authorId,
       published_at: formData.status === 'published' ? new Date().toISOString() : null
     }
 
