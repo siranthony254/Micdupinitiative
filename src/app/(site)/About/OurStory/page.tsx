@@ -55,7 +55,7 @@ export default function OurStoryPage() {
               Anthony encountered something deeper than content opportunities.
               He identified purpose-led voices, quiet leaders, thoughtful
               thinkers, and students carrying a burden for meaning, integrity,
-              and direction.
+              and direction. 
             </p>
 
             <p className="text-white/80 leading-relaxed">
