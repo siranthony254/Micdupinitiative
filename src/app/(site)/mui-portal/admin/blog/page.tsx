@@ -251,12 +251,19 @@ export default function AdminBlogPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.title || !formData.slug || !formData.content) {
-      alert("Please fill all required fields.")
-      return
-    }
+    // Validate all required fields
+    const requiredFields = [
+      { name: 'title', value: formData.title },
+      { name: 'slug', value: formData.slug },
+      { name: 'content', value: formData.content }
+    ]
 
-    setLoading(true)
+    for (const field of requiredFields) {
+      if (!field.value || field.value.trim() === '') {
+        alert(`Please fill in the ${field.name} field.`)
+        return
+      }
+    }
 
     // Ensure author_id is set to current user if not provided
     const authorId = formData.author_id || user?.id
@@ -265,6 +272,30 @@ export default function AdminBlogPage() {
       alert("You must be logged in to create a post.")
       return
     }
+
+    // Ensure category_id is set - use first available category if none selected
+    let categoryId = formData.category_id
+    if (!categoryId && categories.length > 0) {
+      categoryId = categories[0].id
+      alert(`Category automatically set to: ${categories[0].name}`)
+    }
+
+    if (!categoryId) {
+      alert("Please select a category for the post, or create a category first.")
+      return
+    }
+
+    // Debug log to verify all required fields
+    console.log('Creating blog post with data:', {
+      title: formData.title,
+      slug: formData.slug,
+      content: formData.content.substring(0, 100) + '...',
+      author_id: authorId,
+      category_id: categoryId,
+      status: formData.status
+    })
+
+    setLoading(true)
 
     const postData = {
       title: formData.title,
@@ -275,7 +306,7 @@ export default function AdminBlogPage() {
       featured_image: formData.featured_image,
       status: formData.status,
       featured: formData.is_featured,
-      category_id: formData.category_id || null,
+      category_id: categoryId,
       author_id: authorId,
       published_at: formData.status === 'published' ? new Date().toISOString() : null
     }

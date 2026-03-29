@@ -81,6 +81,14 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json()
     
+    // Validate required fields
+    const requiredFields = ['title', 'slug', 'content']
+    for (const field of requiredFields) {
+      if (!body[field] || body[field].trim() === '') {
+        return NextResponse.json({ error: `${field} is required` }, { status: 400 })
+      }
+    }
+    
     // Ensure author_id is set to current user if not provided
     const authorId = body.author_id || user.id
     
@@ -88,19 +96,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'author_id is required' }, { status: 400 })
     }
     
+    // Ensure category_id is provided - get first available category if not
+    let categoryId = body.category_id
+    if (!categoryId) {
+      const { data: categories } = await supabase
+        .from('blog_categories')
+        .select('id')
+        .limit(1)
+      
+      if (categories && categories.length > 0) {
+        categoryId = categories[0].id
+      } else {
+        return NextResponse.json({ error: 'category_id is required and no categories available' }, { status: 400 })
+      }
+    }
+    
     const postData = {
-      title: body.title,
-      subtitle: body.subtitle || null,
-      slug: body.slug,
-      content: body.content,
-      excerpt: body.excerpt || null,
-      featured_image: body.featured_image || null,
-      meta_title: body.meta_title || null,
-      meta_description: body.meta_description || null,
+      title: body.title.trim(),
+      subtitle: body.subtitle?.trim() || null,
+      slug: body.slug.trim(),
+      content: body.content.trim(),
+      excerpt: body.excerpt?.trim() || null,
+      featured_image: body.featured_image?.trim() || null,
+      meta_title: body.meta_title?.trim() || null,
+      meta_description: body.meta_description?.trim() || null,
       keywords: body.keywords || [],
       status: body.status || 'draft',
       is_featured: body.is_featured || false,
-      category_id: body.category_id || null,
+      category_id: categoryId,
       author_id: authorId,
       publish_at: body.status === 'scheduled' ? body.publish_at : null
     }
