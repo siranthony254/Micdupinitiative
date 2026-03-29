@@ -72,13 +72,6 @@ export async function GET(request: NextRequest) {
 // POST /api/admin/blog/posts - Create new post (admin only)
 export async function POST(request: NextRequest) {
   try {
-    // Get the current user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     const body = await request.json()
     
     // Validate required fields
@@ -89,11 +82,17 @@ export async function POST(request: NextRequest) {
       }
     }
     
-    // Ensure author_id is set to current user if not provided
-    const authorId = body.author_id || user.id
+    // Always use "Mic'd Up Initiative" as the author
+    const { data: author } = await supabase
+      .from('blog_authors')
+      .select('id')
+      .eq('name', "Mic'd Up Initiative")
+      .single()
+    
+    const authorId = author?.id
     
     if (!authorId) {
-      return NextResponse.json({ error: 'author_id is required' }, { status: 400 })
+      return NextResponse.json({ error: 'Author "Mic\'d Up Initiative" not found' }, { status: 400 })
     }
     
     // Ensure category_id is provided - get first available category if not
@@ -137,7 +136,7 @@ export async function POST(request: NextRequest) {
       meta_description: body.meta_description?.trim() || null,
       keywords: body.keywords || [],
       status: body.status || 'draft',
-      is_featured: body.is_featured || false,
+      featured: body.featured || false,  // Use correct field name
       category_id: categoryId,
       author_id: authorId,
       publish_at: body.status === 'scheduled' ? body.publish_at : null

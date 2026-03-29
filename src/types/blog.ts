@@ -45,11 +45,11 @@ export interface BlogPost {
   excerpt?: string
   featured_image?: string
   status: 'draft' | 'published'
-  featured: boolean
+  featured: boolean  // Match database field name
   read_time: number
   views: number
-  author_id?: string
-  category_id?: string
+  author_id: string  // Required to match database
+  category_id: string  // Required to match database
   published_at?: string
   created_at: string
   updated_at: string

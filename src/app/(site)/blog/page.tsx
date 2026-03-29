@@ -30,7 +30,7 @@ export default function BlogPage() {
         .from('blog_posts')
         .select(`
           *,
-          author:blog_profiles(id, full_name, avatar_url, role),
+          author:blog_authors(id, name, avatar_url),
           category:blog_categories(id, name, slug),
           tags:blog_post_tags(
             blog_tags(id, name, slug)

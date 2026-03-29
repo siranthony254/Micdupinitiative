@@ -16,7 +16,7 @@ export async function getBlogPosts(options: {
     .from('blog_posts')
     .select(`
       *,
-      author:blog_profiles(id, full_name, avatar_url, role),
+      author:blog_authors(id, name, avatar_url),
       category:blog_categories(id, name, slug),
       tags:blog_post_tags(
         blog_tags(id, name, slug)
@@ -54,7 +54,7 @@ export async function getBlogPost(slug: string) {
     .from('blog_posts')
     .select(`
       *,
-      author:blog_profiles(id, full_name, avatar_url, bio, role),
+      author:blog_authors(id, name, avatar_url),
       category:blog_categories(id, name, slug),
       tags:blog_post_tags(
         blog_tags(id, name, slug)
@@ -203,7 +203,7 @@ export async function searchBlogPosts(query: string, limit = 10) {
     .from('blog_posts')
     .select(`
       *,
-      author:blog_profiles(id, full_name, avatar_url, role),
+      author:blog_authors(id, name, avatar_url),
       category:blog_categories(id, name, slug),
       tags:blog_post_tags(
         blog_tags(id, name, slug)

@@ -17,7 +17,6 @@ export default function AdminBlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [categories, setCategories] = useState<BlogCategory[]>([])
   const [tags, setTags] = useState<BlogTag[]>([])
-  const [authors, setAuthors] = useState<BlogAuthor[]>([])
   const [loading, setLoading] = useState(true)
   const [showEditor, setShowEditor] = useState(false)
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null)
@@ -34,7 +33,7 @@ export default function AdminBlogPage() {
     meta_description: "",
     keywords: [] as string[],
     status: "draft" as "draft" | "published",
-    is_featured: false,
+    featured: false,  // Match database field name
     category_id: "",
     tag_ids: [] as string[],
     author_id: "",
@@ -55,7 +54,6 @@ export default function AdminBlogPage() {
     fetchPosts()
     fetchCategories()
     fetchTags()
-    fetchAuthors()
 
   }, [isAdmin])
 
@@ -102,15 +100,6 @@ export default function AdminBlogPage() {
       .order("name")
 
     if (!error && data) setTags(data as BlogTag[])
-  }
-
-  const fetchAuthors = async () => {
-    const { data, error } = await supabase
-      .from("blog_authors")
-      .select("*")
-      .order("name")
-
-    if (!error && data) setAuthors(data as BlogAuthor[])
   }
 
   const generateSlug = (title: string) => {
@@ -262,7 +251,7 @@ export default function AdminBlogPage() {
         .replace(/[^a-z0-9\s-]/g, '')
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
-        .trim('-')
+        .replace(/^-+|-+$/g, '')
 
       const { data, error } = await supabase
         .from('blog_categories')
@@ -293,6 +282,16 @@ export default function AdminBlogPage() {
     }
   }
 
+  const getMuiAuthorId = async () => {
+    // Always use "Mic'd Up Initiative" as the author
+    const { data } = await supabase
+      .from('blog_authors')
+      .select('id')
+      .eq('name', "Mic'd Up Initiative")
+      .single()
+    return data?.id
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -310,11 +309,11 @@ export default function AdminBlogPage() {
       }
     }
 
-    // Ensure author_id is set to current user if not provided
-    const authorId = formData.author_id || user?.id
+    // Ensure author_id is set to Mic'd Up Initiative
+    const authorId = await getMuiAuthorId()
 
     if (!authorId) {
-      alert("You must be logged in to create a post.")
+      alert("Author not found. Please ensure 'Mic'd Up Initiative' author exists.")
       return
     }
 
@@ -357,7 +356,7 @@ export default function AdminBlogPage() {
       excerpt: formData.excerpt,
       featured_image: formData.featured_image,
       status: formData.status,
-      featured: formData.is_featured,
+      featured: formData.featured,  // Use correct field name
       category_id: categoryId,
       author_id: authorId,
       published_at: formData.status === 'published' ? new Date().toISOString() : null
@@ -432,7 +431,7 @@ export default function AdminBlogPage() {
       meta_description: "",
       keywords: [],
       status: "draft",
-      is_featured: false,
+      featured: false,  // Use correct field name
       category_id: "",
       tag_ids: [],
       author_id: "",
@@ -456,7 +455,7 @@ export default function AdminBlogPage() {
       meta_description: "",
       keywords: [],
       status: post.status,
-      is_featured: post.featured || false,
+      featured: post.featured || false,
       category_id: post.category_id || "",
       tag_ids: post.tags?.map(tag => tag.id) || [],
       author_id: post.author_id || "",
@@ -516,7 +515,6 @@ export default function AdminBlogPage() {
                 fetchPosts()
                 fetchCategories()
                 fetchTags()
-                fetchAuthors()
               }}
               className="bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600"
             >
@@ -1049,22 +1047,18 @@ export default function AdminBlogPage() {
                   </div>
 
                   <div>
-                    <label htmlFor="author" className="block text-sm font-medium mb-2">
+                    <label className="block text-sm font-medium mb-2">
                       Author
                     </label>
-                    <select
-                      id="author"
-                      value={formData.author_id}
-                      onChange={e => handleInputChange("author_id", e.target.value)}
-                      className="w-full p-3 bg-black border border-gray-700 rounded text-white"
-                    >
-                      <option value="">Select author</option>
-                      {authors.map(author => (
-                        <option key={author.id} value={author.id}>
-                          {author.name}
-                        </option>
-                      ))}
-                    </select>
+                    <input
+                      type="text"
+                      value="Mic'd Up Initiative"
+                      disabled
+                      className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-gray-400"
+                    />
+                    <p className="text-xs text-gray-400 mt-1">
+                      All posts are authored by Mic'd Up Initiative
+                    </p>
                   </div>
                 </div>
 
@@ -1072,8 +1066,8 @@ export default function AdminBlogPage() {
                   <label className="flex items-center gap-2">
                     <input
                       type="checkbox"
-                      checked={formData.is_featured}
-                      onChange={e => handleInputChange("is_featured", e.target.checked)}
+                      checked={formData.featured}
+                      onChange={e => handleInputChange("featured", e.target.checked)}
                       className="rounded"
                     />
                     Featured Post
