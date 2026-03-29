@@ -284,11 +284,29 @@ export default function AdminBlogPage() {
 
   const getMuiAuthorId = async () => {
     // Always use "Mic'd Up Initiative" as the author
-    const { data } = await supabase
+    let { data } = await supabase
       .from('blog_authors')
       .select('id')
       .eq('name', "Mic'd Up Initiative")
       .single()
+    
+    // If author doesn't exist, create it
+    if (!data) {
+      const { data: newAuthor } = await supabase
+        .from('blog_authors')
+        .insert({
+          name: "Mic'd Up Initiative",
+          bio: "Mic'd Up Initiative is a leading organization dedicated to empowering students and fostering leadership development on campus."
+        })
+        .select('id')
+        .single()
+      
+      if (newAuthor) {
+        data = newAuthor
+        console.log('Created Mic\'d Up Initiative author:', newAuthor.id)
+      }
+    }
+    
     return data?.id
   }
 

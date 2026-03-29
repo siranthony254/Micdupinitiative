@@ -83,16 +83,33 @@ export async function POST(request: NextRequest) {
     }
     
     // Always use "Mic'd Up Initiative" as the author
-    const { data: author } = await supabase
+    let { data: author } = await supabase
       .from('blog_authors')
       .select('id')
       .eq('name', "Mic'd Up Initiative")
       .single()
     
-    const authorId = author?.id
+    let authorId = author?.id
+    
+    // If author doesn't exist, create it
+    if (!authorId) {
+      const { data: newAuthor } = await supabase
+        .from('blog_authors')
+        .insert({
+          name: "Mic'd Up Initiative",
+          bio: "Mic'd Up Initiative is a leading organization dedicated to empowering students and fostering leadership development on campus."
+        })
+        .select('id')
+        .single()
+      
+      if (newAuthor) {
+        authorId = newAuthor.id
+        console.log('Created Mic\'d Up Initiative author:', newAuthor.id)
+      }
+    }
     
     if (!authorId) {
-      return NextResponse.json({ error: 'Author "Mic\'d Up Initiative" not found' }, { status: 400 })
+      return NextResponse.json({ error: 'Failed to create or find author "Mic\'d Up Initiative"' }, { status: 500 })
     }
     
     // Ensure category_id is provided - get first available category if not
