@@ -55,13 +55,12 @@ export default function OurStoryPage() {
               Anthony encountered something deeper than content opportunities.
               He identified purpose-led voices, quiet leaders, thoughtful
               thinkers, and students carrying a burden for meaning, integrity,
-              and direction. 
-            </p>
-
-            <p className="text-white/80 leading-relaxed">
+              and direction.
               Through conversations, shared reflections, and vision-casting
               moments, it became evident that what was emerging was not merely
-              a podcast—but a calling toward intentional cultural formation.
+              a podcast—but a calling toward intentional cultural formation. The
+              vision expanded from amplifying voices to forming them with purpose,
+              integrity, and clarity. The name "Mic’d Up Initiative" was born.
             </p>
           </motion.section>
 
@@ -108,13 +107,14 @@ export default function OurStoryPage() {
             <p className="text-white/80 leading-relaxed">
               MUI operates at the intersection of content, conversation, and
               character formation. We use media not merely for entertainment,
-              but for stewardship, dignity, and direction.
-            </p>
-
-            <p className="text-white/80 leading-relaxed">
+              but for stewardship, dignity, and direction. 
+              We believe that what we consume shapes our thoughts, and what we 
+              amplify shapes our culture. Therefore, we are intentional about 
+              the voices we amplify and the stories we tell.  
               Through podcasts, documentaries, campus research, creative
               storytelling, mentorship programs, and purpose-driven events, we
-              amplify voices that shape culture responsibly and truthfully.
+              amplify voices that shape culture responsibly and truthfully. 
+              This is the story and zeal behind the existence of Mic'd Up Initiative.
             </p>
 
             <p className="font-medium text-amber-300">
@@ -151,6 +151,8 @@ export default function OurStoryPage() {
                 <li>Voices of purpose</li>
                 <li>Voices of leadership</li>
                 <li>Voices of transformation</li>
+                <li>Voices of responsibility</li>
+                <li>Voices of truth</li>
               </ul>
             </div>
           </motion.section>
@@ -164,22 +166,16 @@ export default function OurStoryPage() {
             transition={{ duration: 0.7 }}
           >
             <h2 className="text-2xl font-semibold text-amber-200">
-              Our Role
+              Our Mandate
             </h2>
 
             <p className="text-white/80 leading-relaxed">
               Mic’d Up Initiative exists to restore dignity to youth expression
               and direction to youth culture.
-            </p>
-
-            <p className="text-white/80 leading-relaxed">
-              As a social enterprise, MUI builds sustainable impact through
+              As an initiative, MUI builds sustainable impact through
               strategic partnerships, research-driven programs, and scalable
               youth-focused solutions—designed to outlive individuals and serve
-              generations.
-            </p>
-
-            <p className="text-white/80 leading-relaxed">
+              generations. 
               From campus conversations to continental dialogues, we are
               equipping young people to think critically, lead responsibly,
               influence meaningfully, and transform the world around them.
