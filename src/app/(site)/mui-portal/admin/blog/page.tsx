@@ -284,10 +284,11 @@ export default function AdminBlogPage() {
 
   const getMuiAuthorId = async () => {
     // Always use "Mic'd Up Initiative" as the author
+    const authorName = "Mic'd Up Initiative"
     let { data } = await supabase
       .from('blog_authors')
       .select('id')
-      .eq('name', "Mic'd Up Initiative")
+      .eq('name', authorName)
       .single()
     
     // If author doesn't exist, create it
@@ -295,7 +296,7 @@ export default function AdminBlogPage() {
       const { data: newAuthor } = await supabase
         .from('blog_authors')
         .insert({
-          name: "Mic'd Up Initiative",
+          name: authorName,
           bio: "Mic'd Up Initiative is a leading organization dedicated to empowering students and fostering leadership development on campus."
         })
         .select('id')
