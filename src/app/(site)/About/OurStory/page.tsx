@@ -77,18 +77,19 @@ export default function OurStoryPage() {
               As the vision matured, it attracted alignment. A core team of
               directors—David Testimony, Daisy Mutheu, Hopewin Adams, John
               Mwandown, Sandra Mutanu, and Peter Bahati—came together around a
-              shared burden, values, and aspiration.
-            </p>
-
-            <p className="text-white/80 leading-relaxed">
+              shared burden, values, and aspiration. The vision expanded from a 
+              campus podcast to a multi-faceted
+              initiative with a continental reach, driven by the belief that
+              youth culture can be shaped positively when given the right
+              platforms, mentorship, and stewardship.
               Each director now oversees a strategic department, ensuring that
               MUI operates with clarity, excellence, and long-term impact across
-              higher education institutions.
+              higher education institutions. 
             </p>
 
             <p className="font-medium text-amber-300">
               What we do is not just about amplifying voices—it's about forming
-              them with purpose, integrity, and clarity.
+              them with purpose, integrity, and clarity. 
             </p>
           </motion.section>
 
