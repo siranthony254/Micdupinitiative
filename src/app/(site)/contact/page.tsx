@@ -23,17 +23,17 @@ export default function ContactPage() {
             <div className="space-y-5 text-sm">
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                 <p className="font-medium text-white">General Inquiries</p>
-                <p className="text-white/70">info@micdupinitiative.org</p>
+                <p className="text-white/70">micdupinitiative@gmail.com</p>
               </div>
 
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                 <p className="font-medium text-white">Partnerships</p>
-                <p className="text-white/70">partners@micdupinitiative.org</p>
+                <p className="text-white/70">micdupinitiative@gmail.com</p>
               </div>
 
               <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                 <p className="font-medium text-white">Media & Press</p>
-                <p className="text-white/70">media@micdupinitiative.org</p>
+                <p className="text-white/70">micdupinitiative@gmail.com</p>
               </div>
             </div>
 
