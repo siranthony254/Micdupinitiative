@@ -54,23 +54,25 @@ export function SiteFooter() {
           </h4>
           <ul className="space-y-2">
             <li><Link href="/" className="hover:underline">Home</Link></li>
-            <li><Link href="/contact" className="hover:underline">Contact</Link></li>
-            <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
-            <li><Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link></li>
-            <li><Link href="/data-protection" className="hover:underline">Data Protection Policy</Link></li>
+            <li><Link href="/Programs/Events" className="hover:underline">Events and Summits</Link></li>
+            <li><Link href="/Programs/campus-tours" className="hover:underline">Campus Tours</Link></li>
+            <li><Link href="/Media" className="hover:underline">Media & Publications</Link></li>
+            <li><Link href="/Research" className="hover:underline">Research & Insights</Link></li>
+           
           </ul>
         </div>
 
         {/* Research & Governance */}
         <div>
           <h4 className="text-white font-medium mb-3">
-            About MUI
+            The Initiative
           </h4>
           <ul className="space-y-2">
-            <li><Link href="/About/OurStory" className="hover:underline">About MUI</Link></li>
+            <li><Link href="/About/OurStory" className="hover:underline">Our Story</Link></li>
             <li><Link href="/About/Vision-Mission" className="hover:underline">Vision & Mission</Link></li>
-            <li><Link href="/Programs/Events" className="hover:underline">Events and Summits</Link></li>
-            <li><Link href="/Programs/campus-tours" className="hover:underline">Campus Tours</Link></li>
+            <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
+            <li><Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link></li>
+            <li><Link href="/data-protection" className="hover:underline">Data Protection Policy</Link></li>
           </ul>
         </div>
 
