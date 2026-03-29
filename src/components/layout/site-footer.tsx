@@ -39,8 +39,9 @@ export function SiteFooter() {
             Mic’d Up Initiative
           </h3>
           <p className="mt-3 leading-relaxed">
-            A youth-driven platform amplifying authentic campus voices,
-            cultivating leadership, and shaping responsible cultural influence.
+            A mission-driven youth institution committed to transforming campus culture 
+            by amplifying authentic culture-shaping voices, talents, and ideas through 
+            storytelling, mentorship, research, productions, and public conversations. 
           </p>
           <p className="mt-4 text-xs">
             © {new Date().getFullYear()} Mic’d Up Initiative
