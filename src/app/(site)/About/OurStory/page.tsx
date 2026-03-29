@@ -26,10 +26,7 @@ export default function OurStoryPage() {
             committed to transforming campus culture by amplifying authentic
             student voices, talents, and ideas through storytelling, mentorship,
             research, productions, and public conversations.
-          </p>
-
-          <p className="text-white/70 leading-relaxed">
-            MUI was born from a simple but urgent realization: campus voices
+            MUI was born from a simple but urgent realization: Informed young voices
             exist, but many are unheard, misrepresented, or poorly stewarded.
           </p>
         </motion.header>
@@ -54,9 +51,6 @@ export default function OurStoryPage() {
               clear: to create space for students, lecturers, and education
               stakeholders to speak honestly about campus life and the forces
               shaping it.
-            </p>
-
-            <p className="text-white/80 leading-relaxed">
               While engaging students at Murang’a University of Technology, Sir
               Anthony encountered something deeper than content opportunities.
               He identified purpose-led voices, quiet leaders, thoughtful
