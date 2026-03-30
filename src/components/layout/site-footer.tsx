@@ -57,7 +57,7 @@ export function SiteFooter() {
             <li><Link href="/" className="hover:underline">Home</Link></li>
             <li><Link href="/Programs/Events" className="hover:underline">Events and Summits</Link></li>
             <li><Link href="/Programs/campus-tours" className="hover:underline">Campus Tours</Link></li>
-            <li><Link href="/Media/podcast" className="hover:underline">MUI Podcast</Link></li>
+            <li><Link href="/Media/Podcast" className="hover:underline">MUI Podcast</Link></li>
             <li><Link href="/blog" className="hover:underline">Blog</Link></li>
            
           </ul>
