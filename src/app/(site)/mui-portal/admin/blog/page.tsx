@@ -164,7 +164,9 @@ export default function AdminBlogPage() {
     }
   }
 
-  const handleContentFormat = (format: string) => {
+  const handleContentFormat = (e: React.MouseEvent, format: string) => {
+    e.preventDefault()
+    e.stopPropagation()
     const textarea = textareaRef.current
     if (!textarea) return
 
@@ -213,6 +215,9 @@ export default function AdminBlogPage() {
       ...prev,
       content: newContent
     }))
+
+    // Refocus textarea after formatting
+    setTimeout(() => textarea.focus(), 0)
   }
 
   const handleKeywordAdd = (keyword: string) => {
@@ -859,21 +864,21 @@ export default function AdminBlogPage() {
                 <div className="flex flex-wrap gap-2 mb-2 p-2 bg-gray-800 rounded">
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("bold")}
+                    onClick={(e) => handleContentFormat(e, "bold")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     <strong>Bold</strong>
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("italic")}
+                    onClick={(e) => handleContentFormat(e, "italic")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     <em>Italic</em>
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("underline")}
+                    onClick={(e) => handleContentFormat(e, "underline")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     <u>Underline</u>
@@ -881,21 +886,21 @@ export default function AdminBlogPage() {
                   <div className="w-px bg-gray-600"></div>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("h1")}
+                    onClick={(e) => handleContentFormat(e, "h1")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     H1
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("h2")}
+                    onClick={(e) => handleContentFormat(e, "h2")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     H2
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("h3")}
+                    onClick={(e) => handleContentFormat(e, "h3")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     H3
@@ -903,21 +908,21 @@ export default function AdminBlogPage() {
                   <div className="w-px bg-gray-600"></div>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("numbered")}
+                    onClick={(e) => handleContentFormat(e, "numbered")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     1.
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("bullet")}
+                    onClick={(e) => handleContentFormat(e, "bullet")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     •
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleContentFormat("quote")}
+                    onClick={(e) => handleContentFormat(e, "quote")}
                     className="px-3 py-1 bg-gray-700 rounded hover:bg-gray-600 text-white text-sm"
                   >
                     "
