@@ -12,6 +12,11 @@ const nextConfig = {
       },
     ],
   },
+  // Increase request body size limit for large blog content
+  onDemandEntries: {
+    maxInactiveAge: 60 * 1000,
+    pagesBufferLength: 5,
+  },
 }
 
 module.exports = nextConfig
