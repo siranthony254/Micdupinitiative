@@ -288,17 +288,39 @@ export default function AdminBlogPage() {
   }
 
   const getMuiAuthorId = async () => {
-    // Always use "Mic'd Up Initiative" as the author
-    const authorName = "Mic'd Up Initiative"
-    let { data } = await supabase
-      .from('blog_authors')
-      .select('id')
-      .eq('name', authorName)
-      .single()
-    
-    // If author doesn't exist, create it
-    if (!data) {
-      const { data: newAuthor } = await supabase
+    try {
+      const authorName = "Mic'd Up Initiative"
+      console.error('getMuiAuthorId: Looking for author:', authorName)
+
+      // Try a simple query with timeout
+      const queryPromise = supabase
+        .from('blog_authors')
+        .select('id, name')
+        .eq('name', authorName)
+        .limit(1)
+
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Query timeout after 5 seconds')), 5000)
+      )
+
+      const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as any
+
+      console.error('getMuiAuthorId: Query returned - data:', data, 'error:', error?.message)
+
+      if (error) {
+        console.error('Query error:', error)
+        throw error
+      }
+
+      // If author exists, return the first result
+      if (data && data.length > 0) {
+        console.error('✓ Found existing author:', data[0].id)
+        return data[0].id
+      }
+
+      // Author doesn't exist, create it
+      console.error('Creating new author...')
+      const { data: newAuthor, error: createError } = await supabase
         .from('blog_authors')
         .insert({
           name: authorName,
@@ -306,108 +328,115 @@ export default function AdminBlogPage() {
         })
         .select('id')
         .single()
-      
-      if (newAuthor) {
-        data = newAuthor
-        console.log('Created Mic\'d Up Initiative author:', newAuthor.id)
+
+      console.error('Create result - newAuthor:', newAuthor, 'error:', createError?.message)
+
+      if (createError) {
+        throw createError
       }
+
+      if (newAuthor?.id) {
+        console.error('✓ Created new author:', newAuthor.id)
+        return newAuthor.id
+      }
+
+      throw new Error('Failed to create or find author')
+    } catch (err: any) {
+      console.error('getMuiAuthorId FAILED:', err.message)
+      throw err
     }
-    
-    return data?.id
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log('🔴 handleSubmit called! Event:', e)
-    e.preventDefault()
-    console.log('✅ Form submission prevented')
+    try {
+      e.preventDefault()
+      e.stopPropagation()
+      console.error('FORM SUBMIT TRIGGERED')
 
-    // Validate all required fields
-    const requiredFields = [
-      { name: 'title', value: formData.title },
-      { name: 'slug', value: formData.slug },
-      { name: 'content', value: formData.content }
-    ]
+      // Validate all required fields
+      const requiredFields = [
+        { name: 'title', value: formData.title },
+        { name: 'slug', value: formData.slug },
+        { name: 'content', value: formData.content }
+      ]
 
-    for (const field of requiredFields) {
-      if (!field.value || field.value.trim() === '') {
-        alert(`Please fill in the ${field.name} field.`)
+      for (const field of requiredFields) {
+        if (!field.value || field.value.trim() === '') {
+          console.error(`Validation failed: ${field.name} is empty`)
+          alert(`Please fill in the ${field.name} field.`)
+          return
+        }
+      }
+      console.error('✓ Validation passed')
+
+      // Check content size (warn if over 50KB)
+      const contentSize = new Blob([formData.content]).size
+      const imageSizeEstimate = formData.featured_image ? new Blob([formData.featured_image]).size : 0
+      const totalSize = contentSize + imageSizeEstimate
+
+      if (contentSize > 5242880) { // 5MB limit (PostgreSQL TEXT can handle more but this is safer)
+        alert(`Content is too large (${(contentSize / 1024 / 1024).toFixed(2)}MB). Maximum is 5MB. Please reduce content size.`)
         return
       }
-    }
+      console.error('✓ Content size OK')
 
-    // Check content size (warn if over 50KB)
-    const contentSize = new Blob([formData.content]).size
-    const imageSizeEstimate = formData.featured_image ? new Blob([formData.featured_image]).size : 0
-    const totalSize = contentSize + imageSizeEstimate
+      // Ensure category_id is set - use first available category if none selected
+      let categoryId = formData.category_id
+      console.error('Initial category_id:', categoryId)
 
-    if (contentSize > 5242880) { // 5MB limit (PostgreSQL TEXT can handle more but this is safer)
-      alert(`Content is too large (${(contentSize / 1024 / 1024).toFixed(2)}MB). Maximum is 5MB. Please reduce content size.`)
-      return
-    }
+      // Handle create-new option
+      if (categoryId === 'create-new') {
+        alert("Please create the new category first using the form below, or select an existing category.")
+        return
+      }
 
-    // Ensure author_id is set to Mic'd Up Initiative
-    const authorId = await getMuiAuthorId()
+      if (!categoryId && categories.length > 0) {
+        categoryId = categories[0].id
+        alert(`Category automatically set to: ${categories[0].name}`)
+      }
 
-    if (!authorId) {
-      alert("Author not found. Please ensure 'Mic'd Up Initiative' author exists.")
-      return
-    }
+      if (!categoryId) {
+        alert("Please select a category for post, or create a category first.")
+        return
+      }
+      console.error('✓ Category ID OK:', categoryId)
 
-    // Ensure category_id is set - use first available category if none selected
-    let categoryId = formData.category_id
+      // Debug log to verify all required fields
+      console.error('Creating blog post with data:', {
+        title: formData.title,
+        slug: formData.slug,
+        contentSize: `${(contentSize / 1024).toFixed(2)}KB`,
+        imageSize: `${(imageSizeEstimate / 1024).toFixed(2)}KB`,
+        totalSize: `${(totalSize / 1024).toFixed(2)}KB`,
+        category_id: categoryId,
+        status: formData.status
+      })
 
-    // Handle create-new option
-    if (categoryId === 'create-new') {
-      alert("Please create the new category first using the form below, or select an existing category.")
-      return
-    }
+      setLoading(true)
+      console.error('✓ Loading state set to true')
 
-    if (!categoryId && categories.length > 0) {
-      categoryId = categories[0].id
-      alert(`Category automatically set to: ${categories[0].name}`)
-    }
+      const postData = {
+        title: formData.title,
+        subtitle: formData.subtitle,
+        slug: formData.slug,
+        content: formData.content,
+        excerpt: formData.excerpt,
+        featured_image: formData.featured_image,
+        status: formData.status,
+        featured: formData.featured,
+        category_id: categoryId,
+        tag_ids: formData.tag_ids,
+        // Author ID will be set by backend API
+        published_at: formData.status === 'published' ? new Date().toISOString() : null
+      }
 
-    if (!categoryId) {
-      alert("Please select a category for post, or create a category first.")
-      return
-    }
-
-    // Debug log to verify all required fields
-    console.log('Creating blog post with data:', {
-      title: formData.title,
-      slug: formData.slug,
-      contentSize: `${(contentSize / 1024).toFixed(2)}KB`,
-      imageSize: `${(imageSizeEstimate / 1024).toFixed(2)}KB`,
-      totalSize: `${(totalSize / 1024).toFixed(2)}KB`,
-      author_id: authorId,
-      category_id: categoryId,
-      status: formData.status
-    })
-
-    setLoading(true)
-
-    const postData = {
-      title: formData.title,
-      subtitle: formData.subtitle,
-      slug: formData.slug,
-      content: formData.content,
-      excerpt: formData.excerpt,
-      featured_image: formData.featured_image,
-      status: formData.status,
-      featured: formData.featured,
-      category_id: categoryId,
-      author_id: authorId,
-      published_at: formData.status === 'published' ? new Date().toISOString() : null
-    }
-
-    try {
       let postId: string
 
-      console.log('Submitting post data to Supabase...', { postDataKeys: Object.keys(postData) })
+      console.error('Submitting post data directly to Supabase...', { postDataKeys: Object.keys(postData) })
 
-      // Create the post
+      // Use direct Supabase to avoid API middleware issues
       if (editingPost) {
-        console.log('Updating existing post:', editingPost.id)
+        console.error('Updating existing post:', editingPost.id)
         const { data, error } = await supabase
           .from("blog_posts")
           .update(postData)
@@ -416,18 +445,15 @@ export default function AdminBlogPage() {
           .single()
 
         if (error) {
-          console.error('Supabase update error:', {
-            message: error.message,
-            code: error.code,
-            details: error.details,
-            hint: error.hint
-          })
-          throw new Error(`Update failed: ${error.message}`)
+          console.error('Supabase update error:', error)
+          throw new Error(`Supabase update failed: ${error.message}`)
         }
+
         postId = data.id
-        console.log('Post updated successfully:', postId)
+        console.error('Post updated successfully:', postId)
       } else {
-        console.log('Creating new post')
+        console.error('Creating new post')
+
         const { data, error } = await supabase
           .from("blog_posts")
           .insert([postData])
@@ -435,20 +461,23 @@ export default function AdminBlogPage() {
           .single()
 
         if (error) {
-          console.error('Supabase insert error:', {
+          console.error('Supabase insert error:', error)
+          console.error('Error details:', {
             message: error.message,
             code: error.code,
             details: error.details,
             hint: error.hint
           })
-          throw new Error(`Insert failed: ${error.message}`)
+          throw new Error(`Supabase insert failed: ${error.message}`)
         }
+
         postId = data.id
-        console.log('Post created successfully:', postId)
+        console.error('Post created successfully:', postId)
       }
 
-      // Update tags
+      // Handle tags if needed
       if (formData.tag_ids.length > 0) {
+        console.error('Updating tags for post:', postId)
         const tagRelations = formData.tag_ids.map(tagId => ({
           post_id: postId,
           tag_id: tagId
@@ -471,20 +500,23 @@ export default function AdminBlogPage() {
         }
       }
 
+
       resetForm()
       setShowEditor(false)
       setEditingPost(null)
       await fetchPosts()
       alert('Post saved successfully!')
-
+      console.error('✓ Post submission complete!')
     } catch (err: any) {
-      console.error('Full error details:', err)
+      console.error('Error in handleSubmit:', err)
+      console.error('Error message:', err?.message)
       console.error('Error stack:', err?.stack)
       const errorMsg = err?.message || err?.toString() || 'Unknown error'
       alert(`Error saving post:\n\n${errorMsg}\n\nCheck browser console (F12) for more details.`)
+    } finally {
+      setLoading(false)
+      console.error('Loading state set to false')
     }
-
-    setLoading(false)
   }
 
   const resetForm = () => {
