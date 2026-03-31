@@ -9,15 +9,26 @@ export async function POST(
   try {
     const { slug } = await params
     const { searchParams } = new URL(request.url)
-    const viewerIp = searchParams.get('ip') || 
-                     request.headers.get('x-forwarded-for') || 
-                     request.headers.get('x-real-ip') || 
+    const viewerIp = searchParams.get('ip') ||
+                     request.headers.get('x-forwarded-for') ||
+                     request.headers.get('x-real-ip') ||
                      'unknown'
     const userAgent = request.headers.get('user-agent') || undefined
 
+    // Get the post to retrieve its ID
+    const { data: post, error: postError } = await supabase
+      .from('blog_posts')
+      .select('id')
+      .eq('slug', slug)
+      .single()
+
+    if (postError || !post) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    }
+
     // Increment view count using RPC function
-    const { error } = await supabase.rpc('increment_blog_post_views', { 
-      post_slug: slug 
+    const { error } = await supabase.rpc('increment_blog_post_views', {
+      post_slug: slug
     })
 
     if (error) {
@@ -29,7 +40,7 @@ export async function POST(
     const { error: trackingError } = await supabase
       .from('blog_post_views')
       .insert({
-        post_id: null, // We'll need to fetch the post ID first
+        post_id: post.id,
         viewer_ip: viewerIp,
         user_agent: userAgent
       })

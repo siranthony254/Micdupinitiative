@@ -25,9 +25,8 @@ export async function GET(request: NextRequest) {
         excerpt,
         featured_image,
         created_at,
-        view_count,
-        share_count,
-        author:blog_profiles(id, full_name, avatar_url),
+        views,
+        author:blog_authors(id, name, avatar_url),
         category:blog_categories(id, name, slug)
       `)
       .textSearch('search', query)

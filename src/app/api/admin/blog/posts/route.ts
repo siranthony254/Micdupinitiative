@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
       query = query.eq('status', status)
     }
     if (featured) {
-      query = query.eq('is_featured', true)
+      query = query.eq('featured', true)
     }
     if (categoryId) {
       query = query.eq('category_id', categoryId)

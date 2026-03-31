@@ -23,9 +23,14 @@ export default function BlogCategoryPage() {
   useEffect(() => {
     if (slug) {
       fetchCategory()
-      fetchPosts()
     }
   }, [slug])
+
+  useEffect(() => {
+    if (category) {
+      fetchPosts()
+    }
+  }, [category?.id])
 
   const fetchCategory = async () => {
     try {
@@ -39,12 +44,15 @@ export default function BlogCategoryPage() {
 
   const fetchPosts = async () => {
     try {
-      const result = await getBlogPosts()
-      const filtered = result.data?.filter((post: BlogPostWithRelations) => 
-        post.status === 'published' && 
-        post.category?.slug === slug
-      ) || []
-      setPosts(filtered)
+      const { data, error } = await getBlogPosts({
+        status: 'published',
+        category_id: category?.id
+      })
+      if (error) {
+        console.error('Error fetching posts:', error)
+      } else {
+        setPosts(data || [])
+      }
     } catch (error) {
       console.error('Error fetching posts:', error)
     } finally {

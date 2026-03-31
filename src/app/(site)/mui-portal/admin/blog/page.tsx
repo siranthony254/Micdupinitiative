@@ -498,7 +498,7 @@ export default function AdminBlogPage() {
   const publishPost = async (id: string) => {
     const { error } = await supabase
       .from("blog_posts")
-      .update({ status: 'published', publish_at: new Date().toISOString() })
+      .update({ status: 'published', published_at: new Date().toISOString() })
       .eq("id", id)
 
     if (!error) fetchPosts()

@@ -21,7 +21,7 @@ export async function PUT(
       meta_description: body.meta_description || null,
       keywords: body.keywords || [],
       status: body.status || 'draft',
-      is_featured: body.is_featured || false,
+      featured: body.featured || false,
       category_id: body.category_id || null,
       author_id: body.author_id,
       publish_at: body.status === 'scheduled' ? body.publish_at : null,

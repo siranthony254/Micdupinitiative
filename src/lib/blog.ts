@@ -28,7 +28,7 @@ export async function getBlogPosts(options: {
     query = query.eq('status', options.status)
   }
   if (options.featured) {
-    query = query.eq('is_featured', true)
+    query = query.eq('featured', true)
   }
   if (options.category_id) {
     query = query.eq('category_id', options.category_id)
@@ -162,7 +162,7 @@ export async function updatePostTags(postId: string, tagIds: string[]) {
 }
 
 // Comments
-export async function getBlogComments(postId: string) {
+export async function getBlogCommentsByPostId(postId: string) {
   const { data, error } = await supabase
     .from('blog_comments')
     .select(`

@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getBlogPost, getBlogComments, createBlogComment, incrementPostViews, incrementPostShares } from '@/lib/blog'
+import { getBlogPost, getBlogCommentsByPostId, createBlogComment, incrementPostViews, incrementPostShares } from '@/lib/blog'
 import { useAuth } from '@/contexts/auth-context'
 import type { BlogPostWithRelations, BlogComment } from '@/types/blog'
 
@@ -26,9 +26,14 @@ export default function BlogPostPage() {
   useEffect(() => {
     if (slug) {
       fetchPost()
-      fetchComments()
     }
   }, [slug])
+
+  useEffect(() => {
+    if (post) {
+      fetchComments()
+    }
+  }, [post?.id])
 
   const fetchPost = async () => {
     try {
@@ -56,7 +61,8 @@ export default function BlogPostPage() {
 
   const fetchComments = async () => {
     try {
-      const { data, error } = await getBlogComments(slug as string)
+      if (!post) return
+      const { data, error } = await getBlogCommentsByPostId(post.id)
       if (error) {
         console.error('Error fetching comments:', error)
       } else {
@@ -300,10 +306,10 @@ export default function BlogPostPage() {
 
         {/* Post Content */}
         <div className="prose prose-invert prose-lg max-w-none mb-12">
-          <div 
-            dangerouslySetInnerHTML={{ 
-              __html: post.content.replace(/\n/g, '<br />') 
-            }} 
+          <div
+            dangerouslySetInnerHTML={{
+              __html: post.content.replace(/\n/g, '<br /').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            }}
           />
         </div>
 
