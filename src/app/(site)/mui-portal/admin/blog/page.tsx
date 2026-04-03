@@ -289,38 +289,71 @@ export default function AdminBlogPage() {
 
   const getMuiAuthorId = async () => {
     try {
+      // Debug Supabase configuration
+      console.error('🔧 Supabase config check:', {
+        url: process.env.NEXT_PUBLIC_SUPABASE_URL?.substring(0, 20) + '...',
+        hasKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+        keyLength: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.length
+      })
+
       const authorName = "Mic'd Up Initiative"
       console.error('getMuiAuthorId: Looking for author:', authorName)
 
-      // Try a simple query with timeout
-      const queryPromise = supabase
-        .from('blog_authors')
-        .select('id, name')
-        .eq('name', authorName)
+      // Test database connection first
+      console.error('Testing database connection...')
+      const timeout = (ms: number) =>
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error("Request timeout")), ms)
+        )
+
+      console.error('⏳ Running connection test query...')
+      const testQuery = supabase
+        .from('blog_categories')
+        .select('id')
         .limit(1)
 
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Query timeout after 5 seconds')), 5000)
-      )
+      const { data: testData, error: testError } = await Promise.race([
+        testQuery,
+        timeout(8000)
+      ]) as any
+      
+      console.error('✅ Connection test result:', { testData, testError: testError?.message })
+      
+      if (testError) {
+        throw new Error(`Database connection failed: ${testError.message}`)
+      }
 
-      const { data, error } = await Promise.race([queryPromise, timeoutPromise]) as any
+      // Simple direct query with timeout
+      console.error('⏳ Running author query...')
+      const authorQuery = supabase
+        .from('blog_authors')
+        .select('id')
+        .eq('name', authorName)
+        .limit(1)
+        .single()
 
-      console.error('getMuiAuthorId: Query returned - data:', data, 'error:', error?.message)
+      const { data, error } = await Promise.race([
+        authorQuery,
+        timeout(8000)
+      ]) as any
 
-      if (error) {
+      console.error('✅ Author query result:', { data, error: error?.message })
+
+      if (error && error.code !== 'PGRST116') { // PGRST116 is "not found" error
         console.error('Query error:', error)
         throw error
       }
 
-      // If author exists, return the first result
-      if (data && data.length > 0) {
-        console.error('✓ Found existing author:', data[0].id)
-        return data[0].id
+      // If author exists, return ID
+      if (data?.id) {
+        console.error('✓ Found existing author:', data.id)
+        return data.id
       }
 
       // Author doesn't exist, create it
       console.error('Creating new author...')
-      const { data: newAuthor, error: createError } = await supabase
+      console.error('⏳ Running author creation query...')
+      const createQuery = supabase
         .from('blog_authors')
         .insert({
           name: authorName,
@@ -329,7 +362,12 @@ export default function AdminBlogPage() {
         .select('id')
         .single()
 
-      console.error('Create result - newAuthor:', newAuthor, 'error:', createError?.message)
+      const { data: newAuthor, error: createError } = await Promise.race([
+        createQuery,
+        timeout(8000)
+      ]) as any
+
+      console.error('✅ Author creation result:', { newAuthor, createError: createError?.message })
 
       if (createError) {
         throw createError
@@ -348,10 +386,22 @@ export default function AdminBlogPage() {
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log('🔴 handleSubmit called!')
+    e.preventDefault()
+    console.log('✅ Form submission prevented')
+
+    // Debug: Show current form data
+    console.log('📋 Current form data:', {
+      title: formData.title,
+      slug: formData.slug,
+      content: formData.content?.substring(0, 100) + '...',
+      category_id: formData.category_id,
+      status: formData.status
+    })
+
     try {
-      e.preventDefault()
       e.stopPropagation()
-      console.error('FORM SUBMIT TRIGGERED')
+      console.log('🚀 Starting form submission process...')
 
       // Validate all required fields
       const requiredFields = [
@@ -374,8 +424,8 @@ export default function AdminBlogPage() {
       const imageSizeEstimate = formData.featured_image ? new Blob([formData.featured_image]).size : 0
       const totalSize = contentSize + imageSizeEstimate
 
-      if (contentSize > 5242880) { // 5MB limit (PostgreSQL TEXT can handle more but this is safer)
-        alert(`Content is too large (${(contentSize / 1024 / 1024).toFixed(2)}MB). Maximum is 5MB. Please reduce content size.`)
+      if (contentSize > 10485760) { // 10MB limit
+        alert(`Content is too large (${(contentSize / 1024 / 1024).toFixed(2)}MB). Maximum is 10MB. Please reduce content size.`)
         return
       }
       console.error('✓ Content size OK')
@@ -415,6 +465,13 @@ export default function AdminBlogPage() {
       setLoading(true)
       console.error('✓ Loading state set to true')
 
+      // Get author ID first
+      const authorId = await getMuiAuthorId()
+      if (!authorId) {
+        throw new Error("Failed to get or create author")
+      }
+      console.error('✓ Author ID obtained:', authorId)
+
       const postData = {
         title: formData.title,
         subtitle: formData.subtitle,
@@ -425,8 +482,7 @@ export default function AdminBlogPage() {
         status: formData.status,
         featured: formData.featured,
         category_id: categoryId,
-        tag_ids: formData.tag_ids,
-        // Author ID will be set by backend API
+        author_id: authorId,
         published_at: formData.status === 'published' ? new Date().toISOString() : null
       }
 
@@ -507,6 +563,9 @@ export default function AdminBlogPage() {
       await fetchPosts()
       alert('Post saved successfully!')
       console.error('✓ Post submission complete!')
+      
+      // Redirect to refresh the page and show updated posts list
+      window.location.href = '/mui-portal/admin/blog'
     } catch (err: any) {
       console.error('Error in handleSubmit:', err)
       console.error('Error message:', err?.message)
