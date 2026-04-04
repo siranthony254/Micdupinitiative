@@ -375,29 +375,6 @@ export async function createBlogComment(comment: {
     return { data: null, error: error as Error }
   }
 }
-export async function searchBlogPosts(query: string, limit = 10) {
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select(`
-      *,
-      author:blog_authors(id, name, avatar_url),
-      category:blog_categories(id, name, slug),
-      tags:blog_post_tags(
-        blog_tags(id, name, slug)
-      )
-    `)
-    .textSearch('search', query)
-    .eq('status', 'published')
-    .limit(limit)
-
-  return { data, error }
-}
-
-// Blog Profile
-export async function getBlogProfile(userId: string) {
-  const { data, error } = await supabase
-    .from('blog_profiles')
-    .select('*')
     .eq('id', userId)
     .single()
 
