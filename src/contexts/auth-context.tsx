@@ -3,11 +3,10 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import { User, Session } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
-import { Profile } from '@/lib/mui-portal'
 
 interface AuthContextType {
   user: User | null
-  profile: Profile | null
+  profile: any | null
   session: Session | null
   loading: boolean
   isAdmin: boolean
@@ -21,7 +20,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [profile, setProfile] = useState<Profile | null>(null)
+  const [profile, setProfile] = useState<any | null>(null)
   const [session, setSession] = useState<Session | null>(null)
   const [loading, setLoading] = useState(true)
 

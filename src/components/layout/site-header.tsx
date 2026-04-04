@@ -225,13 +225,6 @@ export function SiteHeader() {
               {active === nav.label && <MegaMenu items={nav.items} />}
             </div>
           ))}
-
-          <Link
-            href="/mui-portal/signup"
-            className="ml-4 px-4 py-1.5 text-sm rounded-full border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black transition"
-          >
-            MUI Portal
-          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -309,14 +302,6 @@ export function SiteHeader() {
                   )}
                 </div>
               ))}
-
-              <Link
-                href="/mui-portal/signup"
-                onClick={() => setMobileOpen(false)}
-                className="mt-6 inline-block w-full text-center px-4 py-2 rounded-full border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black transition"
-              >
-                MUI Portal
-              </Link>
             </div>
           </div>
         </div>

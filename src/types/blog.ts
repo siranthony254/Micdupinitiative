@@ -35,10 +35,10 @@ export interface SanityPost {
   slug: {
     current: string
   }
-  author: {
+  author?: {
     _ref: string
     _type: 'reference'
-  }
+  } | SanityAuthor
   mainImage?: {
     _type: 'image'
     asset: {
@@ -50,7 +50,7 @@ export interface SanityPost {
   categories?: Array<{
     _ref: string
     _type: 'reference'
-  }>
+  } | SanityCategory>
   publishedAt?: string
   body: PortableTextBlock[]
   excerpt?: string
@@ -91,7 +91,7 @@ export interface BlogComment {
   author: {
     _ref: string
     _type: 'reference'
-  }
+  } | SanityAuthor
   content: PortableTextBlock[]
   approved: boolean
   _createdAt: string

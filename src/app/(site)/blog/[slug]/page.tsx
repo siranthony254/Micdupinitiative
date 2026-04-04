@@ -308,17 +308,17 @@ export default function BlogPostPage() {
               {comments.map((comment) => (
                 <div key={comment._id} className="bg-white rounded-lg p-4 shadow-sm">
                   <div className="flex items-center space-x-2 mb-2">
-                    {comment.author?.image && (
+                    {'image' in comment.author && comment.author.image && (
                       <Image
                         src={urlFor(comment.author.image).width(32).height(32).url()}
-                        alt={comment.author.name}
+                        alt={'name' in comment.author ? comment.author.name : 'Anonymous'}
                         width={32}
                         height={32}
                         className="rounded-full"
                       />
                     )}
                     <div>
-                      <p className="font-medium text-gray-900">{comment.author?.name || 'Anonymous'}</p>
+                      <p className="font-medium text-gray-900">{'name' in comment.author ? comment.author.name : 'Anonymous'}</p>
                       <p className="text-sm text-gray-500">
                         {new Date(comment._createdAt).toLocaleDateString()}
                       </p>
@@ -340,10 +340,7 @@ export default function BlogPostPage() {
             </div>
           ) : (
             <div className="bg-gray-50 rounded-lg p-6 text-center">
-              <p className="text-gray-600 mb-4">Please log in to leave a comment.</p>
-              <Link href="/mui-portal/login" className="text-blue-600 hover:text-blue-800 font-medium">
-                Log in
-              </Link>
+              <p className="text-gray-600">Please log in to leave a comment.</p>
             </div>
           )}
         </section>

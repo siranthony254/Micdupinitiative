@@ -126,18 +126,6 @@ export default function BlogCategoryPage() {
             ))}
           </div>
         )}
-
-        {/* Admin Link */}
-        {isBlogAdmin && (
-          <div className="mt-12 text-center">
-            <Link
-              href="/mui-portal/admin/blog"
-              className="inline-block px-6 py-3 bg-amber-500 text-black rounded-lg font-semibold hover:bg-amber-400 transition"
-            >
-              Manage Blog
-            </Link>
-          </div>
-        )}
       </div>
     </div>
   )
