@@ -1,5 +1,9 @@
 import type { Metadata } from 'next'
 import { SanityLive } from '@/sanity/lib/live'
+import { AuthProvider } from '@/contexts/auth-context'
+import { SiteHeader } from '@/components/layout/site-header'
+import { SiteFooter } from '@/components/layout/site-footer'
+import { CookieConsent } from '@/components/cookie-consent'
 
 export const metadata: Metadata = {
   title: {

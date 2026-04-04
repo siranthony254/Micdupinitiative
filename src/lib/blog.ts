@@ -1,6 +1,7 @@
 import { sanityFetch } from '@/sanity/lib/live'
 import { client } from '@/sanity/lib/client'
 import type { SanityPost, SanityPostWithRelations, SanityCategory, SanityAuthor, BlogTag, BlogComment } from '@/types/blog'
+import type { PortableTextBlock } from '@portabletext/types'
 
 // GROQ Queries
 const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) {
@@ -237,7 +238,7 @@ export async function getBlogAuthor(slug: string) {
 export async function searchBlogPosts(query: string, limit: number = 10) {
   try {
     const posts = await sanityFetch({
-      query: `*[_type == "post" && (title match $query || excerpt match $query)] | order(publishedAt desc)[0...${limit}] {
+      query: `*[_type == "post" && (title match "*${query}*" || excerpt match "*${query}*")] | order(publishedAt desc)[0...${limit}] {
         _id,
         _type,
         title,
@@ -258,8 +259,7 @@ export async function searchBlogPosts(query: string, limit: number = 10) {
           title,
           slug
         }
-      }`,
-      params: { query: `*${query}*` }
+      }`
     })
     return { data: posts.data, error: null }
   } catch (error) {
