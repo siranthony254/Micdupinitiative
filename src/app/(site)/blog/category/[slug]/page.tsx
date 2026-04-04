@@ -7,14 +7,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { getBlogPosts, getBlogCategories } from '@/lib/blog'
 import { useAuth } from '@/contexts/auth-context'
-import type { BlogPostWithRelations, BlogCategory } from '@/types/blog'
+import type { SanityPostWithRelations, SanityCategory } from '@/types/blog'
+import { urlFor } from '@/sanity/lib/image'
 
 export default function BlogCategoryPage() {
   const { slug } = useParams()
   const { profile, isAdmin } = useAuth()
   const router = useRouter()
-  const [posts, setPosts] = useState<BlogPostWithRelations[]>([])
-  const [category, setCategory] = useState<BlogCategory | null>(null)
+  const [posts, setPosts] = useState<SanityPostWithRelations[]>([])
+  const [category, setCategory] = useState<SanityCategory | null>(null)
   const [loading, setLoading] = useState(true)
 
   // Check if user has blog admin permissions
@@ -30,12 +31,12 @@ export default function BlogCategoryPage() {
     if (category) {
       fetchPosts()
     }
-  }, [category?.id])
+  }, [category])
 
   const fetchCategory = async () => {
     try {
       const result = await getBlogCategories()
-      const found = result.data?.find((cat: BlogCategory) => cat.slug === slug)
+      const found = result.data?.find((cat: SanityCategory) => cat.slug.current === slug)
       setCategory(found || null)
     } catch (error) {
       console.error('Error fetching category:', error)
@@ -45,8 +46,7 @@ export default function BlogCategoryPage() {
   const fetchPosts = async () => {
     try {
       const { data, error } = await getBlogPosts({
-        status: 'published',
-        category_id: category?.id
+        category: slug as string
       })
       if (error) {
         console.error('Error fetching posts:', error)
@@ -92,7 +92,7 @@ export default function BlogCategoryPage() {
               ← Back to Blog
             </Link>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              {category.name}
+              {category.title}
             </h1>
             {category.description && (
               <p className="text-xl text-amber-100 mb-8">
@@ -122,7 +122,7 @@ export default function BlogCategoryPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map(post => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post._id} post={post} />
             ))}
           </div>
         )}
@@ -143,15 +143,15 @@ export default function BlogCategoryPage() {
   )
 }
 
-function PostCard({ post }: { post: BlogPostWithRelations }) {
+function PostCard({ post }: { post: SanityPostWithRelations }) {
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
       <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden hover:border-amber-500 transition cursor-pointer">
-        {post.featured_image && (
+        {post.mainImage && (
           <div className="relative h-48 overflow-hidden">
             <Image
-              src={post.featured_image}
-              alt={post.title}
+              src={urlFor(post.mainImage).width(400).height(300).url()}
+              alt={post.mainImage.alt || post.title}
               fill
               className="object-cover group-hover:scale-105 transition duration-300"
             />
@@ -167,15 +167,15 @@ function PostCard({ post }: { post: BlogPostWithRelations }) {
         <div className="p-6">
           <div className="flex items-center gap-3 mb-3">
             <span className="text-gray-400 text-sm">
-              {new Date(post.created_at).toLocaleDateString('en-US', {
+              {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric'
-              })}
+              }) : 'No date'}
             </span>
             <span className="text-gray-400 text-sm">•</span>
             <span className="text-gray-400 text-sm">
-              {post.read_time} min read
+              {post.readTime} min read
             </span>
           </div>
           <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-amber-400 transition">
@@ -188,7 +188,7 @@ function PostCard({ post }: { post: BlogPostWithRelations }) {
           )}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              {post.author?.name && (
+              {post.author && (
                 <span className="text-gray-400 text-sm">
                   By {post.author.name}
                 </span>

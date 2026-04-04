@@ -5,12 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { searchBlogPosts } from '@/lib/blog'
-import type { BlogPostWithRelations } from '@/types/blog'
+import type { SanityPostWithRelations } from '@/types/blog'
+import { urlFor } from '@/sanity/lib/image'
 
 function BlogSearchPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [posts, setPosts] = useState<BlogPostWithRelations[]>([])
+  const [posts, setPosts] = useState<SanityPostWithRelations[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState(searchParams.get('q') || '')
 
@@ -119,7 +120,7 @@ function BlogSearchPageContent() {
             ) : (
               <div className="space-y-8">
                 {posts.map(post => (
-                  <SearchResult key={post.id} post={post} />
+                  <SearchResult key={post._id} post={post} />
                 ))}
               </div>
             )}
@@ -130,16 +131,16 @@ function BlogSearchPageContent() {
   )
 }
 
-function SearchResult({ post }: { post: BlogPostWithRelations }) {
+function SearchResult({ post }: { post: SanityPostWithRelations }) {
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
       <div className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden hover:border-amber-500 transition">
         <div className="md:flex">
-          {post.featured_image && (
+          {post.mainImage && (
             <div className="md:w-1/3 relative h-48 md:h-auto">
               <Image
-                src={post.featured_image}
-                alt={post.title}
+                src={urlFor(post.mainImage).width(400).height(300).url()}
+                alt={post.mainImage.alt || post.title}
                 fill
                 className="object-cover group-hover:scale-105 transition duration-300"
               />
@@ -147,17 +148,17 @@ function SearchResult({ post }: { post: BlogPostWithRelations }) {
           )}
           <div className="p-6 md:w-2/3">
             <div className="flex items-center gap-3 mb-3">
-              {post.category && (
+              {post.categories && post.categories.length > 0 && (
                 <span className="px-2 py-1 bg-gray-800 text-gray-300 text-xs rounded">
-                  {post.category.name}
+                  {post.categories[0].title}
                 </span>
               )}
               <span className="text-gray-400 text-sm">
-                {new Date(post.created_at).toLocaleDateString()}
+                {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : 'No date'}
               </span>
               <span className="text-gray-400 text-sm">•</span>
               <span className="text-gray-400 text-sm">
-                {post.read_time || 5} min read
+                {post.readTime || 5} min read
               </span>
             </div>
             
@@ -173,7 +174,7 @@ function SearchResult({ post }: { post: BlogPostWithRelations }) {
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {post.author?.name && (
+                {post.author && (
                   <span className="text-gray-400 text-sm">
                     By {post.author.name}
                   </span>

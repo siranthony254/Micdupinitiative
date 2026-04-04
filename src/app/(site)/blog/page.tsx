@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getBlogPosts, getBlogCategories, getFeaturedPosts } from '@/lib/blog'
@@ -81,7 +81,7 @@ export default function BlogPage() {
     }
   }
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // Search is handled in useEffect when searchTerm changes
   }
@@ -260,127 +260,6 @@ export default function BlogPage() {
             </div>
           )}
         </section>
-      </div>
-    </div>
-  )
-}
-
-            <input
-              type="text"
-              placeholder="Search posts..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-1 px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"
-            />
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-amber-500"
-              aria-label="Filter by category"
-            >
-              <option value="all">All Categories</option>
-              {categories.map(category => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Featured Posts */}
-        {featuredPosts.length > 0 && (
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold mb-8 text-center">Featured Posts</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {featuredPosts.map(post => (
-                <article key={post.id} className="group">
-                  <Link href={`/blog/${post.slug}`}>
-                    <div className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
-                      {post.featured_image && (
-                        <div className="aspect-video relative overflow-hidden">
-                          <img
-                            src={post.featured_image}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
-                        </div>
-                      )}
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <span className="bg-amber-500 text-black text-xs px-2 py-1 rounded">Featured</span>
-                          {post.category && (
-                            <span className="text-gray-400 text-sm">{post.category.name}</span>
-                          )}
-                        </div>
-                        <h3 className="text-xl font-bold mb-2 group-hover:text-amber-400 transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-gray-400 mb-4 line-clamp-2">
-                          {post.excerpt || truncateText(post.content, 100)}
-                        </p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <span>{formatDate(post.created_at)}</span>
-                          <span>{post.views || 0} views</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* All Posts */}
-        <div>
-          <h2 className="text-3xl font-bold mb-8">Latest Posts</h2>
-          {posts.length === 0 ? (
-            <div className="text-center py-16">
-              <p className="text-gray-400 text-lg">No posts found matching your criteria.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map(post => (
-                <article key={post.id} className="group">
-                  <Link href={`/blog/${post.slug}`}>
-                    <div className="bg-gray-900 rounded-lg overflow-hidden hover:transform hover:scale-105 transition-all duration-300">
-                      {post.featured_image && (
-                        <div className="aspect-video relative overflow-hidden">
-                          <img
-                            src={post.featured_image}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                          />
-                        </div>
-                      )}
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          {post.category && (
-                            <span className="text-gray-400 text-sm">{post.category.name}</span>
-                          )}
-                          {post.featured && (
-                            <span className="bg-amber-500 text-black text-xs px-2 py-1 rounded">Featured</span>
-                          )}
-                        </div>
-                        <h3 className="text-xl font-bold mb-2 group-hover:text-amber-400 transition-colors">
-                          {post.title}
-                        </h3>
-                        <p className="text-gray-400 mb-4 line-clamp-2">
-                          {post.excerpt || truncateText(post.content, 100)}
-                        </p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <span>{formatDate(post.created_at)}</span>
-                          <span>{post.views || 0} views</span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </article>
-              ))}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   )
