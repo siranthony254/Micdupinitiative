@@ -4,6 +4,7 @@ import { AuthProvider } from '@/contexts/auth-context'
 import { SiteHeader } from '@/components/layout/site-header'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { CookieConsent } from '@/components/cookie-consent'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: {
@@ -90,7 +91,7 @@ export default function SiteLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen flex flex-col bg-grey text-orange">
+      <body className="min-h-screen flex flex-col bg-black text-white">
         <AuthProvider>
           <SiteHeader />
           

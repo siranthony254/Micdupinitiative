@@ -117,17 +117,17 @@ export default function BlogPostPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-black text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded mb-8 w-3/4"></div>
-            <div className="h-64 bg-gray-200 rounded mb-8"></div>
+            <div className="h-8 bg-gray-800 rounded mb-4"></div>
+            <div className="h-4 bg-gray-700 rounded mb-2"></div>
+            <div className="h-4 bg-gray-700 rounded mb-8 w-3/4"></div>
+            <div className="h-64 bg-gray-800 rounded mb-8"></div>
             <div className="space-y-4">
-              <div className="h-4 bg-gray-200 rounded"></div>
-              <div className="h-4 bg-gray-200 rounded"></div>
-              <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              <div className="h-4 bg-gray-700 rounded"></div>
+              <div className="h-4 bg-gray-700 rounded"></div>
+              <div className="h-4 bg-gray-700 rounded w-5/6"></div>
             </div>
           </div>
         </div>
@@ -137,10 +137,10 @@ export default function BlogPostPage() {
 
   if (!post) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Post not found</h1>
-          <Link href="/blog" className="text-blue-600 hover:text-blue-800">
+          <h1 className="text-2xl font-bold text-white mb-4">Post not found</h1>
+          <Link href="/blog" className="text-amber-400 hover:text-amber-300">
             ← Back to blog
           </Link>
         </div>
@@ -149,12 +149,12 @@ export default function BlogPostPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Article Header */}
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Breadcrumb */}
         <nav className="mb-8">
-          <Link href="/blog" className="text-blue-600 hover:text-blue-800">
+          <Link href="/blog" className="text-amber-400 hover:text-amber-300">
             ← Back to blog
           </Link>
         </nav>
@@ -167,7 +167,7 @@ export default function BlogPostPage() {
                 <Link
                   key={category._id}
                   href={`/blog/category/${category.slug.current}`}
-                  className="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium mr-2 hover:bg-blue-200"
+                  className="inline-block bg-amber-900 text-amber-100 px-3 py-1 rounded-full text-sm font-medium mr-2 hover:bg-amber-800"
                 >
                   {category.title}
                 </Link>
@@ -175,15 +175,15 @@ export default function BlogPostPage() {
             </div>
           )}
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
             {post.title}
           </h1>
 
           {post.excerpt && (
-            <p className="text-xl text-gray-600 mb-6">{post.excerpt}</p>
+            <p className="text-xl text-gray-300 mb-6">{post.excerpt}</p>
           )}
 
-          <div className="flex items-center justify-between text-gray-500 border-b border-gray-200 pb-6">
+          <div className="flex items-center justify-between text-gray-400 border-b border-gray-700 pb-6">
             <div className="flex items-center space-x-4">
               {post.author && (
                 <div className="flex items-center space-x-2">
@@ -197,7 +197,7 @@ export default function BlogPostPage() {
                     />
                   )}
                   <div>
-                    <p className="font-medium text-gray-900">{post.author.name}</p>
+                    <p className="font-medium text-white">{post.author.name}</p>
                     {post.publishedAt && (
                       <p className="text-sm">
                         {new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -260,8 +260,8 @@ export default function BlogPostPage() {
         </div>
 
         {/* Share Buttons */}
-        <div className="border-t border-gray-200 pt-8 mb-12">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Share this article</h3>
+        <div className="border-t border-gray-700 pt-8 mb-12">
+          <h3 className="text-lg font-semibold text-white mb-4">Share this article</h3>
           <div className="flex space-x-4">
             <button
               onClick={() => handleShare('twitter')}
@@ -295,15 +295,15 @@ export default function BlogPostPage() {
         </div>
 
         {/* Comments Section */}
-        <section className="border-t border-gray-200 pt-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Comments ({comments.length})</h3>
+        <section className="border-t border-gray-700 pt-8">
+          <h3 className="text-2xl font-bold text-white mb-6">Comments ({comments.length})</h3>
 
           {comments.length === 0 ? (
-            <p className="text-gray-500">No comments yet. Be the first to comment!</p>
+            <p className="text-gray-400">No comments yet. Be the first to comment!</p>
           ) : (
             <div className="space-y-6 mb-8">
               {comments.map((comment) => (
-                <div key={comment._id} className="bg-white rounded-lg p-4 shadow-sm">
+                <div key={comment._id} className="bg-gray-900 border border-gray-800 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
                     {'image' in comment.author && comment.author.image && (
                       <Image
@@ -315,8 +315,8 @@ export default function BlogPostPage() {
                       />
                     )}
                     <div>
-                      <p className="font-medium text-gray-900">{'name' in comment.author ? comment.author.name : 'Anonymous'}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-white">{'name' in comment.author ? comment.author.name : 'Anonymous'}</p>
+                      <p className="text-sm text-gray-400">
                         {new Date(comment._createdAt).toLocaleDateString()}
                       </p>
                     </div>
@@ -331,13 +331,13 @@ export default function BlogPostPage() {
 
           {/* Comment Form - Placeholder for now */}
           {user ? (
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h4 className="text-lg font-semibold text-gray-900 mb-4">Leave a comment</h4>
-              <p className="text-gray-600">Commenting functionality will be implemented soon.</p>
+            <div className="bg-gray-900 border border-gray-800 rounded-lg p-6">
+              <h4 className="text-lg font-semibold text-white mb-4">Leave a comment</h4>
+              <p className="text-gray-300">Commenting functionality will be implemented soon.</p>
             </div>
           ) : (
-            <div className="bg-gray-50 rounded-lg p-6 text-center">
-              <p className="text-gray-600">Please log in to leave a comment.</p>
+            <div className="bg-gray-900 border border-gray-800 rounded-lg p-6 text-center">
+              <p className="text-gray-300">Please log in to leave a comment.</p>
             </div>
           )}
         </section>

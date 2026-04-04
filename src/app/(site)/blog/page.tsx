@@ -80,9 +80,9 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-purple-700 text-white">
+      <div className="bg-gradient-to-r from-amber-600 to-orange-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -104,7 +104,7 @@ export default function BlogPage() {
                 />
                 <button
                   type="submit"
-                  className="bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-r-lg font-medium transition-colors"
+                  className="bg-amber-500 hover:bg-amber-600 px-6 py-3 rounded-r-lg font-medium transition-colors"
                 >
                   Search
                 </button>
@@ -122,8 +122,8 @@ export default function BlogPage() {
               onClick={() => setSelectedCategory('all')}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 selectedCategory === 'all'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-amber-600 text-white'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
               }`}
             >
               All Posts
@@ -134,8 +134,8 @@ export default function BlogPage() {
                 onClick={() => setSelectedCategory(category.slug.current)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                   selectedCategory === category.slug.current
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                    ? 'bg-amber-600 text-white'
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
                 }`}
               >
                 {category.title}
@@ -147,10 +147,10 @@ export default function BlogPage() {
         {/* Featured Posts */}
         {featuredPosts.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Featured Articles</h2>
+            <h2 className="text-3xl font-bold text-white mb-8">Featured Articles</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {featuredPosts.map((post) => (
-                <article key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <article key={post._id} className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden hover:border-amber-500 transition-shadow">
                   {post.mainImage && (
                     <div className="h-48 overflow-hidden">
                       <Image
@@ -190,17 +190,17 @@ export default function BlogPage() {
 
         {/* All Posts */}
         <section>
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">
+          <h2 className="text-3xl font-bold text-white mb-8">
             {selectedCategory === 'all' ? 'Latest Articles' : `${categories.find(c => c.slug.current === selectedCategory)?.title} Articles`}
           </h2>
 
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="bg-white rounded-lg shadow-md p-6 animate-pulse">
-                  <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                <div key={i} className="bg-gray-900 border border-gray-800 rounded-lg p-6 animate-pulse">
+                  <div className="h-4 bg-gray-700 rounded mb-4"></div>
+                  <div className="h-4 bg-gray-700 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-700 rounded w-3/4"></div>
                 </div>
               ))}
             </div>
@@ -211,7 +211,7 @@ export default function BlogPage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {posts.map((post) => (
-                <article key={post._id} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                <article key={post._id} className="bg-gray-900 border border-gray-800 rounded-lg overflow-hidden hover:border-amber-500 transition-shadow">
                   {post.mainImage && (
                     <div className="h-48 overflow-hidden">
                       <Image
