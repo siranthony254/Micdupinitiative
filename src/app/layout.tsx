@@ -1,12 +1,4 @@
-// src/app/(site)/layout.tsx
-import "./globals.css";
-import type { Metadata } from "next";
-import { SiteHeader } from "@/components/layout/site-header";
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { AuthProvider } from '@/contexts/auth-context'
-import { SiteFooter } from '@/components/layout/site-footer'
-import { CookieConsent } from '@/components/cookie-consent'
+import { SanityLive } from '@/sanity/lib/live'
 
 export const metadata: Metadata = {
   title: {
@@ -105,6 +97,8 @@ export default function SiteLayout({
 
           {/* Cookie Consent Banner */}
           <CookieConsent />
+
+          <SanityLive />
         </AuthProvider>
       </body>
     </html>
