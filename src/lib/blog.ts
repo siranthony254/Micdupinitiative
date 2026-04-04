@@ -4,6 +4,8 @@ import { client } from '@/sanity/lib/client'
 
 import type { SanityPost, SanityPostWithRelations, SanityCategory, SanityAuthor, BlogTag, BlogComment } from '@/types/blog'
 
+import type { PortableTextBlock } from '@portabletext/types'
+
 
 
 
@@ -708,9 +710,8 @@ export async function searchBlogPosts(query: string, limit: number = 10) {
 
   try {
 
-    const posts = await sanityFetch({
-
-      query: `*[_type == "post" && (title match $query || excerpt match $query)] | order(publishedAt desc)[0...${limit}] {
+    const posts = await client.fetch(
+      `*[_type == "post" && (title match "*${query}*" || excerpt match "*${query}*")] | order(publishedAt desc)[0...${limit}] {
 
         _id,
 
@@ -768,13 +769,10 @@ export async function searchBlogPosts(query: string, limit: number = 10) {
 
         }
 
-      }`,
+      }`
+    )
 
-      params: { query: `*${query}*` }
-
-    })
-
-    return { data: posts.data, error: null }
+    return { data: posts, error: null }
 
   } catch (error) {
 
