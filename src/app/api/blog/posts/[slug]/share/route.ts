@@ -33,26 +33,3 @@ export async function POST(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-      console.error('Error incrementing shares:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    // Track share details for analytics
-    const { error: trackingError } = await supabase
-      .from('blog_post_shares')
-      .insert({
-        post_id: postData.id,
-        platform: platform
-      })
-
-    if (trackingError) {
-      console.error('Error tracking share:', trackingError)
-      // Don't fail the request if tracking fails
-    }
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Unexpected error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
-}

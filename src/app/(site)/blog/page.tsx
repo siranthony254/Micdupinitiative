@@ -267,13 +267,8 @@ export default function BlogPage() {
 
       const { data, error } = await query
       
-      if (!error && data) {
-        setPosts(data as BlogPost[])
-        
-        // Track views for displayed posts
-        data.forEach(post => {
-          incrementPostViews(post.slug)
-        })
+      if (data) {
+        setPosts(data)
       }
     } catch (error) {
       console.error('Error fetching posts:', error)
@@ -284,10 +279,37 @@ export default function BlogPage() {
 
   const fetchCategories = async () => {
     try {
-      const { data, error } = await supabase
-        .from('blog_categories')
-        .select('*')
-        .order('name')
+      const { data, error } = await getBlogCategories()
+
+      if (error) {
+        console.error('Error fetching categories:', error)
+        return
+      }
+
+      if (data) {
+        setCategories(data)
+      }
+    } catch (error) {
+      console.error('Error fetching categories:', error)
+    }
+  }
+
+  const fetchFeaturedPosts = async () => {
+    try {
+      const { data, error } = await getFeaturedPosts(3)
+
+      if (error) {
+        console.error('Error fetching featured posts:', error)
+        return
+      }
+
+      if (data) {
+        setFeaturedPosts(data)
+      }
+    } catch (error) {
+      console.error('Error fetching featured posts:', error)
+    }
+  }
 
       if (!error && data) {
         setCategories(data as BlogCategory[])
@@ -299,31 +321,18 @@ export default function BlogPage() {
 
   const fetchFeaturedPosts = async () => {
     try {
-      const { data, error } = await supabase
-        .from('blog_posts')
-        .select(`
-          *,
-          author:blog_profiles(id, full_name, avatar_url, role),
-          category:blog_categories(id, name, slug)
-        `)
-        .eq('status', 'published')
-        .eq('featured', true)
-        .order('created_at', { ascending: false })
-        .limit(3)
+      const { data, error } = await getFeaturedPosts(3)
 
-      if (!error && data) {
-        setFeaturedPosts(data as BlogPost[])
+      if (error) {
+        console.error('Error fetching featured posts:', error)
+        return
+      }
+
+      if (data) {
+        setFeaturedPosts(data)
       }
     } catch (error) {
       console.error('Error fetching featured posts:', error)
-    }
-  }
-
-  const incrementPostViews = async (slug: string) => {
-    try {
-      await supabase.rpc('increment_blog_post_views', { post_slug: slug })
-    } catch (error) {
-      console.error('Error incrementing views:', error)
     }
   }
 
