@@ -265,69 +265,6 @@ export default function BlogPage() {
   )
 }
 
-      if (!error && data) {
-        setCategories(data as BlogCategory[])
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-    }
-  }
-
-  const fetchFeaturedPosts = async () => {
-    try {
-      const { data, error } = await getFeaturedPosts(3)
-
-      if (error) {
-        console.error('Error fetching featured posts:', error)
-        return
-      }
-
-      if (data) {
-        setFeaturedPosts(data)
-      }
-    } catch (error) {
-      console.error('Error fetching featured posts:', error)
-    }
-  }
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
-
-  const truncateText = (text: string, maxLength: number) => {
-    if (text.length <= maxLength) return text
-    return text.slice(0, maxLength).replace(/\s+\S*$/, '') + '...'
-  }
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500 mx-auto mb-4"></div>
-          <p>Loading posts...</p>
-        </div>
-      </div>
-    )
-  }
-
-  return (
-    <div className="min-h-screen bg-black text-white">
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-            Blog
-          </h1>
-          <p className="text-xl text-gray-400 mb-8">
-            Discover the latest insights, tutorials, and stories from our community
-          </p>
-
-          {/* Search and Filter */}
-          <div className="flex flex-col md:flex-row gap-4 max-w-2xl mx-auto mb-8">
             <input
               type="text"
               placeholder="Search posts..."
