@@ -18,9 +18,6 @@ export default function BlogCategoryPage() {
   const [category, setCategory] = useState<SanityCategory | null>(null)
   const [loading, setLoading] = useState(true)
 
-  // Check if user has blog admin permissions
-  const isBlogAdmin = isAdmin
-
   useEffect(() => {
     if (slug) {
       fetchCategory()

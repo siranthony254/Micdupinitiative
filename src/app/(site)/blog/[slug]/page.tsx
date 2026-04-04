@@ -22,9 +22,6 @@ export default function BlogPostPage() {
   const [newComment, setNewComment] = useState('')
   const [shareLoading, setShareLoading] = useState<{ [key: string]: boolean }>({})
 
-  // Check if user has blog admin permissions
-  const isBlogAdmin = isAdmin
-
   useEffect(() => {
     if (slug) {
       fetchPost()

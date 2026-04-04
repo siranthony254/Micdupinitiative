@@ -267,36 +267,7 @@ export async function searchBlogPosts(query: string, limit: number = 10) {
   }
 }
 
-// Admin functions (for creating/updating content via Sanity Studio)
-export async function createBlogPost(post: Partial<SanityPost>) {
-  try {
-    const result = await client.create({
-      _type: 'post',
-      ...post
-    })
-    return { data: result, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
-export async function updateBlogPost(id: string, post: Partial<SanityPost>) {
-  try {
-    const result = await client.patch(id).set(post).commit()
-    return { data: result, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
-export async function deleteBlogPost(id: string) {
-  try {
-    await client.delete(id)
-    return { error: null }
-  } catch (error) {
-    return { error: error as Error }
-  }
-}
+// Content management should be done through Sanity Studio
 
 // Analytics (simplified - in a real app you'd track this in Sanity)
 export async function incrementPostViews(slug: string) {
@@ -360,12 +331,12 @@ export async function createBlogComment(comment: {
     const result = await client.create({
       _type: 'comment',
       post: {
-        _type: 'reference',
-        _ref: comment.postId
+        _type: 'reference' as const,
+        _ref: String(comment.postId)
       },
       author: {
-        _type: 'reference',
-        _ref: comment.authorId
+        _type: 'reference' as const,
+        _ref: String(comment.authorId)
       },
       content: comment.content,
       approved: false

@@ -79,33 +79,7 @@ export default async function proxy(req: NextRequest) {
     }
   }
 
-  // Handle blog admin routes specifically
-  if (pathname.startsWith('/admin/blog') || pathname.startsWith('/api/admin/blog')) {
-    // Additional check for blog admin permissions
-    const userId = res.headers.get('x-user-id')
-    if (userId) {
-      try {
-        const { data: blogProfile } = await supabase
-          .from('blog_profiles')
-          .select('role')
-          .eq('id', userId)
-          .single()
-
-        const hasBlogAdmin = blogProfile?.role === 'admin' || blogProfile?.role === 'editor'
-        
-        if (!hasBlogAdmin && res.headers.get('x-is-admin') !== 'true') {
-          return pathname.startsWith('/api')
-            ? NextResponse.json({ error: 'Blog admin access required' }, { status: 403 })
-            : NextResponse.redirect(new URL('/unauthorized', req.url))
-        }
-
-        res.headers.set('x-blog-role', blogProfile?.role || 'author')
-      } catch (error) {
-        console.error('Blog admin check error:', error)
-        // Continue without blog admin check for now
-      }
-    }
-  }
+  // Continue with request processing
 
   return res
 }
