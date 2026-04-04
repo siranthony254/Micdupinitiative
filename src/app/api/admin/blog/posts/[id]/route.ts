@@ -110,18 +110,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-          console.error('Error updating tags:', tagError)
-          // Don't fail the whole request if tags fail
-        }
-      }
-    }
-
-    return NextResponse.json({ data })
-  } catch (error) {
-    console.error('Unexpected error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
-}
 
 // DELETE /api/admin/blog/posts/[id] - Delete post (admin only)
 export async function DELETE(

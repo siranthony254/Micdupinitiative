@@ -69,15 +69,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-
-// POST /api/admin/blog/posts - Create new post (admin only)
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    
-    // Validate required fields
-    const requiredFields = ['title', 'slug', 'content']
-    for (const field of requiredFields) {
       if (!body[field] || body[field].trim() === '') {
         return NextResponse.json({ error: `${field} is required` }, { status: 400 })
       }

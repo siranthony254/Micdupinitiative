@@ -265,19 +265,6 @@ export default function BlogPage() {
   )
 }
 
-      if (error) {
-        console.error('Error fetching featured posts:', error)
-        return
-      }
-
-      if (data) {
-        setFeaturedPosts(data)
-      }
-    } catch (error) {
-      console.error('Error fetching featured posts:', error)
-    }
-  }
-
       if (!error && data) {
         setCategories(data as BlogCategory[])
       }
