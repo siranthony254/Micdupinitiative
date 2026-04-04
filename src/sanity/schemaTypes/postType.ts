@@ -12,11 +12,6 @@ export const postType = defineType({
       type: 'string',
     }),
     defineField({
-      name: 'subtitle',
-      type: 'string',
-      title: 'Subtitle',
-    }),
-    defineField({
       name: 'slug',
       type: 'slug',
       options: {
@@ -46,45 +41,6 @@ export const postType = defineType({
       name: 'categories',
       type: 'array',
       of: [defineArrayMember({type: 'reference', to: {type: 'category'}})],
-    }),
-    defineField({
-      name: 'tags',
-      type: 'array',
-      of: [defineArrayMember({type: 'reference', to: {type: 'tag'}})],
-    }),
-    defineField({
-      name: 'excerpt',
-      type: 'text',
-      title: 'Excerpt',
-      rows: 3,
-    }),
-    defineField({
-      name: 'status',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Draft', value: 'draft'},
-          {title: 'Published', value: 'published'},
-        ],
-      },
-      initialValue: 'draft',
-    }),
-    defineField({
-      name: 'featured',
-      type: 'boolean',
-      title: 'Featured Post',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'readTime',
-      type: 'number',
-      title: 'Read Time (minutes)',
-    }),
-    defineField({
-      name: 'views',
-      type: 'number',
-      title: 'View Count',
-      initialValue: 0,
     }),
     defineField({
       name: 'publishedAt',

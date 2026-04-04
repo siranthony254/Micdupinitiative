@@ -24,13 +24,6 @@ export const authorType = defineType({
       options: {
         hotspot: true,
       },
-      fields: [
-        defineField({
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-        })
-      ]
     }),
     defineField({
       name: 'bio',
@@ -42,16 +35,6 @@ export const authorType = defineType({
           lists: [],
         }),
       ],
-    }),
-    defineField({
-      name: 'twitter',
-      type: 'url',
-      title: 'Twitter URL',
-    }),
-    defineField({
-      name: 'linkedin',
-      type: 'url',
-      title: 'LinkedIn URL',
     }),
   ],
   preview: {
