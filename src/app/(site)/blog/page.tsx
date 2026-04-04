@@ -3,7 +3,6 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getBlogPosts, getBlogCategories, getFeaturedPosts } from '@/lib/blog'
 import { useAuth } from '@/contexts/auth-context'
 import type { SanityPostWithRelations, SanityCategory } from '@/types/blog'
 import { urlFor } from '@/sanity/lib/image'
@@ -26,20 +25,16 @@ export default function BlogPage() {
   const fetchPosts = async () => {
     try {
       setLoading(true)
+      const categoryParam = selectedCategory !== 'all' ? `&category=${selectedCategory}` : ''
+      const response = await fetch(`/api/blog/posts?limit=12${categoryParam}`)
+      const result = await response.json()
 
-      const { data, error } = await getBlogPosts({
-        category: selectedCategory !== 'all' ? selectedCategory : undefined,
-        limit: 12
-      })
-
-      if (error) {
-        console.error('Error fetching posts:', error)
+      if (!response.ok) {
+        console.error('Error fetching posts:', result.error)
         return
       }
 
-      if (data) {
-        setPosts(data)
-      }
+      setPosts(result.data || [])
     } catch (error) {
       console.error('Error fetching posts:', error)
     } finally {
@@ -49,16 +44,15 @@ export default function BlogPage() {
 
   const fetchCategories = async () => {
     try {
-      const { data, error } = await getBlogCategories()
+      const response = await fetch('/api/blog/categories')
+      const result = await response.json()
 
-      if (error) {
-        console.error('Error fetching categories:', error)
+      if (!response.ok) {
+        console.error('Error fetching categories:', result.error)
         return
       }
 
-      if (data) {
-        setCategories(data)
-      }
+      setCategories(result.data || [])
     } catch (error) {
       console.error('Error fetching categories:', error)
     }
@@ -66,16 +60,15 @@ export default function BlogPage() {
 
   const fetchFeaturedPosts = async () => {
     try {
-      const { data, error } = await getFeaturedPosts(3)
+      const response = await fetch('/api/blog/posts?featured=true&limit=3')
+      const result = await response.json()
 
-      if (error) {
-        console.error('Error fetching featured posts:', error)
+      if (!response.ok) {
+        console.error('Error fetching featured posts:', result.error)
         return
       }
 
-      if (data) {
-        setFeaturedPosts(data)
-      }
+      setFeaturedPosts(result.data || [])
     } catch (error) {
       console.error('Error fetching featured posts:', error)
     }

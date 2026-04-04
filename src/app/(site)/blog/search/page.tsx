@@ -4,7 +4,6 @@ import { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { searchBlogPosts } from '@/lib/blog'
 import type { SanityPostWithRelations } from '@/types/blog'
 import { urlFor } from '@/sanity/lib/image'
 
@@ -24,12 +23,13 @@ function BlogSearchPageContent() {
   const performSearch = async () => {
     try {
       setLoading(true)
-      const { data, error } = await searchBlogPosts(searchQuery, 20)
+      const response = await fetch(`/api/blog/search?q=${encodeURIComponent(searchQuery)}&limit=20`)
+      const result = await response.json()
       
-      if (error) {
-        console.error('Error searching posts:', error)
+      if (!response.ok) {
+        console.error('Error searching posts:', result.error)
       } else {
-        setPosts(data || [])
+        setPosts(result.data || [])
       }
     } catch (error) {
       console.error('Error:', error)
