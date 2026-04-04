@@ -77,11 +77,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       data: data || [],
-      count: count || 0,
       pagination: {
         limit,
         offset,
-        total: count || 0
+        total: data?.length || 0
       }
     })
   } catch (error) {

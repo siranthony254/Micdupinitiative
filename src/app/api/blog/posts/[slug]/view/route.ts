@@ -22,17 +22,6 @@ export async function POST(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-      post_slug: slug
-    })
-
-    if (error) {
-      console.error('Error incrementing views:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    // Track view details for analytics
-    const { error: trackingError } = await supabase
-      .from('blog_post_views')
       .insert({
         post_id: post.id,
         viewer_ip: viewerIp,

@@ -110,14 +110,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-        .from('blog_post_tags')
-        .delete()
-        .eq('post_id', id)
-
-      // Insert new tags
-      if (body.tag_ids.length > 0) {
-        const tagRelations = body.tag_ids.map((tagId: string) => ({
-          post_id: id,
           tag_id: tagId
         }))
 

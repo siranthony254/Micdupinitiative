@@ -375,19 +375,3 @@ export async function createBlogComment(comment: {
     return { data: null, error: error as Error }
   }
 }
-    .eq('id', userId)
-    .single()
-
-  return { data, error }
-}
-
-export async function updateBlogProfile(userId: string, profile: Partial<BlogProfile>) {
-  const { data, error } = await supabase
-    .from('blog_profiles')
-    .update(profile)
-    .eq('id', userId)
-    .select()
-    .single()
-
-  return { data, error }
-}
