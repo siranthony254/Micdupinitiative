@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { incrementPostShares } from '@/lib/blog'
+import { sanityFetch } from '@/sanity/lib/live'
 
 // POST /api/blog/posts/[slug]/share - Track post share
 export async function POST(
@@ -8,26 +9,30 @@ export async function POST(
 ) {
   try {
     const { slug } = await params
-    const body = await request.json()
-    const platform = body.platform || 'unknown'
 
-    // First get the post ID from slug
-    const { data: postData, error: fetchError } = await supabase
-      .from('blog_posts')
-      .select('id')
-      .eq('slug', slug)
-      .single()
+    // Find the post by slug to get its ID
+    const post = await sanityFetch({
+      query: `*[_type == "post" && slug.current == $slug][0]._id`,
+      params: { slug }
+    })
 
-    if (fetchError || !postData) {
+    if (!post.data) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 })
     }
 
-    // Increment share count using RPC function
-    const { error } = await supabase.rpc('increment_blog_post_shares', { 
-      post_id: postData.id 
-    })
+    const { error } = await incrementPostShares(post.data)
 
     if (error) {
+      console.error('Error incrementing shares:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('Share API error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
       console.error('Error incrementing shares:', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }

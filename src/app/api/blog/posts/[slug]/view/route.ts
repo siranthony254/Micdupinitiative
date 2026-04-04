@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabase } from '@/lib/supabase'
+import { incrementPostViews } from '@/lib/blog'
 
 // POST /api/blog/posts/[slug]/view - Track post view
 export async function POST(
@@ -8,26 +8,20 @@ export async function POST(
 ) {
   try {
     const { slug } = await params
-    const { searchParams } = new URL(request.url)
-    const viewerIp = searchParams.get('ip') ||
-                     request.headers.get('x-forwarded-for') ||
-                     request.headers.get('x-real-ip') ||
-                     'unknown'
-    const userAgent = request.headers.get('user-agent') || undefined
 
-    // Get the post to retrieve its ID
-    const { data: post, error: postError } = await supabase
-      .from('blog_posts')
-      .select('id')
-      .eq('slug', slug)
-      .single()
+    const { error } = await incrementPostViews(slug)
 
-    if (postError || !post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 })
+    if (error) {
+      console.error('Error incrementing views:', error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    // Increment view count using RPC function
-    const { error } = await supabase.rpc('increment_blog_post_views', {
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error('View API error:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
       post_slug: slug
     })
 

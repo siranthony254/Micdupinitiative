@@ -1,203 +1,380 @@
-import { supabase } from '@/lib/supabase'
-import type { BlogPost, BlogPostWithRelations, BlogCategory, BlogTag, BlogProfile, BlogComment } from '@/types/blog'
+import { sanityFetch } from '@/sanity/lib/live'
+import { client } from '@/sanity/lib/client'
+import type { SanityPost, SanityPostWithRelations, SanityCategory, SanityAuthor, BlogTag, BlogComment } from '@/types/blog'
+
+// GROQ Queries
+const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) {
+  _id,
+  _type,
+  title,
+  slug,
+  mainImage,
+  publishedAt,
+  excerpt,
+  featured,
+  readTime,
+  views,
+  shares,
+  author->{
+    _id,
+    _type,
+    name,
+    slug,
+    image
+  },
+  categories[]->{
+    _id,
+    _type,
+    title,
+    slug
+  }
+}`
+
+const POST_QUERY = `*[_type == "post" && slug.current == $slug][0] {
+  _id,
+  _type,
+  title,
+  slug,
+  mainImage,
+  publishedAt,
+  excerpt,
+  featured,
+  readTime,
+  views,
+  shares,
+  body,
+  author->{
+    _id,
+    _type,
+    name,
+    slug,
+    image,
+    bio
+  },
+  categories[]->{
+    _id,
+    _type,
+    title,
+    slug,
+    description
+  }
+}`
+
+const CATEGORIES_QUERY = `*[_type == "category"] | order(title asc) {
+  _id,
+  _type,
+  title,
+  slug,
+  description
+}`
+
+const AUTHORS_QUERY = `*[_type == "author"] | order(name asc) {
+  _id,
+  _type,
+  name,
+  slug,
+  image,
+  bio
+}`
 
 // Blog Posts
 export async function getBlogPosts(options: {
-  status?: 'published' | 'draft' | 'scheduled'
   featured?: boolean
-  category_id?: string
-  tag_id?: string
-  author_id?: string
+  category?: string
+  author?: string
   limit?: number
   offset?: number
-  search?: string
 } = {}) {
-  let query = supabase
-    .from('blog_posts')
-    .select(`
-      *,
-      author:blog_authors(id, name, avatar_url),
-      category:blog_categories(id, name, slug),
-      tags:blog_post_tags(
-        blog_tags(id, name, slug)
-      )
-    `)
+  try {
+    let query = `*[_type == "post"`
+    const params: Record<string, any> = {}
 
-  // Apply filters
-  if (options.status) {
-    query = query.eq('status', options.status)
-  }
-  if (options.featured) {
-    query = query.eq('featured', true)
-  }
-  if (options.category_id) {
-    query = query.eq('category_id', options.category_id)
-  }
-  if (options.author_id) {
-    query = query.eq('author_id', options.author_id)
-  }
-  if (options.search) {
-    query = query.textSearch('search', options.search)
-  }
+    if (options.featured) {
+      query += ` && featured == true`
+    }
 
-  // Apply ordering and pagination
-  query = query
-    .order('created_at', { ascending: false })
-    .range(options.offset || 0, (options.offset || 0) + (options.limit || 10) - 1)
+    if (options.category) {
+      query += ` && $category in categories[]->slug.current`
+      params.category = options.category
+    }
 
-  const { data, error } = await query
-  return { data, error }
+    if (options.author) {
+      query += ` && author->slug.current == $author`
+      params.author = options.author
+    }
+
+    query += `] | order(publishedAt desc)`
+
+    if (options.limit) {
+      query += ` [${options.offset || 0}...${(options.offset || 0) + options.limit}]`
+    }
+
+    query += ` {
+      _id,
+      _type,
+      title,
+      slug,
+      mainImage,
+      publishedAt,
+      excerpt,
+      featured,
+      readTime,
+      views,
+      shares,
+      author->{
+        _id,
+        _type,
+        name,
+        slug,
+        image
+      },
+      categories[]->{
+        _id,
+        _type,
+        title,
+        slug
+      }
+    }`
+
+    const posts = await sanityFetch({ query, params })
+    return { data: posts.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
 }
 
 export async function getBlogPost(slug: string) {
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .select(`
-      *,
-      author:blog_authors(id, name, avatar_url),
-      category:blog_categories(id, name, slug),
-      tags:blog_post_tags(
-        blog_tags(id, name, slug)
-      )
-    `)
-    .eq('slug', slug)
-    .single()
-
-  return { data, error }
+  try {
+    const post = await sanityFetch({
+      query: POST_QUERY,
+      params: { slug }
+    })
+    return { data: post.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
 }
 
-export async function createBlogPost(post: Partial<BlogPost>) {
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .insert(post)
-    .select()
-    .single()
-
-  return { data, error }
-}
-
-export async function updateBlogPost(id: string, post: Partial<BlogPost>) {
-  const { data, error } = await supabase
-    .from('blog_posts')
-    .update(post)
-    .eq('id', id)
-    .select()
-    .single()
-
-  return { data, error }
-}
-
-export async function deleteBlogPost(id: string) {
-  const { error } = await supabase
-    .from('blog_posts')
-    .delete()
-    .eq('id', id)
-
-  return { error }
+export async function getFeaturedPosts(limit: number = 3) {
+  try {
+    const posts = await sanityFetch({
+      query: `*[_type == "post" && featured == true] | order(publishedAt desc)[0...${limit}] {
+        _id,
+        _type,
+        title,
+        slug,
+        mainImage,
+        publishedAt,
+        excerpt,
+        readTime,
+        author->{
+          _id,
+          _type,
+          name,
+          slug,
+          image
+        }
+      }`
+    })
+    return { data: posts.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
 }
 
 // Categories
 export async function getBlogCategories() {
-  const { data, error } = await supabase
-    .from('blog_categories')
-    .select('*')
-    .order('name')
-
-  return { data, error }
-}
-
-export async function createBlogCategory(category: Partial<BlogCategory>) {
-  const { data, error } = await supabase
-    .from('blog_categories')
-    .insert(category)
-    .select()
-    .single()
-
-  return { data, error }
-}
-
-// Tags
-export async function getBlogTags() {
-  const { data, error } = await supabase
-    .from('blog_tags')
-    .select('*')
-    .order('name')
-
-  return { data, error }
-}
-
-export async function createBlogTag(tag: Partial<BlogTag>) {
-  const { data, error } = await supabase
-    .from('blog_tags')
-    .insert(tag)
-    .select()
-    .single()
-
-  return { data, error }
-}
-
-// Post Tags
-export async function updatePostTags(postId: string, tagIds: string[]) {
-  // Delete existing tags
-  await supabase
-    .from('blog_post_tags')
-    .delete()
-    .eq('post_id', postId)
-
-  // Insert new tags
-  if (tagIds.length > 0) {
-    const tagRelations = tagIds.map(tagId => ({
-      post_id: postId,
-      tag_id: tagId
-    }))
-
-    const { error } = await supabase
-      .from('blog_post_tags')
-      .insert(tagRelations)
-
-    return { error }
+  try {
+    const categories = await sanityFetch({ query: CATEGORIES_QUERY })
+    return { data: categories.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
   }
-
-  return { error: null }
 }
 
-// Comments
-export async function getBlogCommentsByPostId(postId: string) {
-  const { data, error } = await supabase
-    .from('blog_comments')
-    .select(`
-      *,
-      user:blog_profiles(id, full_name, avatar_url)
-    `)
-    .eq('post_id', postId)
-    .eq('is_approved', true)
-    .order('created_at', { ascending: true })
-
-  return { data, error }
+export async function getBlogCategory(slug: string) {
+  try {
+    const category = await sanityFetch({
+      query: `*[_type == "category" && slug.current == $slug][0]`,
+      params: { slug }
+    })
+    return { data: category.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
 }
 
-export async function createBlogComment(comment: Partial<BlogComment>) {
-  const { data, error } = await supabase
-    .from('blog_comments')
-    .insert(comment)
-    .select()
-    .single()
-
-  return { data, error }
+// Authors
+export async function getBlogAuthors() {
+  try {
+    const authors = await sanityFetch({ query: AUTHORS_QUERY })
+    return { data: authors.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
 }
 
-// Analytics
-export async function incrementPostViews(slug: string) {
-  const { error } = await supabase.rpc('increment_blog_post_views', { post_slug: slug })
-  return { error }
-}
-
-export async function incrementPostShares(postId: string) {
-  const { error } = await supabase.rpc('increment_blog_post_shares', { post_id: postId })
-  return { error }
+export async function getBlogAuthor(slug: string) {
+  try {
+    const author = await sanityFetch({
+      query: `*[_type == "author" && slug.current == $slug][0] {
+        _id,
+        _type,
+        name,
+        slug,
+        image,
+        bio
+      }`,
+      params: { slug }
+    })
+    return { data: author.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
 }
 
 // Search
+export async function searchBlogPosts(query: string, limit: number = 10) {
+  try {
+    const posts = await sanityFetch({
+      query: `*[_type == "post" && (title match $query || excerpt match $query)] | order(publishedAt desc)[0...${limit}] {
+        _id,
+        _type,
+        title,
+        slug,
+        mainImage,
+        publishedAt,
+        excerpt,
+        author->{
+          _id,
+          _type,
+          name,
+          slug,
+          image
+        },
+        categories[]->{
+          _id,
+          _type,
+          title,
+          slug
+        }
+      }`,
+      params: { query: `*${query}*` }
+    })
+    return { data: posts.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
+}
+
+// Admin functions (for creating/updating content via Sanity Studio)
+export async function createBlogPost(post: Partial<SanityPost>) {
+  try {
+    const result = await client.create({
+      _type: 'post',
+      ...post
+    })
+    return { data: result, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
+}
+
+export async function updateBlogPost(id: string, post: Partial<SanityPost>) {
+  try {
+    const result = await client.patch(id).set(post).commit()
+    return { data: result, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
+}
+
+export async function deleteBlogPost(id: string) {
+  try {
+    await client.delete(id)
+    return { error: null }
+  } catch (error) {
+    return { error: error as Error }
+  }
+}
+
+// Analytics (simplified - in a real app you'd track this in Sanity)
+export async function incrementPostViews(slug: string) {
+  try {
+    // Find the post by slug
+    const post = await sanityFetch({
+      query: `*[_type == "post" && slug.current == $slug][0]._id`,
+      params: { slug }
+    })
+
+    if (post.data) {
+      // Increment views (this would require a custom field in Sanity)
+      await client.patch(post.data).inc({ views: 1 }).commit()
+    }
+
+    return { error: null }
+  } catch (error) {
+    return { error: error as Error }
+  }
+}
+
+export async function incrementPostShares(id: string) {
+  try {
+    await client.patch(id).inc({ shares: 1 }).commit()
+    return { error: null }
+  } catch (error) {
+    return { error: error as Error }
+  }
+}
+
+// Comments (if you want to add commenting functionality)
+export async function getBlogComments(postId: string) {
+  try {
+    const comments = await sanityFetch({
+      query: `*[_type == "comment" && post._ref == $postId && approved == true] | order(_createdAt asc) {
+        _id,
+        _type,
+        content,
+        _createdAt,
+        author->{
+          _id,
+          _type,
+          name,
+          image
+        }
+      }`,
+      params: { postId }
+    })
+    return { data: comments.data, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
+}
+
+export async function createBlogComment(comment: {
+  postId: string
+  authorId: string
+  content: PortableTextBlock[]
+}) {
+  try {
+    const result = await client.create({
+      _type: 'comment',
+      post: {
+        _type: 'reference',
+        _ref: comment.postId
+      },
+      author: {
+        _type: 'reference',
+        _ref: comment.authorId
+      },
+      content: comment.content,
+      approved: false
+    })
+    return { data: result, error: null }
+  } catch (error) {
+    return { data: null, error: error as Error }
+  }
+}
 export async function searchBlogPosts(query: string, limit = 10) {
   const { data, error } = await supabase
     .from('blog_posts')

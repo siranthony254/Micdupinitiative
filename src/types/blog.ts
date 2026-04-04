@@ -1,91 +1,113 @@
-export interface BlogAuthor {
-  id: string
+import { PortableTextBlock } from '@portabletext/types'
+
+export interface SanityAuthor {
+  _id: string
+  _type: 'author'
   name: string
-  bio?: string
-  avatar_url?: string
-  twitter?: string
-  linkedin?: string
-  created_at: string
-  updated_at: string
+  slug: {
+    current: string
+  }
+  image?: {
+    _type: 'image'
+    asset: {
+      _ref: string
+      _type: 'reference'
+    }
+    alt?: string
+  }
+  bio?: PortableTextBlock[]
 }
 
-export interface BlogProfile {
-  id: string
-  full_name?: string
-  avatar_url?: string
-  bio?: string
-  role: 'author' | 'editor' | 'admin'
-  created_at: string
-  updated_at: string
-}
-
-export interface BlogCategory {
-  id: string
-  name: string
-  slug: string
-  description?: string
-  created_at: string
-  updated_at: string
-}
-
-export interface BlogTag {
-  id: string
-  name: string
-  slug: string
-  created_at: string
-  updated_at: string
-}
-
-export interface BlogPost {
-  id: string
+export interface SanityCategory {
+  _id: string
+  _type: 'category'
   title: string
-  subtitle?: string
-  slug: string
-  content: string
+  slug: {
+    current: string
+  }
+  description?: string
+}
+
+export interface SanityPost {
+  _id: string
+  _type: 'post'
+  title: string
+  slug: {
+    current: string
+  }
+  author: {
+    _ref: string
+    _type: 'reference'
+  }
+  mainImage?: {
+    _type: 'image'
+    asset: {
+      _ref: string
+      _type: 'reference'
+    }
+    alt?: string
+  }
+  categories?: Array<{
+    _ref: string
+    _type: 'reference'
+  }>
+  publishedAt?: string
+  body: PortableTextBlock[]
   excerpt?: string
-  featured_image?: string
-  status: 'draft' | 'published'
-  featured: boolean  // Match database field name
-  read_time: number
-  views: number
-  author_id: string  // Required to match database
-  category_id: string  // Required to match database
-  published_at?: string
-  created_at: string
-  updated_at: string
-  author?: BlogAuthor
-  category?: BlogCategory
-  tags?: BlogTag[]
+  featured?: boolean
+  readTime?: number
+  views?: number
+  shares?: number
+}
+
+export interface SanityPostWithRelations extends SanityPost {
+  author?: SanityAuthor
+  categories?: SanityCategory[]
+}
+
+// Legacy types for backward compatibility (mapped to Sanity)
+export interface BlogAuthor extends SanityAuthor {}
+export interface BlogCategory extends SanityCategory {}
+export interface BlogPost extends SanityPost {}
+export interface BlogPostWithRelations extends SanityPostWithRelations {}
+
+// Additional types for admin functionality
+export interface BlogTag {
+  _id: string
+  _type: 'tag'
+  name: string
+  slug: {
+    current: string
+  }
 }
 
 export interface BlogComment {
-  id: string
-  post_id: string
-  user_id?: string
-  content: string
-  is_approved: boolean
-  created_at: string
-  user?: BlogProfile
+  _id: string
+  _type: 'comment'
+  post: {
+    _ref: string
+    _type: 'reference'
+  }
+  author: {
+    _ref: string
+    _type: 'reference'
+  }
+  content: PortableTextBlock[]
+  approved: boolean
+  _createdAt: string
 }
 
-export interface BlogPostView {
-  id: string
-  post_id: string
-  viewer_ip?: string
-  user_agent?: string
-  created_at: string
-}
-
-export interface BlogPostShare {
-  id: string
-  post_id: string
-  platform?: string
-  created_at: string
-}
-
-export interface BlogPostWithRelations extends BlogPost {
-  author?: BlogAuthor
-  category?: BlogCategory
-  tags?: BlogTag[]
-  comments?: BlogComment[]
+export interface BlogProfile {
+  _id: string
+  _type: 'profile'
+  name: string
+  email: string
+  avatar?: {
+    _type: 'image'
+    asset: {
+      _ref: string
+      _type: 'reference'
+    }
+  }
+  role: 'author' | 'editor' | 'admin'
 }
