@@ -110,14 +110,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-          tag_id: tagId
-        }))
-
-        const { error: tagError } = await supabase
-          .from('blog_post_tags')
-          .insert(tagRelations)
-
-        if (tagError) {
           console.error('Error updating tags:', tagError)
           // Don't fail the whole request if tags fail
         }

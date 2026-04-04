@@ -22,16 +22,6 @@ export async function POST(
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
-      .insert({
-        post_id: post.id,
-        viewer_ip: viewerIp,
-        user_agent: userAgent
-      })
-
-    if (trackingError) {
-      console.error('Error tracking view:', trackingError)
-      // Don't fail the request if tracking fails
-    }
 
     return NextResponse.json({ success: true })
   } catch (error) {

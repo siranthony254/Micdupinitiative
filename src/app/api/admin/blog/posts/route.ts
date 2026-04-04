@@ -70,25 +70,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-    if (error) {
-      console.error('Error fetching posts:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    return NextResponse.json({
-      data: data || [],
-      pagination: {
-        limit,
-        offset,
-        total: data?.length || 0
-      }
-    })
-  } catch (error) {
-    console.error('Unexpected error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
-}
-
 // POST /api/admin/blog/posts - Create new post (admin only)
 export async function POST(request: NextRequest) {
   try {

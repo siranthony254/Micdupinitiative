@@ -265,39 +265,6 @@ export default function BlogPage() {
   )
 }
 
-      const { data, error } = await query
-      
-      if (data) {
-        setPosts(data)
-      }
-    } catch (error) {
-      console.error('Error fetching posts:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const fetchCategories = async () => {
-    try {
-      const { data, error } = await getBlogCategories()
-
-      if (error) {
-        console.error('Error fetching categories:', error)
-        return
-      }
-
-      if (data) {
-        setCategories(data)
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-    }
-  }
-
-  const fetchFeaturedPosts = async () => {
-    try {
-      const { data, error } = await getFeaturedPosts(3)
-
       if (error) {
         console.error('Error fetching featured posts:', error)
         return
