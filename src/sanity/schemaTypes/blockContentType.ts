@@ -1,4 +1,4 @@
-import {defineType, defineArrayMember} from 'sanity'
+import {defineType, defineArrayMember, Rule} from 'sanity'
 import {ImageIcon} from '@sanity/icons'
 
 /**
@@ -71,6 +71,117 @@ export const blockContentType = defineType({
           title: 'Alternative Text',
         }
       ]
+    }),
+    // Custom paragraph block with enhanced styling
+    defineArrayMember({
+      type: 'object',
+      title: 'Paragraph',
+      name: 'paragraph',
+      icon: ImageIcon,
+      fields: [
+        {
+          name: 'content',
+          type: 'text',
+          title: 'Paragraph Content',
+          description: 'The text content of the paragraph',
+          validation: Rule => Rule.required().min(1),
+        },
+        {
+          name: 'style',
+          type: 'string',
+          title: 'Paragraph Style',
+          description: 'Visual style for the paragraph',
+          options: [
+            {title: 'Normal', value: 'normal'},
+            {title: 'Lead', value: 'lead'},
+            {title: 'Large', value: 'large'},
+            {title: 'Small', value: 'small'},
+            {title: 'Muted', value: 'muted'},
+            {title: 'Highlight', value: 'highlight'},
+          ],
+          initialValue: 'normal',
+        },
+        {
+          name: 'alignment',
+          type: 'string',
+          title: 'Text Alignment',
+          options: [
+            {title: 'Left', value: 'left'},
+            {title: 'Center', value: 'center'},
+            {title: 'Right', value: 'right'},
+            {title: 'Justify', value: 'justify'},
+          ],
+          initialValue: 'left',
+        },
+        {
+          name: 'backgroundColor',
+          type: 'string',
+          title: 'Background Color',
+          description: 'Background color for the paragraph',
+          options: [
+            {title: 'Default', value: ''},
+            {title: 'Primary', value: 'primary'},
+            {title: 'Secondary', value: 'secondary'},
+            {title: 'Accent', value: 'accent'},
+            {title: 'Muted', value: 'muted'},
+            {title: 'Success', value: 'success'},
+            {title: 'Warning', value: 'warning'},
+            {title: 'Error', value: 'error'},
+          ],
+          initialValue: '',
+        },
+        {
+          name: 'textColor',
+          type: 'string',
+          title: 'Text Color',
+          description: 'Text color for the paragraph',
+          options: [
+            {title: 'Default', value: ''},
+            {title: 'Primary', value: 'primary'},
+            {title: 'Secondary', value: 'secondary'},
+            {title: 'Accent', value: 'accent'},
+            {title: 'Muted', value: 'muted'},
+            {title: 'Success', value: 'success'},
+            {title: 'Warning', value: 'warning'},
+            {title: 'Error', value: 'error'},
+          ],
+          initialValue: '',
+        },
+        {
+          name: 'marginBottom',
+          type: 'string',
+          title: 'Bottom Margin',
+          description: 'Spacing below the paragraph',
+          options: [
+            {title: 'None', value: 'none'},
+            {title: 'Small', value: 'small'},
+            {title: 'Medium', value: 'medium'},
+            {title: 'Large', value: 'large'},
+            {title: 'Extra Large', value: 'xlarge'},
+          ],
+          initialValue: 'medium',
+        },
+        {
+          name: 'dropCap',
+          type: 'boolean',
+          title: 'Drop Cap',
+          description: 'Add a large first letter to the paragraph',
+          initialValue: false,
+        },
+      ],
+      preview: {
+        select: {
+          content: 'content',
+          style: 'style',
+        },
+        prepare(selection) {
+          const {content, style} = selection
+          return {
+            title: style === 'normal' ? 'Paragraph' : `Paragraph (${style})`,
+            subtitle: content?.substring(0, 50) + (content?.length > 50 ? '...' : ''),
+          }
+        },
+      },
     }),
   ],
 })

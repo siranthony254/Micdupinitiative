@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/auth-context'
 import type { SanityPostWithRelations, BlogComment } from '@/types/blog'
 import { urlFor } from '@/sanity/lib/image'
 import { PortableText } from '@portabletext/react'
+import customComponents from '@/components/blog/PortableTextComponents'
 
 export default function BlogPostPage() {
   const { slug } = useParams()
@@ -241,21 +242,7 @@ export default function BlogPostPage() {
         <div className="prose prose-lg max-w-none mb-12">
           <PortableText
             value={post.body}
-            components={{
-              types: {
-                image: ({ value }) => (
-                  <div className="my-8">
-                    <Image
-                      src={urlFor(value).width(800).url()}
-                      alt={value.alt || 'Article image'}
-                      width={800}
-                      height={400}
-                      className="w-full h-auto rounded-lg"
-                    />
-                  </div>
-                )
-              }
-            }}
+            components={customComponents}
           />
         </div>
 
@@ -322,7 +309,7 @@ export default function BlogPostPage() {
                     </div>
                   </div>
                   <div className="prose prose-sm max-w-none">
-                    <PortableText value={comment.content} />
+                    <PortableText value={comment.content} components={customComponents} />
                   </div>
                 </div>
               ))}

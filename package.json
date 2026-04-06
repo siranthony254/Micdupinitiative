@@ -16,6 +16,7 @@
     "@sanity/vision": "^5.19.0",
     "@supabase/auth-helpers-nextjs": "^0.15.0",
     "@supabase/supabase-js": "^2.101.1",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.31.0",
     "lucide-react": "^0.563.0",
     "next": "^16.1.6",
@@ -30,6 +31,7 @@
     "react-notion-x": "^7.7.3",
     "sanity": "^5.19.0",
     "styled-components": "^6.3.12",
+    "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
