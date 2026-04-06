@@ -98,12 +98,11 @@ export function HomePage() {
 
         {/* Subtext */}
         <div className="mt-6 space-y-3">
-          <p className="text-base md:text-lg text-white/90 leading-relaxed">
-            Become a bold voice with something meaningful to say.
-          </p>
 
           <p className="text-base md:text-lg text-white/75 leading-relaxed">
-            Because voices shape society, real problems will be solved by young people who were heard, formed, and trusted while they were still in school. MUI focuses on helping you express truth with clarity, conviction, and responsibility.
+            Because voices shape society and real problems will be solved by bold 
+            people who were heard, formed, and trusted even while they were still in school. 
+             MUI focuses on helping you express truth with clarity, conviction, and responsibility.
           </p>
         </div>
 
