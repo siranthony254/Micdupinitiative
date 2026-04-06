@@ -84,9 +84,24 @@ export function HomePage() {
               bg-clip-text text-transparent
               leading-[1.2] md:leading-[1.2]
               px-4 md:px-0
+              mb-3
             "
           >
-            Becoming Clear Thinkers, Bold Voices And Responsible Influencers
+            Becoming Clear Thinkers, Bold Voices
+          </span>
+
+          <span
+            className="
+              inline-block text-3xl md:text-5xl lg:text-6xl
+              font-extrabold text-white
+              leading-[1.2] md:leading-[1.2]
+              bg-white
+              px-6 py-2
+              rounded-lg
+              shadow-lg
+            "
+          >
+            And Responsible Influencers
           </span>
         </h1>
 
