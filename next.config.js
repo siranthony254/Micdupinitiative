@@ -19,10 +19,7 @@ const nextConfig = {
   },
   // Exclude Studio from build temporarily
   excludeDefaultMomentLocales: false,
-  experimental: {
-    // Temporarily disable Studio during build
-    serverComponentsExternalPackages: ['@sanity'],
-  },
+  serverExternalPackages: []
 }
 
 module.exports = nextConfig

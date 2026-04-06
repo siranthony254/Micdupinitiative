@@ -6,15 +6,15 @@
  * You can learn more about the next-sanity package here:
  * https://github.com/sanity-io/next-sanity
  */
-'use client'
-
-import { NextStudio } from 'next-sanity/studio'
-import config from '../../../../sanity.config'
+'// src/app/studio/[[...tool]]/page.tsx'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
+
 export { metadata, viewport } from 'next-sanity/studio'
 
+import StudioClient from './studio-client'
+
 export default function StudioPage() {
-  return <NextStudio config={config} />
+  return <StudioClient />
 }
