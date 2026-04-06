@@ -64,27 +64,29 @@ export function HomePage() {
         className="relative max-w-4xl px-6 md:px-10 text-center"
       >
         {/* Headline */}
-        <h1 className="mb-2 tracking-tight leading-tight">
+        <h1 className="mb-6 tracking-tight leading-tight">
           <span
             className="
               block text-4xl md:text-6xl lg:text-7xl
               font-extrabold text-white
-              whitespace-nowrap
+              leading-[1.1] md:leading-[1.1]
+              mb-4
             "
           >
-            VOICING A GENERATION
+            Join a Generation
           </span>
 
           <span
             className="
-              mt-3 inline-block
-              text-3xl md:text-5xl lg:text-6xl
+              block text-3xl md:text-5xl lg:text-6xl
               font-extrabold
-              bg-white text-slate-800
-              px-5 py-2
+              bg-gradient-to-r from-amber-400 to-amber-500
+              bg-clip-text text-transparent
+              leading-[1.2] md:leading-[1.2]
+              px-4 md:px-0
             "
           >
-            SHAPING CULTURE
+            Becoming Clear Thinkers, Bold Voices And Responsible Influencers
           </span>
         </h1>
 
