@@ -76,47 +76,34 @@ export function HomePage() {
             Join a Generation
           </span>
 
-          <span
+                    <span
             className="
-              block text-3xl md:text-5xl lg:text-6xl
+              block
+              text-2xl md:text-4xl lg:text-5xl
               font-extrabold
               bg-gradient-to-r from-amber-400 to-amber-500
               bg-clip-text text-transparent
-              leading-[1.2] md:leading-[1.2]
-              px-4 md:px-0
-              mb-3
+              leading-[1.2]
+              text-center
             "
           >
-            Becoming Clear Thinkers, Bold Voices
-          </span>
-
-          <span
-            className="
-              inline-block text-3xl md:text-5xl lg:text-6xl
-              font-extrabold text-white
-              leading-[1.2] md:leading-[1.2]
-              bg-white
-              px-6 py-2
-              rounded-lg
-              shadow-lg
-            "
-          >
-            And Responsible Influencers
+            <span className="block text-inherit leading-inherit">
+              Becoming Clear Thinkers, Bold Voices And
+            </span>
+            <span className="block text-inherit leading-inherit">
+              Responsible Influencers
+            </span>
           </span>
         </h1>
 
         {/* Subtext */}
         <div className="mt-6 space-y-3">
           <p className="text-base md:text-lg text-white/90 leading-relaxed">
-            Mic’d Up Initiative (MUI) is a mission-driven platform committed to transforming campus culture by
-            amplifying authentic student voices, talents, and ideas through storytelling, mentorship, productions, and public conversations, raising a renewed
-            generation of young people formed into holistic excellence across Kenyan universities and beyond.
+            Become a bold voice with something meaningful to say.
           </p>
 
           <p className="text-base md:text-lg text-white/75 leading-relaxed">
-            Society is shaped by voices. We exist to amplify responsible ones
-            across campus—and cultivate cultural influence that endures. Through dialogue, storytelling, and research, we preserve ideas
-            worthy of longevity across higher education institutions.
+            Because voices shape society, real problems will be solved by young people who were heard, formed, and trusted while they were still in school. MUI focuses on helping you express truth with clarity, conviction, and responsibility.
           </p>
         </div>
 

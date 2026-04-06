@@ -1,14 +1,17 @@
 import { HomePage as HeroSection } from "@/components/home/hero";
 import WhyWeExist from "@/components/home/WhyWeExist";
+import OurObjectives from "@/components/home/OurObjectives";
 import { WhatWeDo } from "@/components/home/WhatWeDo";
 import { PlaylistsRail } from "@/components/home/PlaylistsRail";
 import GetInvolved from "@/components/home/GetInvolved";
+import ClosingLine from "@/components/home/ClosingLine";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
       <WhyWeExist />
+      <OurObjectives />
       <WhatWeDo />
 
       {/* Mixed-content editorial rail (podcasts, talks, documentaries) */}
@@ -19,6 +22,9 @@ export default function HomePage() {
       />
 
       <GetInvolved />
+      
+      {/* Homepage Closing Line Section */}
+      <ClosingLine />
     </>
   );
 }
