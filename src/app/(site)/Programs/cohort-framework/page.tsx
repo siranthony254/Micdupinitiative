@@ -175,6 +175,9 @@ const tags = [
   "Intercampus",
 ] as const;
 
+const preparedBy = "Prepared by Sir Anthony --- Founder and President MUI";
+const preparedDate = "April 16, 2026";
+
 function SectionHeader({
   number,
   title,
@@ -195,6 +198,76 @@ export default function CohortFrameworkPage() {
 
   const togglePillar = (index: number) => {
     setActivePillar((current) => (current === index ? -1 : index));
+  };
+
+  const downloadFramework = () => {
+    const frameworkText = [
+      "The Cohort Framework",
+      "",
+      "MUI - Internal Framework",
+      "",
+      "A 12-week, fully online, intercampus formation journey - structured across 5 pillars, 3 output levels, and a weekly rhythm designed for depth without institutional friction.",
+      "",
+      "Core Objective - The Why",
+      "Form individuals who can think clearly, identify real problems, and use their voice to influence responsibly.",
+      "",
+      "The 5 Pillars - 12-Week Structure",
+      "",
+      ...pillars.flatMap((pillar) => [
+        `${pillar.badge} | ${pillar.name} | ${pillar.weeks}`,
+        `Goal: ${pillar.goal}`,
+        `${pillar.objectiveLabel}:`,
+        ...pillar.objectives.map((item) => `- ${item}`),
+        `${pillar.outputLabel}:`,
+        ...pillar.outputs.map((item) => `- ${item}`),
+        "",
+      ]),
+      "The Output System - 3 Levels",
+      "",
+      ...outputLevels.flatMap((output) => [
+        `${output.level}: ${output.name}`,
+        ...output.items.map((item) => `- ${item}`),
+        `Result: ${output.result}`,
+        "",
+      ]),
+      "Cohort Rhythm",
+      "",
+      ...rhythmCards.flatMap((card) => [
+        `${card.freq}: ${card.title}`,
+        card.desc,
+        "",
+      ]),
+      "Cohort Goals",
+      "",
+      "Primary Goal:",
+      "Develop clear thinkers with responsible voices.",
+      "",
+      ...goalGroups.flatMap((group) => [
+        group.label,
+        ...group.items.map((item) => `- ${item}`),
+        "",
+      ]),
+      "Why Online & Intercampus",
+      "The cohort is fully online and spans multiple campuses simultaneously - by design, not default. Campus clubs create institutional friction: approval processes, physical logistics, single-campus access. A student at a TVET in Kisumu and a student at a university in Nairobi walk the same formation journey, at the same time. The result is also richer: cohort members are formed alongside peers from different institutions, disciplines, and realities. That diversity is part of the formation.",
+      "",
+      "Framework Notes:",
+      ...tags.map((tag) => `- ${tag}`),
+      "",
+      preparedBy,
+      `Date: ${preparedDate}`,
+    ].join("\n");
+
+    const blob = new Blob([frameworkText], {
+      type: "text/plain;charset=utf-8",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "MUI_Cohort_Framework.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -348,6 +421,18 @@ export default function CohortFrameworkPage() {
               </span>
             ))}
           </div>
+        </div>
+
+        <div className="downloadSection">
+          <p className="downloadMeta">{preparedBy}</p>
+          <p className="downloadMeta">Date: {preparedDate}</p>
+          <button
+            type="button"
+            className="downloadButton"
+            onClick={downloadFramework}
+          >
+            Download Framework
+          </button>
         </div>
       </div>
 
@@ -842,6 +927,51 @@ export default function CohortFrameworkPage() {
           border-radius: 20px;
           background: #04342c;
           color: var(--p4);
+        }
+
+        .downloadSection {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 0.6rem;
+          margin-top: 2rem;
+          padding-top: 1.5rem;
+          border-top: 0.5px solid var(--line);
+        }
+
+        .downloadMeta {
+          font-size: 12px;
+          color: var(--hint);
+          line-height: 1.5;
+        }
+
+        .downloadButton {
+          border: 1px solid rgba(93, 202, 165, 0.45);
+          border-radius: 999px;
+          background: linear-gradient(
+            180deg,
+            rgba(29, 158, 117, 0.22),
+            rgba(15, 110, 86, 0.3)
+          );
+          color: var(--ink);
+          padding: 0.8rem 1.35rem;
+          font-size: 13px;
+          font-weight: 500;
+          letter-spacing: 0.04em;
+          transition:
+            transform 0.18s ease,
+            border-color 0.18s ease,
+            background 0.18s ease;
+        }
+
+        .downloadButton:hover {
+          transform: translateY(-1px);
+          border-color: var(--p4);
+          background: linear-gradient(
+            180deg,
+            rgba(29, 158, 117, 0.3),
+            rgba(15, 110, 86, 0.38)
+          );
         }
 
         @media (max-width: 720px) {
