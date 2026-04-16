@@ -618,3 +618,4 @@ export default function CohortFrameworkPage() {
     </section>
   );
 }
+ 
