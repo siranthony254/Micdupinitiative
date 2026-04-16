@@ -1,0 +1,739 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: var(--color-text-primary);
+    --muted: var(--color-text-secondary);
+    --hint: var(--color-text-tertiary);
+    --surf: var(--color-background-secondary);
+    --line: var(--color-border-tertiary);
+    --radius: var(--border-radius-md);
+    --p1: #1A3A2E;
+    --p2: #0F6E56;
+    --p3: #1D9E75;
+    --p4: #5DCAA5;
+    --p5: #9FE1CB;
+    --p6: #E1F5EE;
+  }
+
+  .wrap {
+    font-family: 'DM Sans', sans-serif;
+    padding: 2rem 1.5rem 3rem;
+    max-width: 720px;
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--p3);
+    margin-bottom: 8px;
+  }
+
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+
+  .hero-sub {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 32px;
+    max-width: 480px;
+  }
+
+  /* ── CORE OBJECTIVE ── */
+  .core-obj {
+    border-left: 3px solid var(--p3);
+    padding: 16px 20px;
+    background: var(--p6);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    margin-bottom: 36px;
+  }
+  .core-obj .label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--p2);
+    margin-bottom: 6px;
+  }
+  .core-obj .statement {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    color: var(--p1);
+    line-height: 1.45;
+  }
+
+  /* ── SECTION HEADERS ── */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .sec-number {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--p3);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .sec-title {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ── PILLAR TIMELINE ── */
+  .pillars { position: relative; padding-left: 20px; margin-bottom: 40px; }
+  .pillars::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--p3), var(--p5));
+    border-radius: 2px;
+  }
+
+  .pillar {
+    position: relative;
+    margin-bottom: 0;
+  }
+  .pillar::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 14px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--p3);
+    border: 2px solid var(--color-background-primary);
+    box-shadow: 0 0 0 1px var(--p3);
+  }
+
+  .pillar-card {
+    border: 0.5px solid var(--line);
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .pillar-card:hover { border-color: var(--p4); }
+  .pillar-card.active { border-color: var(--p3); }
+
+  .pillar-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background: var(--color-background-primary);
+  }
+  .pillar-head-left { display: flex; align-items: center; gap: 12px; }
+  .pillar-badge {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .pillar-name {
+    font-weight: 500;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .pillar-weeks {
+    font-size: 11px;
+    color: var(--hint);
+  }
+  .pillar-toggle {
+    font-size: 16px;
+    color: var(--hint);
+    transition: transform 0.2s;
+    line-height: 1;
+  }
+  .pillar-card.active .pillar-toggle { transform: rotate(180deg); }
+
+  .pillar-body {
+    display: none;
+    padding: 0 16px 16px;
+    border-top: 0.5px solid var(--line);
+    background: var(--color-background-primary);
+  }
+  .pillar-card.active .pillar-body { display: block; }
+
+  .pillar-goal {
+    margin-top: 12px;
+    margin-bottom: 10px;
+  }
+  .pillar-goal-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hint);
+    margin-bottom: 4px;
+  }
+  .pillar-goal-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .pillar-rows {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .pillar-col {
+    background: var(--surf);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+  }
+  .pillar-col-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--hint);
+    margin-bottom: 6px;
+  }
+  .pillar-col-item {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+  }
+  .pillar-col-item::before {
+    content: '–';
+    color: var(--p4);
+    flex-shrink: 0;
+  }
+
+  /* ── COLOR BADGES ── */
+  .b-purple  { background: #EEEDFE; color: #3C3489; }
+  .b-amber   { background: #FAEEDA; color: #633806; }
+  .b-blue    { background: #E6F1FB; color: #0C447C; }
+  .b-coral   { background: #FAECE7; color: #4A1B0C; }
+  .b-teal    { background: #E1F5EE; color: #085041; }
+
+  /* ── OUTPUT SYSTEM ── */
+  .output-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .output-card {
+    border: 0.5px solid var(--line);
+    border-radius: var(--border-radius-lg);
+    padding: 14px;
+    background: var(--color-background-primary);
+    position: relative;
+    overflow: hidden;
+  }
+  .output-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+  .output-card.l1::before { background: var(--p4); }
+  .output-card.l2::before { background: #EF9F27; }
+  .output-card.l3::before { background: var(--p2); }
+
+  .output-level {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .output-card.l1 .output-level { color: var(--p3); }
+  .output-card.l2 .output-level { color: #BA7517; }
+  .output-card.l3 .output-level { color: var(--p1); }
+
+  .output-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .output-items {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .output-result {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 0.5px solid var(--line);
+    font-size: 11px;
+    font-style: italic;
+    color: var(--hint);
+  }
+
+  /* ── RHYTHM ── */
+  .rhythm {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .rhythm-card {
+    border: 0.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px;
+    background: var(--surf);
+  }
+  .rhythm-freq {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--p3);
+    margin-bottom: 6px;
+  }
+  .rhythm-title {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .rhythm-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ── GOALS ── */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .goal-card {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    border: 0.5px solid var(--line);
+    background: var(--color-background-primary);
+  }
+  .goal-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hint);
+    margin-bottom: 8px;
+  }
+  .goal-primary .goal-label { color: var(--p2); }
+  .goal-primary {
+    grid-column: 1 / -1;
+    background: var(--p6);
+    border-color: var(--p5);
+  }
+  .goal-primary .goal-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--p1);
+    line-height: 1.3;
+  }
+  .goal-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .goal-check {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--p3);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 8px;
+  }
+
+  /* ── DESIGN NOTE ── */
+  .design-note {
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    background: var(--surf);
+    border: 0.5px solid var(--line);
+  }
+  .design-note-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hint);
+    margin-bottom: 6px;
+  }
+  .design-note-text {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .design-note-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--p6);
+    color: var(--p2);
+  }
+
+  /* dark mode badge overrides */
+  @media (prefers-color-scheme: dark) {
+    .b-purple { background: #26215C; color: #AFA9EC; }
+    .b-amber  { background: #412402; color: #FAC775; }
+    .b-blue   { background: #042C53; color: #85B7EB; }
+    .b-coral  { background: #4A1B0C; color: #F0997B; }
+    .b-teal   { background: #04342C; color: #5DCAA5; }
+    .core-obj { background: #04342C; }
+    .core-obj .statement { color: #9FE1CB; }
+    .core-obj .label { color: var(--p4); }
+    .tag { background: #04342C; color: var(--p4); }
+    .output-card.l1 { border-top-color: var(--p4); }
+  }
+</style>
+
+<div class="wrap">
+
+  <p class="eyebrow">MUI — Internal Framework</p>
+  <h1 class="hero-title">The Cohort Framework</h1>
+  <p class="hero-sub">A 12-week, fully online, intercampus formation journey — structured across 5 pillars, 3 output levels, and a weekly rhythm designed for depth without institutional friction.</p>
+
+  <!-- CORE OBJECTIVE -->
+  <div class="core-obj">
+    <p class="label">Core Objective — The Why</p>
+    <p class="statement">Form individuals who can think clearly, identify real problems, and use their voice to influence responsibly.</p>
+  </div>
+
+  <!-- PILLARS -->
+  <div class="sec-header">
+    <div class="sec-number">2</div>
+    <p class="sec-title">The 5 Pillars — 12-Week Structure</p>
+  </div>
+
+  <div class="pillars" id="pillars">
+
+    <div class="pillar">
+      <div class="pillar-card active" onclick="toggle(this)">
+        <div class="pillar-head">
+          <div class="pillar-head-left">
+            <span class="pillar-badge b-purple">Identity</span>
+            <span class="pillar-name">Understanding self & belief systems</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="pillar-weeks">Weeks 1–2</span>
+            <span class="pillar-toggle">&#8964;</span>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-goal">
+            <p class="pillar-goal-label">Goal</p>
+            <p class="pillar-goal-text">Clarity of self — participants articulate: "This is what has shaped how I think."</p>
+          </div>
+          <div class="pillar-rows">
+            <div class="pillar-col">
+              <p class="pillar-col-label">Cohort Objective</p>
+              <div class="pillar-col-item">Name the experiences, voices, and systems that formed their current worldview</div>
+              <div class="pillar-col-item">Distinguish between inherited beliefs and examined convictions</div>
+            </div>
+            <div class="pillar-col">
+              <p class="pillar-col-label">Output</p>
+              <div class="pillar-col-item">Personal reflection: "My thinking has been shaped by…"</div>
+              <div class="pillar-col-item">Short video or written post on formative influences</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-card" onclick="toggle(this)">
+        <div class="pillar-head">
+          <div class="pillar-head-left">
+            <span class="pillar-badge b-amber">Understanding</span>
+            <span class="pillar-name">Rethinking education & knowledge</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="pillar-weeks">Weeks 3–4</span>
+            <span class="pillar-toggle">&#8964;</span>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-goal">
+            <p class="pillar-goal-label">Goal</p>
+            <p class="pillar-goal-text">Clarity of thinking — participants distinguish information, understanding, and wisdom.</p>
+          </div>
+          <div class="pillar-rows">
+            <div class="pillar-col">
+              <p class="pillar-col-label">Cohort Objective</p>
+              <div class="pillar-col-item">Challenge the credential-as-education assumption</div>
+              <div class="pillar-col-item">Define what it means to be truly educated versus merely qualified</div>
+            </div>
+            <div class="pillar-col">
+              <p class="pillar-col-label">Output</p>
+              <div class="pillar-col-item">"What it means to be truly educated" — insight post or short essay</div>
+              <div class="pillar-col-item">Cohort discussion thread on the purpose of university</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-card" onclick="toggle(this)">
+        <div class="pillar-head">
+          <div class="pillar-head-left">
+            <span class="pillar-badge b-blue">Awareness</span>
+            <span class="pillar-name">Seeing real problems clearly</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="pillar-weeks">Weeks 5–6</span>
+            <span class="pillar-toggle">&#8964;</span>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-goal">
+            <p class="pillar-goal-label">Goal</p>
+            <p class="pillar-goal-text">Clarity of environment — participants identify a real, specific problem around them.</p>
+          </div>
+          <div class="pillar-rows">
+            <div class="pillar-col">
+              <p class="pillar-col-label">Cohort Objective</p>
+              <div class="pillar-col-item">Move from vague frustrations to named, specific problems</div>
+              <div class="pillar-col-item">Practise observing with precision — not complaint, but diagnosis</div>
+            </div>
+            <div class="pillar-col">
+              <p class="pillar-col-label">Output</p>
+              <div class="pillar-col-item">Problem breakdown — a named issue with evidence</div>
+              <div class="pillar-col-item">Observational insight shared in cohort session</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-card" onclick="toggle(this)">
+        <div class="pillar-head">
+          <div class="pillar-head-left">
+            <span class="pillar-badge b-coral">Solution Thinking</span>
+            <span class="pillar-name">Moving from complaints to clarity</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="pillar-weeks">Weeks 7–8</span>
+            <span class="pillar-toggle">&#8964;</span>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-goal">
+            <p class="pillar-goal-label">Goal</p>
+            <p class="pillar-goal-text">Clarity of reasoning — participants diagnose problems and propose thoughtful responses.</p>
+          </div>
+          <div class="pillar-rows">
+            <div class="pillar-col">
+              <p class="pillar-col-label">Cohort Objective</p>
+              <div class="pillar-col-item">Apply structured thinking to the problem identified in Pillar 3</div>
+              <div class="pillar-col-item">Distinguish symptoms from root causes</div>
+            </div>
+            <div class="pillar-col">
+              <p class="pillar-col-label">Output</p>
+              <div class="pillar-col-item">"What's really going on here" — case-style breakdown</div>
+              <div class="pillar-col-item">Written or recorded problem-solution framing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillar">
+      <div class="pillar-card" onclick="toggle(this)">
+        <div class="pillar-head">
+          <div class="pillar-head-left">
+            <span class="pillar-badge b-teal">Voice & Responsibility</span>
+            <span class="pillar-name">Owning ideas and expressing them</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="pillar-weeks">Weeks 9–12</span>
+            <span class="pillar-toggle">&#8964;</span>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <div class="pillar-goal">
+            <p class="pillar-goal-label">Goal</p>
+            <p class="pillar-goal-text">Clarity of expression — participants clearly express an idea and stand behind it publicly.</p>
+          </div>
+          <div class="pillar-rows">
+            <div class="pillar-col">
+              <p class="pillar-col-label">Cohort Objective</p>
+              <div class="pillar-col-item">Articulate a well-reasoned position on a real issue</div>
+              <div class="pillar-col-item">Understand that voice carries responsibility, not just visibility</div>
+            </div>
+            <div class="pillar-col">
+              <p class="pillar-col-label">Output (Capstone)</p>
+              <div class="pillar-col-item">Recorded talk or presentation — archived on MUI platforms</div>
+              <div class="pillar-col-item">Shared content — the voice is now on record</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OUTPUT SYSTEM -->
+  <div class="sec-header">
+    <div class="sec-number">3</div>
+    <p class="sec-title">The Output System — 3 Levels</p>
+  </div>
+
+  <div class="output-grid">
+    <div class="output-card l1">
+      <p class="output-level">Level 1</p>
+      <p class="output-name">Personal</p>
+      <div class="output-items">
+        Reflections<br>
+        Formation notes<br>
+        Internal clarity work
+      </div>
+      <p class="output-result">Transformation inside — the individual changes.</p>
+    </div>
+    <div class="output-card l2">
+      <p class="output-level">Level 2</p>
+      <p class="output-name">Expression</p>
+      <div class="output-items">
+        Short videos<br>
+        Written insights<br>
+        Cohort discussions
+      </div>
+      <p class="output-result">Voice develops — ideas begin to travel.</p>
+    </div>
+    <div class="output-card l3">
+      <p class="output-level">Level 3</p>
+      <p class="output-name">Public Capstone</p>
+      <div class="output-items">
+        Recorded presentations<br>
+        Published content<br>
+        Documented ideas
+      </div>
+      <p class="output-result">Influence + visibility — the voice is on record.</p>
+    </div>
+  </div>
+
+  <!-- RHYTHM -->
+  <div class="sec-header">
+    <div class="sec-number">4</div>
+    <p class="sec-title">Cohort Rhythm</p>
+  </div>
+
+  <div class="rhythm" style="margin-bottom: 40px;">
+    <div class="rhythm-card">
+      <p class="rhythm-freq">Weekly</p>
+      <p class="rhythm-title">Personal formation tasks</p>
+      <p class="rhythm-desc">Not assignments. Structured exercises in honest self-examination — completed independently before each session.</p>
+    </div>
+    <div class="rhythm-card">
+      <p class="rhythm-freq">Monthly</p>
+      <p class="rhythm-title">Closed cohort session</p>
+      <p class="rhythm-desc">The heartbeat of the programme. Facilitated, intercampus, online. Real thinking — not a webinar.</p>
+    </div>
+    <div class="rhythm-card">
+      <p class="rhythm-freq">Ongoing</p>
+      <p class="rhythm-title">Accountability & tracking</p>
+      <p class="rhythm-desc">Every participant is accountable to their mentor and to each other. Growth that is not tracked does not compound.</p>
+    </div>
+  </div>
+
+  <!-- GOALS -->
+  <div class="sec-header">
+    <div class="sec-number">5</div>
+    <p class="sec-title">Cohort Goals</p>
+  </div>
+
+  <div class="goals-grid">
+    <div class="goal-card goal-primary">
+      <p class="goal-label">Primary Goal</p>
+      <p class="goal-text">Develop clear thinkers with responsible voices.</p>
+    </div>
+    <div class="goal-card">
+      <p class="goal-label">By end of 12 weeks, each participant will:</p>
+      <div class="goal-item"><span class="goal-check">✓</span>Understand themselves and the belief systems that shaped them</div>
+      <div class="goal-item"><span class="goal-check">✓</span>Think critically about ideas — distinguishing information from wisdom</div>
+      <div class="goal-item"><span class="goal-check">✓</span>Identify a real-world problem with precision</div>
+    </div>
+    <div class="goal-card">
+      <p class="goal-label">And they will be able to:</p>
+      <div class="goal-item"><span class="goal-check">✓</span>Break down an issue clearly — root cause, not just symptom</div>
+      <div class="goal-item"><span class="goal-check">✓</span>Express an idea confidently and stand behind it</div>
+      <div class="goal-item"><span class="goal-check">✓</span>Produce public content that is documented and shareable</div>
+    </div>
+  </div>
+
+  <!-- DESIGN NOTE -->
+  <div class="design-note">
+    <p class="design-note-label">Why Online & Intercampus</p>
+    <p class="design-note-text">The cohort is fully online and spans multiple campuses simultaneously — by design, not default. Campus clubs create institutional friction: approval processes, physical logistics, single-campus access. A student at a TVET in Kisumu and a student at a university in Nairobi walk the same formation journey, at the same time. The result is also richer: cohort members are formed alongside peers from different institutions, disciplines, and realities. That diversity is part of the formation.</p>
+    <div class="design-note-tags">
+      <span class="tag">2 cohorts / year</span>
+      <span class="tag">1 semester (3 months)</span>
+      <span class="tag">15–25 participants per cohort</span>
+      <span class="tag">Fully online</span>
+      <span class="tag">Intercampus</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggle(card) {
+  const wasActive = card.classList.contains('active');
+  document.querySelectorAll('.pillar-card').forEach(c => c.classList.remove('active'));
+  if (!wasActive) card.classList.add('active');
+}
+</script>

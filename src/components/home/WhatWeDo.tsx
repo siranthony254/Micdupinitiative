@@ -38,14 +38,12 @@ export function WhatWeDo() {
   <div className="mx-auto max-w-7xl px-6 py-20">
     
     {/* Intro */}
-    <div className="mb-14 max-w-3xl">
+    <div className="mb-14 max-w-3xl text-center">
       <h2 className="text-3xl font-bold text-white">
         What We Do As MUI
       </h2>
       <p className="mt-4 text-lg text-white/70">
-        Mic’d Up Initiative is a campus-centered movement that discovers
-        voices, shapes leaders, hosts dialogue, and produces insight—turning
-        youth expression into societal impact across Africa.
+        Mic'd Up Initiative is a campus-centered movement that discovers voices, shapes leaders, hosts dialogue, and produces insight—turning youth expression into societal impact across Africa and beyond.
       </p>
     </div>
 

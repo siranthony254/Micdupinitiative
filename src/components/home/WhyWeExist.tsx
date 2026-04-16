@@ -6,6 +6,7 @@ export default function WhyWeExist() {
   <div className="mx-auto max-w-7xl px-6 py-7">
 
     {/* Eyebrow */}
+    
     <span className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
       Our Purpose
     </span>

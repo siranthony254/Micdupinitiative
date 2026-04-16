@@ -38,11 +38,15 @@ export default function WhyThisMatters() {
           <div className="max-w-4xl mx-auto">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
               <p className="text-lg md:text-xl text-white/90 leading-relaxed mb-6">
-                Africa has the youngest population on earth — more than 400 million people between 15 and 35. By 2050, that number will exceed 830 million. This is either the greatest resource in human history, or the greatest unmanaged risk — depending entirely on what happens to those young people during their formation years.
+                Africa has the youngest population on earth — more than 400 million people between 15 and 35. 
+                By 2050, that number will exceed 830 million. This is either the greatest 
+                resource in human history, or the greatest unmanaged risk — 
+                depending entirely on what happens to those young people during their formation years.
               </p>
               
               <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-                Campuses are formation ground. And right now, formation is broken. We are not waiting for governments to fix it. We are building the fix from inside.
+                Campuses are formation ground. And right now, formation is broken.
+                We are not waiting for governments to fix it. We are building the fix from inside.
               </p>
             </div>
           </div>
