@@ -101,7 +101,7 @@ const pillars = [
     outputLabel: "Output (Capstone)",
     outputs: [
       "Recorded talk or presentation - archived on MUI platforms",
-      "Shared content - the voice is now on record",
+       "Shared content - the voice is now on record",
     ],
   },
 ] as const;
@@ -114,7 +114,7 @@ const outputLevels = [
     items: ["Reflections", "Formation notes", "Internal clarity work"],
     result: "Transformation inside - the individual changes.",
   },
-  {
+   {
     levelClass: "levelTwo",
     level: "Level 2",
     name: "Expression",
@@ -162,7 +162,7 @@ const goalGroups = [
     items: [
       "Break down an issue clearly - root cause, not just symptom",
       "Express an idea confidently and stand behind it",
-      "Produce public content that is documented and shareable",
+       "Produce public content that is documented and shareable",
     ],
   },
 ] as const;
