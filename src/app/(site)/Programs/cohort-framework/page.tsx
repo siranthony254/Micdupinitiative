@@ -3,22 +3,14 @@
 import { useState } from "react";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-});
-
-const dmSerif = DM_Serif_Display({
-  subsets: ["latin"],
-  weight: "400",
-});
+const sans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500"] });
+const serif = DM_Serif_Display({ subsets: ["latin"], weight: "400" });
 
 const pillars = [
   {
-    badgeClass: "badgePurple",
     badge: "Identity",
-    name: "Understanding self & belief systems",
     weeks: "Weeks 1-2",
+    name: "Understanding self & belief systems",
     goal:
       'Clarity of self - participants articulate: "This is what has shaped how I think."',
     objectiveLabel: "Cohort Objective",
@@ -31,12 +23,12 @@ const pillars = [
       'Personal reflection: "My thinking has been shaped by..."',
       "Short video or written post on formative influences",
     ],
+    badgeStyle: "bg-[#26215c] text-[#afa9ec]",
   },
   {
-    badgeClass: "badgeAmber",
     badge: "Understanding",
-    name: "Rethinking education & knowledge",
     weeks: "Weeks 3-4",
+    name: "Rethinking education & knowledge",
     goal:
       "Clarity of thinking - participants distinguish information, understanding, and wisdom.",
     objectiveLabel: "Cohort Objective",
@@ -49,12 +41,12 @@ const pillars = [
       '"What it means to be truly educated" - insight post or short essay',
       "Cohort discussion thread on the purpose of university",
     ],
+    badgeStyle: "bg-[#412402] text-[#fac775]",
   },
   {
-    badgeClass: "badgeBlue",
     badge: "Awareness",
-    name: "Seeing real problems clearly",
     weeks: "Weeks 5-6",
+    name: "Seeing real problems clearly",
     goal:
       "Clarity of environment - participants identify a real, specific problem around them.",
     objectiveLabel: "Cohort Objective",
@@ -67,12 +59,12 @@ const pillars = [
       "Problem breakdown - a named issue with evidence",
       "Observational insight shared in cohort session",
     ],
+    badgeStyle: "bg-[#042c53] text-[#85b7eb]",
   },
   {
-    badgeClass: "badgeCoral",
     badge: "Solution Thinking",
-    name: "Moving from complaints to clarity",
     weeks: "Weeks 7-8",
+    name: "Moving from complaints to clarity",
     goal:
       "Clarity of reasoning - participants diagnose problems and propose thoughtful responses.",
     objectiveLabel: "Cohort Objective",
@@ -82,15 +74,15 @@ const pillars = [
     ],
     outputLabel: "Output",
     outputs: [
-      '"What\'s really going on here" - case-style breakdown',
+      `"What's really going on here" - case-style breakdown`,
       "Written or recorded problem-solution framing",
     ],
+    badgeStyle: "bg-[#4a1b0c] text-[#f0997b]",
   },
   {
-    badgeClass: "badgeTeal",
     badge: "Voice & Responsibility",
-    name: "Owning ideas and expressing them",
     weeks: "Weeks 9-12",
+    name: "Owning ideas and expressing them",
     goal:
       "Clarity of expression - participants clearly express an idea and stand behind it publicly.",
     objectiveLabel: "Cohort Objective",
@@ -101,28 +93,26 @@ const pillars = [
     outputLabel: "Output (Capstone)",
     outputs: [
       "Recorded talk or presentation - archived on MUI platforms",
-       "Shared content - the voice is now on record",
+      "Shared content - the voice is now on record",
     ],
+    badgeStyle: "bg-[#04342c] text-[#5dcaa5]",
   },
 ] as const;
 
 const outputLevels = [
   {
-    levelClass: "levelOne",
     level: "Level 1",
     name: "Personal",
     items: ["Reflections", "Formation notes", "Internal clarity work"],
     result: "Transformation inside - the individual changes.",
   },
-   {
-    levelClass: "levelTwo",
+  {
     level: "Level 2",
     name: "Expression",
     items: ["Short videos", "Written insights", "Cohort discussions"],
     result: "Voice develops - ideas begin to travel.",
   },
   {
-    levelClass: "levelThree",
     level: "Level 3",
     name: "Public Capstone",
     items: ["Recorded presentations", "Published content", "Documented ideas"],
@@ -162,7 +152,7 @@ const goalGroups = [
     items: [
       "Break down an issue clearly - root cause, not just symptom",
       "Express an idea confidently and stand behind it",
-       "Produce public content that is documented and shareable",
+      "Produce public content that is documented and shareable",
     ],
   },
 ] as const;
@@ -178,92 +168,259 @@ const tags = [
 const preparedBy = "Prepared by Sir Anthony --- Founder and President MUI";
 const preparedDate = "April 16, 2026";
 
-function SectionHeader({
-  number,
-  title,
-}: {
-  number: string;
-  title: string;
-}) {
+const pdfW = 595.28;
+const pdfH = 841.89;
+const margin = 48;
+
+const escapePdf = (value: string) =>
+  value.replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
+
+const pdfColor = (r: number, g: number, b: number) =>
+  `${(r / 255).toFixed(3)} ${(g / 255).toFixed(3)} ${(b / 255).toFixed(3)}`;
+
+function wrapPdfText(text: string, width: number, size: number) {
+  const words = text.trim().split(/\s+/);
+  const limit = Math.max(14, Math.floor(width / (size * 0.52)));
+  const lines: string[] = [];
+  let current = "";
+  for (const word of words) {
+    const next = current ? `${current} ${word}` : word;
+    if (next.length <= limit) current = next;
+    else {
+      if (current) lines.push(current);
+      current = word;
+    }
+  }
+  if (current) lines.push(current);
+  return lines;
+}
+
+function buildFrameworkPdf() {
+  const pages: string[] = [];
+  let y = pdfH - margin;
+  let page = 0;
+  let cmds: string[] = [];
+
+  const newPage = () => {
+    page += 1;
+    y = pdfH - margin;
+    cmds = [
+      `1 1 1 rg 0 0 ${pdfW} ${pdfH} re f`,
+      `${pdfColor(218, 231, 225)} rg 0 ${pdfH - 18} ${pdfW} 18 re f`,
+    ];
+  };
+
+  const closePage = () => {
+    cmds.push(
+      `BT /F1 9 Tf ${pdfColor(124, 132, 126)} rg 1 0 0 1 ${margin} 22 Tm (${escapePdf(preparedBy)}) Tj ET`,
+      `BT /F1 9 Tf ${pdfColor(124, 132, 126)} rg 1 0 0 1 ${pdfW - 130} 22 Tm (Page ${page}) Tj ET`
+    );
+    pages.push(cmds.join("\n"));
+  };
+
+  const ensure = (height: number) => {
+    if (y - height < margin) {
+      closePage();
+      newPage();
+    }
+  };
+
+  const line = (
+    text: string,
+    x: number,
+    py: number,
+    size: number,
+    font: "F1" | "F2" | "F3",
+    color: string
+  ) => {
+    cmds.push(
+      `BT /${font} ${size} Tf ${color} rg 1 0 0 1 ${x} ${py} Tm (${escapePdf(text)}) Tj ET`
+    );
+  };
+
+  const paragraph = (
+    text: string,
+    opts: {
+      x?: number;
+      width?: number;
+      size?: number;
+      leading?: number;
+      font?: "F1" | "F2" | "F3";
+      color?: string;
+      after?: number;
+    } = {}
+  ) => {
+    const width = opts.width ?? pdfW - margin * 2;
+    const size = opts.size ?? 11;
+    const leading = opts.leading ?? 15;
+    const font = opts.font ?? "F1";
+    const color = opts.color ?? pdfColor(60, 68, 63);
+    const after = opts.after ?? 8;
+    const x = opts.x ?? margin;
+    const lines = wrapPdfText(text, width, size);
+    ensure(lines.length * leading + after);
+    for (const item of lines) {
+      line(item, x, y, size, font, color);
+      y -= leading;
+    }
+    y -= after;
+  };
+
+  const bullets = (items: readonly string[]) => {
+    for (const item of items) {
+      const lines = wrapPdfText(item, pdfW - margin * 2 - 12, 10.5);
+      ensure(lines.length * 14 + 4);
+      line("-", margin, y, 11, "F2", pdfColor(29, 158, 117));
+      lines.forEach((txt, i) => line(txt, margin + 12, y - i * 14, 10.5, "F1", pdfColor(62, 70, 65)));
+      y -= lines.length * 14 + 2;
+    }
+    y -= 4;
+  };
+
+  const section = (number: string, title: string) => {
+    ensure(34);
+    cmds.push(
+      `${pdfColor(29, 158, 117)} rg ${margin} ${y - 8} 22 22 re f`,
+      `${pdfColor(14, 81, 63)} rg ${margin + 28} ${y - 4} ${pdfW - margin * 2 - 28} 14 re f`
+    );
+    line(number, margin + 7, y - 1, 10, "F2", pdfColor(255, 255, 255));
+    line(title, margin + 34, y - 1, 10.5, "F2", pdfColor(255, 255, 255));
+    y -= 34;
+  };
+
+  const card = (heading: string, body: string[], emphasis = false) => {
+    const fill = emphasis ? pdfColor(225, 245, 238) : pdfColor(244, 248, 246);
+    const stroke = emphasis ? pdfColor(159, 225, 203) : pdfColor(205, 221, 214);
+    const titleColor = emphasis ? pdfColor(26, 58, 46) : pdfColor(15, 110, 86);
+    const bodyLines = body.flatMap((item) => wrapPdfText(item, pdfW - margin * 2 - 24, 10.5));
+    const height = 20 + bodyLines.length * 14 + 10;
+    ensure(height);
+    cmds.push(
+      `${fill} rg ${margin} ${y - height + 10} ${pdfW - margin * 2} ${height} re f`,
+      `${stroke} RG 1 w ${margin} ${y - height + 10} ${pdfW - margin * 2} ${height} re S`
+    );
+    line(heading, margin + 12, y - 6, 10, "F2", titleColor);
+    let innerY = y - 22;
+    for (const item of bodyLines) {
+      line(item, margin + 12, innerY, 10.5, "F1", pdfColor(62, 70, 65));
+      innerY -= 14;
+    }
+    y -= height + 8;
+  };
+
+  newPage();
+  cmds.push(`${pdfColor(15, 110, 86)} rg ${margin} ${y - 94} ${pdfW - margin * 2} 94 re f`);
+  line("MUI - Internal Framework", margin + 18, y - 22, 11, "F2", pdfColor(225, 245, 238));
+  line("The Cohort Framework", margin + 18, y - 50, 24, "F3", pdfColor(255, 255, 255));
+  line(`Date: ${preparedDate}`, margin + 18, y - 74, 10, "F1", pdfColor(225, 245, 238));
+  y -= 118;
+
+  paragraph(
+    "A 12-week, fully online, intercampus formation journey structured across 5 pillars, 3 output levels, and a weekly rhythm designed for depth without institutional friction.",
+    { size: 11.5, leading: 16, color: pdfColor(83, 92, 87), after: 14 }
+  );
+
+  card(
+    "Core Objective - The Why",
+    ["Form individuals who can think clearly, identify real problems, and use their voice to influence responsibly."],
+    true
+  );
+
+  section("2", "The 5 Pillars - 12-Week Structure");
+  pillars.forEach((pillar, index) =>
+    card(`${index + 1}. ${pillar.badge} | ${pillar.name} | ${pillar.weeks}`, [
+      `Goal: ${pillar.goal}`,
+      `${pillar.objectiveLabel}: ${pillar.objectives.join("; ")}`,
+      `${pillar.outputLabel}: ${pillar.outputs.join("; ")}`,
+    ])
+  );
+
+  section("3", "The Output System - 3 Levels");
+  outputLevels.forEach((item) =>
+    card(`${item.level} - ${item.name}`, [
+      `Includes: ${item.items.join(", ")}`,
+      `Result: ${item.result}`,
+    ])
+  );
+
+  section("4", "Cohort Rhythm");
+  rhythmCards.forEach((item) => card(`${item.freq} - ${item.title}`, [item.desc]));
+
+  section("5", "Cohort Goals");
+  card("Primary Goal", ["Develop clear thinkers with responsible voices."], true);
+  goalGroups.forEach((group) => {
+    ensure(28);
+    line(group.label, margin, y, 10.5, "F2", pdfColor(15, 110, 86));
+    y -= 18;
+    bullets(group.items);
+  });
+
+  card("Why Online & Intercampus", [
+    "The cohort is fully online and spans multiple campuses simultaneously by design, not default. Campus clubs create institutional friction: approval processes, physical logistics, single-campus access. A student at a TVET in Kisumu and a student at a university in Nairobi walk the same formation journey, at the same time. The result is also richer: cohort members are formed alongside peers from different institutions, disciplines, and realities. That diversity is part of the formation.",
+  ]);
+
+  ensure(80);
+  line("Framework Notes", margin, y, 10.5, "F2", pdfColor(15, 110, 86));
+  y -= 18;
+  bullets(tags);
+  paragraph(preparedBy, { size: 10.5, font: "F2", color: pdfColor(26, 58, 46), after: 2 });
+  paragraph(`Date: ${preparedDate}`, { size: 10, color: pdfColor(83, 92, 87), after: 0 });
+  closePage();
+
+  const objects: string[] = [];
+  objects[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+  objects[2] = `<< /Type /Pages /Count ${pages.length} /Kids [${pages.map((_, i) => `${6 + i * 2} 0 R`).join(" ")}] >>`;
+  objects[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+  objects[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>";
+  objects[5] = "<< /Type /Font /Subtype /Type1 /BaseFont /Times-Roman >>";
+
+  pages.forEach((content, i) => {
+    const pageId = 6 + i * 2;
+    const streamId = pageId + 1;
+    objects[pageId] =
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pdfW} ${pdfH}] ` +
+      `/Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents ${streamId} 0 R >>`;
+    objects[streamId] = `<< /Length ${content.length} >>\nstream\n${content}\nendstream`;
+  });
+
+  let pdf = "%PDF-1.4\n";
+  const offsets: number[] = [0];
+  for (let i = 1; i < objects.length; i += 1) {
+    offsets[i] = pdf.length;
+    pdf += `${i} 0 obj\n${objects[i]}\nendobj\n`;
+  }
+  const xref = pdf.length;
+  pdf += `xref\n0 ${objects.length}\n0000000000 65535 f \n`;
+  for (let i = 1; i < objects.length; i += 1) {
+    pdf += `${String(offsets[i]).padStart(10, "0")} 00000 n \n`;
+  }
+  pdf += `trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+
+  return new Blob([new TextEncoder().encode(pdf)], { type: "application/pdf" });
+}
+
+function SectionHeader({ number, title }: { number: string; title: string }) {
   return (
-    <div className="sectionHeader">
-      <div className="sectionNumber">{number}</div>
-      <p className="sectionTitle">{title}</p>
+    <div className="mb-4 flex items-center gap-3">
+      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-600 text-xs font-medium text-white">
+        {number}
+      </div>
+      <p className="text-[13px] font-medium uppercase tracking-[0.08em] text-white/75">
+        {title}
+      </p>
     </div>
   );
 }
 
 export default function CohortFrameworkPage() {
-  const [activePillar, setActivePillar] = useState(0);
-
-  const togglePillar = (index: number) => {
-    setActivePillar((current) => (current === index ? -1 : index));
-  };
+  const [active, setActive] = useState(0);
 
   const downloadFramework = () => {
-    const frameworkText = [
-      "The Cohort Framework",
-      "",
-      "MUI - Internal Framework",
-      "",
-      "A 12-week, fully online, intercampus formation journey - structured across 5 pillars, 3 output levels, and a weekly rhythm designed for depth without institutional friction.",
-      "",
-      "Core Objective - The Why",
-      "Form individuals who can think clearly, identify real problems, and use their voice to influence responsibly.",
-      "",
-      "The 5 Pillars - 12-Week Structure",
-      "",
-      ...pillars.flatMap((pillar) => [
-        `${pillar.badge} | ${pillar.name} | ${pillar.weeks}`,
-        `Goal: ${pillar.goal}`,
-        `${pillar.objectiveLabel}:`,
-        ...pillar.objectives.map((item) => `- ${item}`),
-        `${pillar.outputLabel}:`,
-        ...pillar.outputs.map((item) => `- ${item}`),
-        "",
-      ]),
-      "The Output System - 3 Levels",
-      "",
-      ...outputLevels.flatMap((output) => [
-        `${output.level}: ${output.name}`,
-        ...output.items.map((item) => `- ${item}`),
-        `Result: ${output.result}`,
-        "",
-      ]),
-      "Cohort Rhythm",
-      "",
-      ...rhythmCards.flatMap((card) => [
-        `${card.freq}: ${card.title}`,
-        card.desc,
-        "",
-      ]),
-      "Cohort Goals",
-      "",
-      "Primary Goal:",
-      "Develop clear thinkers with responsible voices.",
-      "",
-      ...goalGroups.flatMap((group) => [
-        group.label,
-        ...group.items.map((item) => `- ${item}`),
-        "",
-      ]),
-      "Why Online & Intercampus",
-      "The cohort is fully online and spans multiple campuses simultaneously - by design, not default. Campus clubs create institutional friction: approval processes, physical logistics, single-campus access. A student at a TVET in Kisumu and a student at a university in Nairobi walk the same formation journey, at the same time. The result is also richer: cohort members are formed alongside peers from different institutions, disciplines, and realities. That diversity is part of the formation.",
-      "",
-      "Framework Notes:",
-      ...tags.map((tag) => `- ${tag}`),
-      "",
-      preparedBy,
-      `Date: ${preparedDate}`,
-    ].join("\n");
-
-    const blob = new Blob([frameworkText], {
-      type: "text/plain;charset=utf-8",
-    });
+    const blob = buildFrameworkPdf();
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "MUI_Cohort_Framework.txt";
+    link.download = "MUI_Cohort_Framework.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -271,73 +428,83 @@ export default function CohortFrameworkPage() {
   };
 
   return (
-    <section className={`frameworkPage ${dmSans.className}`}>
-      <div className="wrap">
-        <p className="eyebrow">MUI - Internal Framework</p>
-        <h1 className={`heroTitle ${dmSerif.className}`}>The Cohort Framework</h1>
-        <p className="heroSub">
-          A 12-week, fully online, intercampus formation journey - structured
-          across 5 pillars, 3 output levels, and a weekly rhythm designed for
-          depth without institutional friction.
+    <section className={`${sans.className} min-h-screen bg-[#080808] px-4 py-10 text-[#f6f3ec] sm:px-6`}>
+      <div className="mx-auto max-w-[720px]">
+        <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-400">
+          MUI - Internal Framework
+        </p>
+        <h1 className={`${serif.className} mb-2 text-[clamp(2rem,3.8vw,2.8rem)] leading-[1.15]`}>
+          The Cohort Framework
+        </h1>
+        <p className="mb-8 max-w-[480px] text-[13px] leading-6 text-white/75">
+          A 12-week, fully online, intercampus formation journey - structured across 5 pillars,
+          3 output levels, and a weekly rhythm designed for depth without institutional friction.
         </p>
 
-        <div className="coreObjective">
-          <p className="label">Core Objective - The Why</p>
-          <p className={`statement ${dmSerif.className}`}>
-            Form individuals who can think clearly, identify real problems, and
-            use their voice to influence responsibly.
+        <div className="mb-9 rounded-r-[14px] border-l-[3px] border-emerald-500 bg-emerald-50/10 px-5 py-4">
+          <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.12em] text-emerald-400">
+            Core Objective - The Why
+          </p>
+          <p className={`${serif.className} text-[17px] leading-[1.45] text-[#9fe1cb]`}>
+            Form individuals who can think clearly, identify real problems, and use their voice to
+            influence responsibly.
           </p>
         </div>
 
         <SectionHeader number="2" title="The 5 Pillars - 12-Week Structure" />
-
-        <div className="pillars">
+        <div className="relative mb-10 pl-5 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[2px] before:rounded before:bg-gradient-to-b before:from-emerald-500 before:to-emerald-200">
           {pillars.map((pillar, index) => {
-            const isActive = activePillar === index;
-
+            const open = active === index;
             return (
-              <div key={pillar.name} className="pillar">
+              <div key={pillar.name} className="relative">
+                <div className="absolute -left-6 top-4 h-2 w-2 rounded-full border-2 border-[#080808] bg-emerald-500 shadow-[0_0_0_1px_#1d9e75]" />
                 <button
                   type="button"
-                  className={`pillarCard ${isActive ? "active" : ""}`}
-                  onClick={() => togglePillar(index)}
-                  aria-expanded={isActive}
+                  onClick={() => setActive((current) => (current === index ? -1 : index))}
+                  className={`mb-3 w-full rounded-[18px] border bg-white/[0.03] text-left transition ${
+                    open ? "border-emerald-500" : "border-white/10 hover:border-emerald-300"
+                  }`}
                 >
-                  <div className="pillarHead">
-                    <div className="pillarHeadLeft">
-                      <span className={`pillarBadge ${pillar.badgeClass}`}>
+                  <div className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span className={`rounded px-2 py-1 text-[10px] font-medium uppercase tracking-[0.1em] ${pillar.badgeStyle}`}>
                         {pillar.badge}
                       </span>
-                      <span className="pillarName">{pillar.name}</span>
+                      <span className="text-sm font-medium text-white">{pillar.name}</span>
                     </div>
-                    <div className="pillarMeta">
-                      <span className="pillarWeeks">{pillar.weeks}</span>
-                      <span className="pillarToggle">⌄</span>
+                    <div className="flex items-center justify-between gap-3 text-xs text-white/55 sm:justify-end">
+                      <span>{pillar.weeks}</span>
+                      <span className={`transition ${open ? "rotate-180" : ""}`}>v</span>
                     </div>
                   </div>
-
-                  {isActive && (
-                    <div className="pillarBody">
-                      <div className="pillarGoal">
-                        <p className="pillarGoalLabel">Goal</p>
-                        <p className="pillarGoalText">{pillar.goal}</p>
+                  {open && (
+                    <div className="border-t border-white/10 bg-black/20 px-4 pb-4 pt-3">
+                      <div className="mb-3">
+                        <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.1em] text-white/55">
+                          Goal
+                        </p>
+                        <p className="text-[13px] leading-6 text-white/75">{pillar.goal}</p>
                       </div>
-
-                      <div className="pillarRows">
-                        <div className="pillarCol">
-                          <p className="pillarColLabel">{pillar.objectiveLabel}</p>
+                      <div className="grid gap-2 sm:grid-cols-2">
+                        <div className="rounded-[14px] bg-white/[0.04] p-3">
+                          <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.1em] text-white/55">
+                            {pillar.objectiveLabel}
+                          </p>
                           {pillar.objectives.map((item) => (
-                            <div key={item} className="pillarColItem">
-                              {item}
+                            <div key={item} className="flex gap-2 text-xs leading-6 text-white/75">
+                              <span className="text-emerald-300">-</span>
+                              <span>{item}</span>
                             </div>
                           ))}
                         </div>
-
-                        <div className="pillarCol">
-                          <p className="pillarColLabel">{pillar.outputLabel}</p>
+                        <div className="rounded-[14px] bg-white/[0.04] p-3">
+                          <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.1em] text-white/55">
+                            {pillar.outputLabel}
+                          </p>
                           {pillar.outputs.map((item) => (
-                            <div key={item} className="pillarColItem">
-                              {item}
+                            <div key={item} className="flex gap-2 text-xs leading-6 text-white/75">
+                              <span className="text-emerald-300">-</span>
+                              <span>{item}</span>
                             </div>
                           ))}
                         </div>
@@ -351,50 +518,63 @@ export default function CohortFrameworkPage() {
         </div>
 
         <SectionHeader number="3" title="The Output System - 3 Levels" />
-
-        <div className="outputGrid">
-          {outputLevels.map((output) => (
-            <div key={output.level} className={`outputCard ${output.levelClass}`}>
-              <p className="outputLevel">{output.level}</p>
-              <p className={`outputName ${dmSerif.className}`}>{output.name}</p>
-              <div className="outputItems">
-                {output.items.map((item) => (
-                  <div key={item}>{item}</div>
+        <div className="mb-10 grid gap-3 sm:grid-cols-3">
+          {outputLevels.map((item, index) => (
+            <div key={item.level} className="relative rounded-[18px] border border-white/10 bg-white/[0.03] p-4">
+              <div
+                className={`absolute inset-x-0 top-0 h-[3px] rounded-t-[18px] ${
+                  index === 0 ? "bg-emerald-300" : index === 1 ? "bg-amber-400" : "bg-emerald-800"
+                }`}
+              />
+              <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.12em] text-emerald-400">
+                {item.level}
+              </p>
+              <p className={`${serif.className} mb-2 text-base`}>{item.name}</p>
+              <div className="text-[11px] leading-7 text-white/75">
+                {item.items.map((entry) => (
+                  <div key={entry}>{entry}</div>
                 ))}
               </div>
-              <p className="outputResult">{output.result}</p>
+              <p className="mt-3 border-t border-white/10 pt-3 text-[11px] italic text-white/55">
+                {item.result}
+              </p>
             </div>
           ))}
         </div>
 
         <SectionHeader number="4" title="Cohort Rhythm" />
-
-        <div className="rhythm">
-          {rhythmCards.map((card) => (
-            <div key={card.title} className="rhythmCard">
-              <p className="rhythmFreq">{card.freq}</p>
-              <p className="rhythmTitle">{card.title}</p>
-              <p className="rhythmDesc">{card.desc}</p>
+        <div className="mb-10 grid gap-3 sm:grid-cols-3">
+          {rhythmCards.map((item) => (
+            <div key={item.title} className="rounded-[14px] border border-white/10 bg-white/[0.04] p-4">
+              <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.12em] text-emerald-400">
+                {item.freq}
+              </p>
+              <p className="mb-1 text-[13px] font-medium text-white">{item.title}</p>
+              <p className="text-[11px] leading-6 text-white/75">{item.desc}</p>
             </div>
           ))}
         </div>
 
         <SectionHeader number="5" title="Cohort Goals" />
-
-        <div className="goalsGrid">
-          <div className="goalCard goalPrimary">
-            <p className="goalLabel">Primary Goal</p>
-            <p className={`goalText ${dmSerif.className}`}>
+        <div className="mb-10 grid gap-3 sm:grid-cols-2">
+          <div className="sm:col-span-2 rounded-[14px] border border-emerald-200/30 bg-emerald-50/10 p-4">
+            <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.12em] text-emerald-400">
+              Primary Goal
+            </p>
+            <p className={`${serif.className} text-lg leading-[1.3] text-[#9fe1cb]`}>
               Develop clear thinkers with responsible voices.
             </p>
           </div>
-
           {goalGroups.map((group) => (
-            <div key={group.label} className="goalCard">
-              <p className="goalLabel">{group.label}</p>
+            <div key={group.label} className="rounded-[14px] border border-white/10 bg-white/[0.03] p-4">
+              <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.12em] text-white/55">
+                {group.label}
+              </p>
               {group.items.map((item) => (
-                <div key={item} className="goalItem">
-                  <span className="goalCheck">✓</span>
+                <div key={item} className="mb-2 flex gap-2 text-xs leading-6 text-white/75">
+                  <span className="mt-1 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-emerald-500 text-[8px] text-white">
+                    ✓
+                  </span>
                   <span>{item}</span>
                 </div>
               ))}
@@ -402,605 +582,39 @@ export default function CohortFrameworkPage() {
           ))}
         </div>
 
-        <div className="designNote">
-          <p className="designNoteLabel">Why Online & Intercampus</p>
-          <p className="designNoteText">
-            The cohort is fully online and spans multiple campuses
-            simultaneously - by design, not default. Campus clubs create
-            institutional friction: approval processes, physical logistics,
-            single-campus access. A student at a TVET in Kisumu and a student
-            at a university in Nairobi walk the same formation journey, at the
-            same time. The result is also richer: cohort members are formed
-            alongside peers from different institutions, disciplines, and
-            realities. That diversity is part of the formation.
+        <div className="rounded-[14px] border border-white/10 bg-white/[0.04] p-4">
+          <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.12em] text-white/55">
+            Why Online & Intercampus
           </p>
-          <div className="designNoteTags">
+          <p className="text-[12px] leading-6 text-white/75">
+            The cohort is fully online and spans multiple campuses simultaneously - by design, not
+            default. Campus clubs create institutional friction: approval processes, physical
+            logistics, single-campus access. A student at a TVET in Kisumu and a student at a
+            university in Nairobi walk the same formation journey, at the same time. The result is
+            also richer: cohort members are formed alongside peers from different institutions,
+            disciplines, and realities. That diversity is part of the formation.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
             {tags.map((tag) => (
-              <span key={tag} className="tag">
+              <span key={tag} className="rounded-full bg-[#04342c] px-3 py-1 text-[11px] font-medium text-emerald-300">
                 {tag}
               </span>
             ))}
           </div>
         </div>
 
-        <div className="downloadSection">
-          <p className="downloadMeta">{preparedBy}</p>
-          <p className="downloadMeta">Date: {preparedDate}</p>
+        <div className="mt-8 border-t border-white/10 pt-6">
+          <p className="text-sm text-white/55">{preparedBy}</p>
+          <p className="mt-1 text-sm text-white/55">Date: {preparedDate}</p>
           <button
             type="button"
-            className="downloadButton"
             onClick={downloadFramework}
+            className="mt-4 rounded-full border border-emerald-300/40 bg-gradient-to-b from-emerald-500/25 to-emerald-800/30 px-5 py-3 text-sm font-medium text-white transition hover:-translate-y-px hover:border-emerald-300"
           >
-            Download Framework
+            Download Framework PDF
           </button>
         </div>
       </div>
-
-      <style jsx>{`
-        .frameworkPage {
-          --ink: #f6f3ec;
-          --muted: rgba(246, 243, 236, 0.76);
-          --hint: rgba(246, 243, 236, 0.54);
-          --surface: rgba(255, 255, 255, 0.04);
-          --line: rgba(255, 255, 255, 0.1);
-          --radius: 14px;
-          --p1: #1a3a2e;
-          --p2: #0f6e56;
-          --p3: #1d9e75;
-          --p4: #5dcaa5;
-          --p5: #9fe1cb;
-          --p6: #e1f5ee;
-          background:
-            radial-gradient(circle at top left, rgba(29, 158, 117, 0.12), transparent 30%),
-            linear-gradient(180deg, #040404 0%, #080808 100%);
-          color: var(--ink);
-          padding: 2.5rem 1.5rem 4rem;
-        }
-
-        .wrap {
-          max-width: 720px;
-          margin: 0 auto;
-        }
-
-        .eyebrow {
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-          color: var(--p4);
-          margin-bottom: 8px;
-        }
-
-        .heroTitle {
-          font-size: clamp(2rem, 3.8vw, 2.8rem);
-          font-weight: 400;
-          color: var(--ink);
-          line-height: 1.15;
-          margin-bottom: 6px;
-        }
-
-        .heroSub {
-          font-size: 13px;
-          color: var(--muted);
-          line-height: 1.6;
-          margin-bottom: 32px;
-          max-width: 480px;
-        }
-
-        .coreObjective {
-          border-left: 3px solid var(--p3);
-          padding: 16px 20px;
-          background: rgba(225, 245, 238, 0.09);
-          border-radius: 0 var(--radius) var(--radius) 0;
-          margin-bottom: 36px;
-        }
-
-        .label {
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: var(--p4);
-          margin-bottom: 6px;
-        }
-
-        .statement {
-          font-size: 17px;
-          color: #9fe1cb;
-          line-height: 1.45;
-        }
-
-        .sectionHeader {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          margin-bottom: 16px;
-        }
-
-        .sectionNumber {
-          width: 26px;
-          height: 26px;
-          border-radius: 999px;
-          background: var(--p3);
-          color: #fff;
-          font-size: 12px;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .sectionTitle {
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.08em;
-          text-transform: uppercase;
-          color: var(--muted);
-        }
-
-        .pillars {
-          position: relative;
-          padding-left: 20px;
-          margin-bottom: 40px;
-        }
-
-        .pillars::before {
-          content: "";
-          position: absolute;
-          left: 0;
-          top: 8px;
-          bottom: 8px;
-          width: 2px;
-          background: linear-gradient(to bottom, var(--p3), var(--p5));
-          border-radius: 2px;
-        }
-
-        .pillar {
-          position: relative;
-        }
-
-        .pillar::before {
-          content: "";
-          position: absolute;
-          left: -24px;
-          top: 14px;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: var(--p3);
-          border: 2px solid #080808;
-          box-shadow: 0 0 0 1px var(--p3);
-        }
-
-        .pillarCard {
-          width: 100%;
-          border: 0.5px solid var(--line);
-          border-radius: 18px;
-          overflow: hidden;
-          margin-bottom: 10px;
-          background: rgba(7, 7, 7, 0.85);
-          transition: border-color 0.2s ease;
-          text-align: left;
-        }
-
-        .pillarCard:hover {
-          border-color: var(--p4);
-        }
-
-        .pillarCard.active {
-          border-color: var(--p3);
-        }
-
-        .pillarHead {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 12px;
-          padding: 14px 16px;
-        }
-
-        .pillarHeadLeft {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          min-width: 0;
-        }
-
-        .pillarBadge {
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          padding: 3px 8px;
-          border-radius: 4px;
-          white-space: nowrap;
-        }
-
-        .badgePurple {
-          background: #26215c;
-          color: #afa9ec;
-        }
-
-        .badgeAmber {
-          background: #412402;
-          color: #fac775;
-        }
-
-        .badgeBlue {
-          background: #042c53;
-          color: #85b7eb;
-        }
-
-        .badgeCoral {
-          background: #4a1b0c;
-          color: #f0997b;
-        }
-
-        .badgeTeal {
-          background: #04342c;
-          color: #5dcaa5;
-        }
-
-        .pillarName {
-          font-weight: 500;
-          font-size: 14px;
-          color: var(--ink);
-        }
-
-        .pillarMeta {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          flex-shrink: 0;
-        }
-
-        .pillarWeeks {
-          font-size: 11px;
-          color: var(--hint);
-        }
-
-        .pillarToggle {
-          font-size: 16px;
-          color: var(--hint);
-          transition: transform 0.2s ease;
-          line-height: 1;
-        }
-
-        .pillarCard.active .pillarToggle {
-          transform: rotate(180deg);
-        }
-
-        .pillarBody {
-          padding: 0 16px 16px;
-          border-top: 0.5px solid var(--line);
-          background: rgba(7, 7, 7, 0.9);
-        }
-
-        .pillarGoal {
-          margin-top: 12px;
-          margin-bottom: 10px;
-        }
-
-        .pillarGoalLabel,
-        .pillarColLabel,
-        .outputLevel,
-        .rhythmFreq,
-        .goalLabel,
-        .designNoteLabel {
-          font-size: 10px;
-          font-weight: 500;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-        }
-
-        .pillarGoalLabel,
-        .pillarColLabel,
-        .goalLabel,
-        .designNoteLabel {
-          color: var(--hint);
-        }
-
-        .pillarGoalLabel {
-          margin-bottom: 4px;
-        }
-
-        .pillarGoalText {
-          font-size: 13px;
-          color: var(--muted);
-          line-height: 1.5;
-        }
-
-        .pillarRows {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-          margin-top: 10px;
-        }
-
-        .pillarCol {
-          background: var(--surface);
-          border-radius: var(--radius);
-          padding: 10px 12px;
-        }
-
-        .pillarColLabel {
-          margin-bottom: 6px;
-        }
-
-        .pillarColItem {
-          font-size: 12px;
-          color: var(--muted);
-          line-height: 1.6;
-          display: flex;
-          gap: 6px;
-          align-items: flex-start;
-        }
-
-        .pillarColItem::before {
-          content: "-";
-          color: var(--p4);
-          flex-shrink: 0;
-        }
-
-        .outputGrid,
-        .rhythm {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 10px;
-          margin-bottom: 40px;
-        }
-
-        .outputCard {
-          border: 0.5px solid var(--line);
-          border-radius: 18px;
-          padding: 14px;
-          background: rgba(7, 7, 7, 0.85);
-          position: relative;
-          overflow: hidden;
-        }
-
-        .outputCard::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-        }
-
-        .levelOne::before {
-          background: var(--p4);
-        }
-
-        .levelTwo::before {
-          background: #ef9f27;
-        }
-
-        .levelThree::before {
-          background: var(--p2);
-        }
-
-        .levelOne .outputLevel {
-          color: var(--p3);
-        }
-
-        .levelTwo .outputLevel {
-          color: #ba7517;
-        }
-
-        .levelThree .outputLevel {
-          color: var(--p5);
-        }
-
-        .outputLevel {
-          margin-bottom: 6px;
-          letter-spacing: 0.12em;
-        }
-
-        .outputName {
-          font-size: 16px;
-          color: var(--ink);
-          margin-bottom: 8px;
-        }
-
-        .outputItems {
-          font-size: 11px;
-          color: var(--muted);
-          line-height: 1.8;
-        }
-
-        .outputResult {
-          margin-top: 10px;
-          padding-top: 10px;
-          border-top: 0.5px solid var(--line);
-          font-size: 11px;
-          font-style: italic;
-          color: var(--hint);
-        }
-
-        .rhythmCard,
-        .goalCard,
-        .designNote {
-          border: 0.5px solid var(--line);
-          border-radius: var(--radius);
-        }
-
-        .rhythmCard {
-          padding: 14px;
-          background: var(--surface);
-        }
-
-        .rhythmFreq {
-          color: var(--p3);
-          margin-bottom: 6px;
-          letter-spacing: 0.12em;
-        }
-
-        .rhythmTitle {
-          font-weight: 500;
-          font-size: 13px;
-          color: var(--ink);
-          margin-bottom: 4px;
-        }
-
-        .rhythmDesc,
-        .designNoteText {
-          font-size: 12px;
-          color: var(--muted);
-          line-height: 1.6;
-        }
-
-        .goalsGrid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 10px;
-          margin-bottom: 40px;
-        }
-
-        .goalCard {
-          padding: 14px 16px;
-          background: rgba(7, 7, 7, 0.85);
-        }
-
-        .goalPrimary {
-          grid-column: 1 / -1;
-          background: rgba(225, 245, 238, 0.09);
-          border-color: rgba(159, 225, 203, 0.35);
-        }
-
-        .goalPrimary .goalLabel {
-          color: var(--p4);
-        }
-
-        .goalText {
-          font-size: 18px;
-          color: #9fe1cb;
-          line-height: 1.3;
-        }
-
-        .goalItem {
-          display: flex;
-          align-items: flex-start;
-          gap: 8px;
-          font-size: 12px;
-          color: var(--muted);
-          line-height: 1.5;
-          margin-bottom: 6px;
-        }
-
-        .goalCheck {
-          width: 14px;
-          height: 14px;
-          border-radius: 999px;
-          background: var(--p3);
-          flex-shrink: 0;
-          margin-top: 2px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #fff;
-          font-size: 8px;
-        }
-
-        .designNote {
-          padding: 14px 16px;
-          background: var(--surface);
-        }
-
-        .designNoteLabel {
-          letter-spacing: 0.12em;
-          margin-bottom: 6px;
-        }
-
-        .designNoteTags {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px;
-          margin-top: 10px;
-        }
-
-        .tag {
-          font-size: 11px;
-          font-weight: 500;
-          padding: 3px 10px;
-          border-radius: 20px;
-          background: #04342c;
-          color: var(--p4);
-        }
-
-        .downloadSection {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 0.6rem;
-          margin-top: 2rem;
-          padding-top: 1.5rem;
-          border-top: 0.5px solid var(--line);
-        }
-
-        .downloadMeta {
-          font-size: 12px;
-          color: var(--hint);
-          line-height: 1.5;
-        }
-
-        .downloadButton {
-          border: 1px solid rgba(93, 202, 165, 0.45);
-          border-radius: 999px;
-          background: linear-gradient(
-            180deg,
-            rgba(29, 158, 117, 0.22),
-            rgba(15, 110, 86, 0.3)
-          );
-          color: var(--ink);
-          padding: 0.8rem 1.35rem;
-          font-size: 13px;
-          font-weight: 500;
-          letter-spacing: 0.04em;
-          transition:
-            transform 0.18s ease,
-            border-color 0.18s ease,
-            background 0.18s ease;
-        }
-
-        .downloadButton:hover {
-          transform: translateY(-1px);
-          border-color: var(--p4);
-          background: linear-gradient(
-            180deg,
-            rgba(29, 158, 117, 0.3),
-            rgba(15, 110, 86, 0.38)
-          );
-        }
-
-        @media (max-width: 720px) {
-          .frameworkPage {
-            padding: 2rem 1rem 3rem;
-          }
-
-          .pillarHead {
-            align-items: flex-start;
-            flex-direction: column;
-          }
-
-          .pillarHeadLeft,
-          .pillarMeta {
-            width: 100%;
-          }
-
-          .pillarMeta {
-            justify-content: space-between;
-          }
-
-          .pillarRows,
-          .outputGrid,
-          .rhythm,
-          .goalsGrid {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
     </section>
   );
 }
