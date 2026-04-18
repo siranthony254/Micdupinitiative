@@ -43,7 +43,7 @@ const NAV_ITEMS = [
       {
         title: "Dialogue Tours",
         description:
-          "We visit campuses to listen, learn, and amplify student voices",
+          "We visit campuses to listen, form and amplify voices",
         href: "/Programs/campus-tours",
       },
       {
