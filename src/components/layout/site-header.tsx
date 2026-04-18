@@ -25,11 +25,11 @@ const NAV_ITEMS = [
         description: "What Mic’d Up stands for",
         href: "/About/Vision-Mission",
       },
-      {
-        title: "MUI Leadership",
-        description: "Founding directors and governance",
-        href: "/About/MUI-Leadership",
-      },
+      //{
+        //title: "MUI Leadership",
+        //description: "Founding directors and governance",
+        //href: "/About/MUI-Leadership",
+      //},
       {
         title: "Tools of Influence",
         description: "MUI's framework for cultural impact",
