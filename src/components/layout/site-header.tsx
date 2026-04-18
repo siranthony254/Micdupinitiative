@@ -60,7 +60,7 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: "Research & Insights",
+    label: "Insights",
     items: [
       {
         title: "Blogs",
