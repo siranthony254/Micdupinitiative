@@ -9,19 +9,6 @@ import { urlFor } from '@/sanity/lib/image'
 import { getOptimizedImageProps, debounce } from '@/lib/performance'
 import { getBlogPosts, getBlogCategories, getFeaturedPosts } from '@/lib/blog'
 
-// Static generation for better performance
-export async function generateStaticParams() {
-  const categories = await getBlogCategories()
-  const categorySlugs = categories.data?.map(cat => ({
-    category: cat.slug.current
-  })) || []
-  
-  return [
-    { category: 'all' },
-    ...categorySlugs
-  ]
-}
-
 export default function BlogPage() {
   const { user, profile, isAdmin } = useAuth()
   const [posts, setPosts] = useState<SanityPostWithRelations[]>([])
@@ -55,6 +42,57 @@ export default function BlogPage() {
     fetchCategories()
     fetchFeaturedPosts()
   }, [debouncedSearch, selectedCategory])
+
+  const fetchPosts = async () => {
+    try {
+      setLoading(true)
+      const { data, error } = await getBlogPosts({
+        limit: 12,
+        category: selectedCategory !== 'all' ? selectedCategory : undefined
+      })
+
+      if (error) {
+        console.error('Error fetching posts:', error)
+        return
+      }
+
+      setPosts(data || [])
+    } catch (error) {
+      console.error('Error fetching posts:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const { data, error } = await getBlogCategories()
+
+      if (error) {
+        console.error('Error fetching categories:', error)
+        return
+      }
+
+      setCategories(data || [])
+    } catch (error) {
+      console.error('Error fetching categories:', error)
+    }
+  }
+
+  const fetchFeaturedPosts = async () => {
+    try {
+      const { data, error } = await getFeaturedPosts(3)
+
+      if (error) {
+        console.error('Error fetching featured posts:', error)
+        return
+      }
+
+      setFeaturedPosts(data || [])
+    } catch (error) {
+      console.error('Error fetching featured posts:', error)
+    }
+  }
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

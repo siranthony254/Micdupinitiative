@@ -2,8 +2,6 @@
 const nextConfig = {
   // Performance optimizations
   experimental: {
-    // Enable React strict mode for better performance
-    reactStrict: true,
     // Optimize bundle splitting
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
@@ -61,9 +59,6 @@ const nextConfig = {
   
   // Enable compression
   compress: true,
-  
-  // Optimize build output
-  swcMinify: true,
   
   // Enable static optimization for marketing pages
   output: 'standalone',

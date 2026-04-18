@@ -9,8 +9,7 @@ import ClosingLine from "@/components/home/ClosingLine";
 
 // Dynamically import heavy components
 const PlaylistsRail = dynamic(() => import("@/components/home/PlaylistsRail"), {
-  loading: () => <div className="animate-pulse bg-gray-800 rounded-lg h-32 w-full" />,
-  ssr: false
+  loading: () => <div className="animate-pulse bg-gray-800 rounded-lg h-32 w-full" />
 });
 
 export default function HomePage() {
