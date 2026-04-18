@@ -1,10 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { DM_Sans, DM_Serif_Display } from "next/font/google";
-
-const sans = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500"] });
-const serif = DM_Serif_Display({ subsets: ["latin"], weight: "400" });
 
 const pillars = [
   {
@@ -428,12 +424,12 @@ export default function CohortFrameworkPage() {
   };
 
   return (
-    <section className={`${sans.className} min-h-screen bg-[#080808] px-4 py-10 text-[#f6f3ec] sm:px-6`}>
+    <section className={`min-h-screen bg-[#080808] px-4 py-10 text-[#f6f3ec] [font-family:Arial,Helvetica,sans-serif] sm:px-6`}>
       <div className="mx-auto max-w-[720px]">
         <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-400">
           MUI - Internal Framework
         </p>
-        <h1 className={`${serif.className} mb-2 text-[clamp(2rem,3.8vw,2.8rem)] leading-[1.15]`}>
+        <h1 className={`mb-2 text-[clamp(2rem,3.8vw,2.8rem)] leading-[1.15] [font-family:Georgia,'Times New Roman',serif]`}>
           The Cohort Framework
         </h1>
         <p className="mb-8 max-w-[480px] text-[13px] leading-6 text-white/75">
@@ -445,7 +441,7 @@ export default function CohortFrameworkPage() {
           <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.12em] text-emerald-400">
             Core Objective - The Why
           </p>
-          <p className={`${serif.className} text-[17px] leading-[1.45] text-[#9fe1cb]`}>
+          <p className={`text-[17px] leading-[1.45] text-[#9fe1cb] [font-family:Georgia,'Times New Roman',serif]`}>
             Form individuals who can think clearly, identify real problems, and use their voice to
             influence responsibly.
           </p>
@@ -529,7 +525,7 @@ export default function CohortFrameworkPage() {
               <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.12em] text-emerald-400">
                 {item.level}
               </p>
-              <p className={`${serif.className} mb-2 text-base`}>{item.name}</p>
+              <p className={`mb-2 text-base [font-family:Georgia,'Times New Roman',serif]`}>{item.name}</p>
               <div className="text-[11px] leading-7 text-white/75">
                 {item.items.map((entry) => (
                   <div key={entry}>{entry}</div>
@@ -561,7 +557,7 @@ export default function CohortFrameworkPage() {
             <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.12em] text-emerald-400">
               Primary Goal
             </p>
-            <p className={`${serif.className} text-lg leading-[1.3] text-[#9fe1cb]`}>
+            <p className={`text-lg leading-[1.3] text-[#9fe1cb] [font-family:Georgia,'Times New Roman',serif]`}>
               Develop clear thinkers with responsible voices.
             </p>
           </div>

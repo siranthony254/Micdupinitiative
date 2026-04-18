@@ -62,20 +62,29 @@ export async function getBlogPosts(options: {
   offset?: number
   category?: string
   author?: string
+  search?: string
 }) {
   try {
     let query = `*[_type == "post"`
+    const params: Record<string, string> = {}
     
     if (options.featured) {
       query += " && featured == true"
     }
     
     if (options.category) {
-      query += ` && "${options.category}" in categories[]->slug.current`
+      query += ` && $category in categories[]->slug.current`
+      params.category = options.category
     }
     
     if (options.author) {
-      query += ` && "${options.author}" in author->slug.current`
+      query += ` && author->slug.current == $author`
+      params.author = options.author
+    }
+
+    if (options.search) {
+      query += ` && (title match $search || excerpt match $search)`
+      params.search = `*${options.search}*`
     }
     
     query += `] | order(publishedAt desc)`
@@ -100,12 +109,7 @@ export async function getBlogPosts(options: {
       categories[]->{_id, _type, title, slug}
     }`
 
-    const posts = await client.fetch(query, 
-    options.category || options.author ? { 
-      category: options.category, 
-      author: options.author 
-    } : {}
-  )
+    const posts = await client.fetch(query, params)
 
     return { data: posts, error: null }
   } catch (error) {

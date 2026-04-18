@@ -7,17 +7,35 @@ import type { SanityPost, SanityPostWithRelations, SanityCategory, SanityAuthor,
 export async function getBlogPostsClient(options: {
   featured?: boolean
   limit?: number
+  offset?: number
   category?: string
+  author?: string
+  search?: string
 }) {
   try {
-    const { featured, limit = 10, category } = options
+    const {
+      featured,
+      limit = 10,
+      offset = 0,
+      category,
+      author,
+      search,
+    } = options
     
     let query = `*[_type == "post"`
     if (featured) query += " && featured == true"
-    if (category) query += ` && "${category}" in categories[]->slug.current`
-    query += `] | order(publishedAt desc)[0...${limit}]`
+    if (category) query += ` && $category in categories[]->slug.current`
+    if (author) query += ` && author->slug.current == $author`
+    if (search) query += ` && (title match $search || excerpt match $search)`
+    query += `] | order(publishedAt desc)[${offset}...${offset + limit}]`
 
-    const posts = await client.fetch(query)
+    const params = {
+      ...(category ? { category } : {}),
+      ...(author ? { author } : {}),
+      ...(search ? { search: `*${search}*` } : {}),
+    }
+
+    const posts = await client.fetch(query, params)
 
     return { data: posts, error: null }
   } catch (error) {
