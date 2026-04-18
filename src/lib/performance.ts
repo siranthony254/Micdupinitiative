@@ -1,5 +1,11 @@
 // Performance optimization utilities
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void
+  }
+}
+
 // Image optimization utilities
 export function getOptimizedImageProps(src: string, width: number, height: number, priority: boolean = false) {
   return {
