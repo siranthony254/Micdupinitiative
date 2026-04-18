@@ -41,7 +41,7 @@ const NAV_ITEMS = [
     label: "Initiatives",
     items: [
       {
-        title: "Campus Listening & Dialogue Tours",
+        title: "Dialogue Tours",
         description:
           "We visit campuses to listen, learn, and amplify student voices",
         href: "/Programs/campus-tours",
