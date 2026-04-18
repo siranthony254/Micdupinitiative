@@ -8,9 +8,12 @@ import GetInvolved from "@/components/home/GetInvolved";
 import ClosingLine from "@/components/home/ClosingLine";
 
 // Dynamically import heavy components
-const PlaylistsRail = dynamic(() => import("@/components/home/PlaylistsRail"), {
+const PlaylistsRail = dynamic(
+  () => import("@/components/home/PlaylistsRail").then((mod) => mod.PlaylistsRail),
+  {
   loading: () => <div className="animate-pulse bg-gray-800 rounded-lg h-32 w-full" />
-});
+  }
+);
 
 export default function HomePage() {
   return (
