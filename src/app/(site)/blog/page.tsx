@@ -138,11 +138,13 @@ export default function BlogPage() {
                   {post.mainImage && (
                     <div className="h-48 overflow-hidden">
                       <Image
-                        src={urlFor(post.mainImage).width(400).height(200).url()}
+                        {...getOptimizedImageProps(
+                          urlFor(post.mainImage).width(400).height(200).url(),
+                          400,
+                          200
+                        )}
                         alt={post.mainImage.alt || post.title}
-                        width={400}
-                        height={200}
-                        className="w-full h-full object-cover"
+                        fill
                       />
                     </div>
                   )}
@@ -199,11 +201,13 @@ export default function BlogPage() {
                   {post.mainImage && (
                     <div className="h-48 overflow-hidden">
                       <Image
-                        src={urlFor(post.mainImage).width(400).height(200).url()}
+                        {...getOptimizedImageProps(
+                          urlFor(post.mainImage).width(400).height(200).url(),
+                          400,
+                          200
+                        )}
                         alt={post.mainImage.alt || post.title}
-                        width={400}
-                        height={200}
-                        className="w-full h-full object-cover"
+                        fill
                       />
                     </div>
                   )}

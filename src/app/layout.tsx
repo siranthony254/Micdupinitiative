@@ -1,10 +1,19 @@
 import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import { SanityLive } from '@/sanity/lib/live'
 import { AuthProvider } from '@/contexts/auth-context'
 import { SiteHeader } from '@/components/layout/site-header'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { CookieConsent } from '@/components/cookie-consent'
+import { preloadCriticalAssets, reportWebVitals } from '@/lib/performance'
 import './globals.css'
+
+// Optimize font loading
+const inter = Inter({ 
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true
+})
 
 export const metadata: Metadata = {
   title: {
@@ -90,6 +99,22 @@ export default function SiteLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // Initialize performance monitoring
+  useEffect(() => {
+    preloadCriticalAssets()
+    
+    // Report web vitals
+    if (typeof window !== 'undefined') {
+      import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+        getCLS(reportWebVitals)
+        getFID(reportWebVitals)
+        getFCP(reportWebVitals)
+        getLCP(reportWebVitals)
+        getTTFB(reportWebVitals)
+      })
+    }
+  }, [])
+
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-black text-white">
@@ -101,10 +126,10 @@ export default function SiteLayout({
           </main>
 
           <SiteFooter />
-
+          
           {/* Cookie Consent Banner */}
           <CookieConsent />
-
+          
           <SanityLive />
         </AuthProvider>
       </body>
