@@ -6,6 +6,21 @@ import Image from 'next/image'
 import { useAuth } from '@/contexts/auth-context'
 import type { SanityPostWithRelations, SanityCategory } from '@/types/blog'
 import { urlFor } from '@/sanity/lib/image'
+import { getOptimizedImageProps, debounce } from '@/lib/performance'
+import { getBlogPosts, getBlogCategories, getFeaturedPosts } from '@/lib/blog'
+
+// Static generation for better performance
+export async function generateStaticParams() {
+  const categories = await getBlogCategories()
+  const categorySlugs = categories.data?.map(cat => ({
+    category: cat.slug.current
+  })) || []
+  
+  return [
+    { category: 'all' },
+    ...categorySlugs
+  ]
+}
 
 export default function BlogPage() {
   const { user, profile, isAdmin } = useAuth()
@@ -16,67 +31,36 @@ export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
+  // Debounced search function
+  const debouncedSearch = debounce(async (term: string) => {
+    if (term.trim()) {
+      const categoryParam = selectedCategory !== 'all' ? `&category=${selectedCategory}` : ''
+      const { data, error } = await getBlogPosts({
+        limit: 12,
+        search: term.trim(),
+        category: selectedCategory !== 'all' ? selectedCategory : undefined
+      })
+
+      if (error) {
+        console.error('Error searching posts:', error)
+        return
+      }
+
+      setPosts(data || [])
+    }
+  }, 300) // 300ms debounce
+
   useEffect(() => {
     fetchPosts()
     fetchCategories()
     fetchFeaturedPosts()
-  }, [searchTerm, selectedCategory])
-
-  const fetchPosts = async () => {
-    try {
-      setLoading(true)
-      const categoryParam = selectedCategory !== 'all' ? `&category=${selectedCategory}` : ''
-      const response = await fetch(`/api/blog/posts?limit=12${categoryParam}`)
-      const result = await response.json()
-
-      if (!response.ok) {
-        console.error('Error fetching posts:', result.error)
-        return
-      }
-
-      setPosts(result.data || [])
-    } catch (error) {
-      console.error('Error fetching posts:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch('/api/blog/categories')
-      const result = await response.json()
-
-      if (!response.ok) {
-        console.error('Error fetching categories:', result.error)
-        return
-      }
-
-      setCategories(result.data || [])
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-    }
-  }
-
-  const fetchFeaturedPosts = async () => {
-    try {
-      const response = await fetch('/api/blog/posts?featured=true&limit=3')
-      const result = await response.json()
-
-      if (!response.ok) {
-        console.error('Error fetching featured posts:', result.error)
-        return
-      }
-
-      setFeaturedPosts(result.data || [])
-    } catch (error) {
-      console.error('Error fetching featured posts:', error)
-    }
-  }
+  }, [debouncedSearch, selectedCategory])
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Search is handled in useEffect when searchTerm changes
+    const term = (e.target as HTMLInputElement).value
+    setSearchTerm(term)
+    debouncedSearch(term)
   }
 
   return (

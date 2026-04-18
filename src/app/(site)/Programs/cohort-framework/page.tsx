@@ -617,5 +617,4 @@ export default function CohortFrameworkPage() {
       </div>
     </section>
   );
-}
- 
+} 

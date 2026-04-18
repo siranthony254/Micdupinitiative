@@ -67,6 +67,11 @@ const NAV_ITEMS = [
         description: "Brief, timely takes on campus culture and youth trends",
         href: "/blog",
       },
+      {
+        title: "FAQs",
+        description: "Frequently asked questions about MUI",
+        href: "/research/faqs",
+      },
     ],
   },
   {
@@ -225,6 +230,28 @@ export function SiteHeader() {
               {active === nav.label && <MegaMenu items={nav.items} />}
             </div>
           ))}
+
+          {/* On The Mic Button */}
+          <Link
+            href="/on-the-mic"
+            className={`
+              relative text-sm font-medium transition rounded-full border border-amber-400/30 px-4 py-2
+              ${
+                pathname === "/on-the-mic"
+                  ? "text-amber-400 bg-amber-400/10 border-amber-400"
+                  : "text-white/80 hover:text-amber-400 hover:bg-amber-400/10 hover:border-amber-400"
+              }
+              after:absolute after:left-0 after:-bottom-1
+              after:h-px after:bg-amber-400 after:transition-all
+              ${
+                pathname === "/on-the-mic"
+                  ? "after:w-full"
+                  : "after:w-0 hover:after:w-full"
+              }
+            `}
+          >
+            On The Mic
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -302,6 +329,17 @@ export function SiteHeader() {
                   )}
                 </div>
               ))}
+
+              {/* On the Mic Mobile Button */}
+              <div>
+                <Link
+                  href="/on-the-mic"
+                  onClick={() => setMobileOpen(false)}
+                  className="block py-3 text-base font-medium text-amber-400 rounded-full border border-amber-400/30 px-4 bg-amber-400/10"
+                >
+                  On The Mic
+                </Link>
+              </div>
             </div>
           </div>
         </div>
