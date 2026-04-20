@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useAuth } from '@/contexts/auth-context'
 import type { SanityPostWithRelations, SanityCategory } from '@/types/blog'
 import { urlFor } from '@/sanity/lib/image'
-import { getOptimizedImageProps, debounce } from '@/lib/performance'
+import { getOptimizedImageProps } from '@/lib/performance'
 import { getBlogPosts, getBlogCategories, getFeaturedPosts } from '@/lib/blog'
 
 export default function BlogPage() {
@@ -18,36 +18,21 @@ export default function BlogPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
 
-  // Debounced search function
-  const debouncedSearch = debounce(async (term: string) => {
-    if (term.trim()) {
-      const categoryParam = selectedCategory !== 'all' ? `&category=${selectedCategory}` : ''
-      const { data, error } = await getBlogPosts({
-        limit: 12,
-        search: term.trim(),
-        category: selectedCategory !== 'all' ? selectedCategory : undefined
-      })
-
-      if (error) {
-        console.error('Error searching posts:', error)
-        return
-      }
-
-      setPosts(data || [])
-    }
-  }, 300) // 300ms debounce
+  useEffect(() => {
+    fetchCategories()
+    fetchFeaturedPosts()
+  }, [])
 
   useEffect(() => {
     fetchPosts()
-    fetchCategories()
-    fetchFeaturedPosts()
-  }, [debouncedSearch, selectedCategory])
+  }, [selectedCategory])
 
   const fetchPosts = async () => {
     try {
       setLoading(true)
       const { data, error } = await getBlogPosts({
         limit: 12,
+        search: searchTerm.trim() || undefined,
         category: selectedCategory !== 'all' ? selectedCategory : undefined
       })
 
@@ -96,9 +81,7 @@ export default function BlogPage() {
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const term = (e.target as HTMLInputElement).value
-    setSearchTerm(term)
-    debouncedSearch(term)
+    fetchPosts()
   }
 
   return (

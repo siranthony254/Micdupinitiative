@@ -1,13 +1,16 @@
+const normalizeEnvValue = (value: string | undefined) =>
+  value?.trim().replace(/^['"]|['"]$/g, '')
+
 export const apiVersion =
-  process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2026-04-04'
+  normalizeEnvValue(process.env.NEXT_PUBLIC_SANITY_API_VERSION) || '2026-04-04'
 
 export const dataset = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_DATASET,
+  normalizeEnvValue(process.env.NEXT_PUBLIC_SANITY_DATASET),
   'Missing environment variable: NEXT_PUBLIC_SANITY_DATASET'
 )
 
 export const projectId = assertValue(
-  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  normalizeEnvValue(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID),
   'Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID'
 )
 
