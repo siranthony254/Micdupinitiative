@@ -170,8 +170,11 @@ export default function BlogPage() {
                     </div>
                   )}
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      <Link href={`/blog/${post.slug.current}`} className="hover:text-blue-600">
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      <Link
+                        href={`/blog/${post.slug.current}`}
+                        className="text-white transition-colors hover:text-amber-400"
+                      >
                         {post.title}
                       </Link>
                     </h3>
@@ -233,8 +236,11 @@ export default function BlogPage() {
                     </div>
                   )}
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                      <Link href={`/blog/${post.slug.current}`} className="hover:text-blue-600">
+                    <h3 className="text-xl font-semibold text-white mb-2">
+                      <Link
+                        href={`/blog/${post.slug.current}`}
+                        className="text-white transition-colors hover:text-amber-400"
+                      >
                         {post.title}
                       </Link>
                     </h3>
