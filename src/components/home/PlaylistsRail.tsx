@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ExternalMediaCard } from "@/components/media/ExternalMediaCard";
+import { getYouTubeEmbedUrl } from "@/components/media/youtube";
 
 interface PlaylistsRailProps {
   title: string;
@@ -104,8 +105,10 @@ export function PlaylistsRail({
 
             <div className="relative aspect-video bg-black">
               <iframe
-                src={`https://www.youtube.com/embed/${editorialVideo.youtubeId}`}
+                src={getYouTubeEmbedUrl(editorialVideo.youtubeId)}
                 className="absolute inset-0 h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
               />
             </div>

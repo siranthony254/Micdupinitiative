@@ -11,6 +11,7 @@ import {
   Linkedin,
 } from "lucide-react";
 import { MediaItem } from "./types/media";
+import { getYouTubeEmbedUrl } from "./youtube";
 
 interface ExternalMediaCardProps extends Partial<MediaItem> {}
 
@@ -44,7 +45,12 @@ export function ExternalMediaCard({
 
         {isYouTube && youtubeId && (
           <iframe
-            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}`}
+            src={getYouTubeEmbedUrl(youtubeId, {
+              autoplay: true,
+              controls: false,
+              loop: true,
+              mute: true,
+            })}
             title={title || "YouTube video"}
             className="absolute inset-0 h-full w-full opacity-0 transition-opacity duration-300 ease-out group-hover:opacity-100"
             allow="autoplay; encrypted-media"

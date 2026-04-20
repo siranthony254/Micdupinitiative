@@ -6,6 +6,7 @@ export async function GET(req: Request) {
 
   const section = searchParams.get("section"); // podcast | talk | documentary | playlist
   const category = searchParams.get("category"); // optional
+  const railOnly = searchParams.get("rail") === "true";
 
   const videos: MediaItem[] = [
     // ===================== PODCASTS =====================
@@ -117,7 +118,9 @@ export async function GET(req: Request) {
   }
 
   // 👇 Editorial visibility control for rails
-  filtered = filtered.filter(v => v.showInRail !== false);
+  if (railOnly) {
+    filtered = filtered.filter(v => v.showInRail !== false);
+  }
 
   return NextResponse.json({
     videos: filtered,

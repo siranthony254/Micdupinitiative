@@ -1,4 +1,4 @@
-import { ExternalMediaCard } from "@/components/media/ExternalMediaCard";
+import { MediaGallery } from "@/components/media/MediaGallery";
 import { getVideos } from "@/app/lib/getVideos";
 
 export default async function TalksPage() {
@@ -15,11 +15,7 @@ export default async function TalksPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {data.videos.map((item: any) => (
-          <ExternalMediaCard key={item.id} {...item} />
-        ))}
-      </div>
+      <MediaGallery items={data.videos} />
     </section>
   );
 }
