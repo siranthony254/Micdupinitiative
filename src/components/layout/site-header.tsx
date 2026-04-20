@@ -159,7 +159,7 @@ export function SiteHeader() {
           <div className="relative w-8 h-8 rounded-full overflow-hidden">
   <Image
     src="/favicon.jpeg"
-    alt="Mic’d Up Initiative Logo"
+    alt="Mic’d Up Initiative"
     fill
     sizes="32px"
     className="object-cover"
