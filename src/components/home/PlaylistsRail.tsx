@@ -3,7 +3,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MediaGallery } from "@/components/media/MediaGallery";
-import type { MediaItem } from "@/components/media/types/media";
+import { getRailVideos } from "@/lib/videos";
+import { urlFor } from "@/sanity/lib/image";
+import type { SanityVideo } from "@/types/video";
 
 interface PlaylistsRailProps {
   title: string;
@@ -11,28 +13,21 @@ interface PlaylistsRailProps {
   viewAllHref?: string;
 }
 
-async function getRailVideos() {
-  const res = await fetch(
-    `${process.env.NODE_ENV === "development" ? "http" : "https"}://${typeof window !== 'undefined' ? window.location.host : 'localhost:3000'}/api/videos?rail=true`,
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) throw new Error("Failed to fetch rail videos");
-
-  return res.json();
-}
-
 export function PlaylistsRail({
   title,
   subtitle,
   viewAllHref,
 }: PlaylistsRailProps) {
-  const [data, setData] = useState<any>(null);
+  const [videos, setVideos] = useState<SanityVideo[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getRailVideos()
-      .then(setData)
+      .then((result) => {
+        if (result.data) {
+          setVideos(result.data);
+        }
+      })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
@@ -54,37 +49,63 @@ export function PlaylistsRail({
     );
   }
 
-  if (!data) {
-    return (
-      <section className="bg-slate-900 text-white">
-        <div className="mx-auto max-w-7xl px-6 py-14 text-center">
-          <p className="text-gray-400">Failed to load videos</p>
-        </div>
-      </section>
-    );
-  }
-
-  const playlists: MediaItem[] = data.videos;
+  // Transform SanityVideo to MediaItem format for MediaGallery
+  const mediaItems = videos.map((video) => ({
+    id: video._id,
+    type: video.type,
+    category: video.category,
+    title: video.title,
+    description: video.description,
+    campus: video.campus,
+    duration: video.duration,
+    thumbnail: video.thumbnail ? {
+      url: urlFor(video.thumbnail).width(400).height(225).url(),
+      alt: video.thumbnail.alt || video.title,
+    } : undefined,
+    primaryPlatform: video.primaryPlatform,
+    youtubeId: video.youtubeId,
+    externalUrl: video.externalUrl,
+    social: video.social,
+  }));
 
   return (
     <section className="bg-slate-900 text-white">
       <div className="mx-auto max-w-7xl px-6 py-14">
-        <div className="mb-8 flex justify-between">
-          <div>
-            <h2 className="text-xl font-semibold">{title}</h2>
-            {subtitle && (
-              <p className="text-sm text-white/70">{subtitle}</p>
-            )}
-          </div>
-
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
+            {title}
+          </h2>
+          {subtitle && (
+            <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
+              {subtitle}
+            </p>
+          )}
           {viewAllHref && (
-            <Link href={viewAllHref} className="text-sm hover:underline">
-              See all
+            <Link
+              href={viewAllHref}
+              className="inline-flex items-center text-amber-400 hover:text-amber-300 font-medium transition-colors"
+            >
+              View All
+              <svg
+                className="ml-2 w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4-4m4 4H5a4 4 0 00-4-4v12a4 4 0 004 4h6a4 4 0 004-4V4a4 4 0 00-4-4z"
+                />
+              </svg>
             </Link>
           )}
         </div>
 
-        <MediaGallery items={playlists} />
+        {/* Media Gallery */}
+        <MediaGallery items={mediaItems} />
       </div>
     </section>
   );
