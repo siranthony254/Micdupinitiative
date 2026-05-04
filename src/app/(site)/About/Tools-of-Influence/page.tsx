@@ -30,7 +30,7 @@ const tools = [
     ],
   },
   {
-    title: "Research & Insights",
+    title: "Insights",
     tagline: "We speak with credibility.",
     points: [
       "Content and storytelling direction",
@@ -59,7 +59,7 @@ const tools = [
 
 export default function ToolsOfInfluencePage() {
   return (
-    <main className="relative min-h-screen bg-neutral-950 text-white overflow-hidden">
+    <main className="relative min-h-screen text-white overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       {/* Ambient Premium Glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-[-220px] left-[-180px] h-[520px] w-[520px] rounded-full bg-amber-500/10 blur-[140px]" />
@@ -159,10 +159,6 @@ export default function ToolsOfInfluencePage() {
           </div>
         </motion.section>
 
-        {/* Footer */}
-        <p className="mt-10 text-xs text-white/35 border-t border-white/10 pt-5">
-          © 2026 Mic’d Up Initiative. All rights reserved.
-        </p>
       </div>
     </main>
   );

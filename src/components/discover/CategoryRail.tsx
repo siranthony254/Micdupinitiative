@@ -13,7 +13,7 @@ const categories = [
   { label: "Leadership & Growth", slug: "leadership" },
   { label: "Education", slug: "education" },
   { label: "Culture & Identity", slug: "culture" },
-  { label: "Research & Insights", slug: "research" },
+  { label: "Insights", slug: "research" },
 ];
 
 export default function CategoryRail  () {

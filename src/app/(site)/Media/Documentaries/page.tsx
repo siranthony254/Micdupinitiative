@@ -6,7 +6,7 @@ export default async function DocumentariesPage() {
   const data = await getVideos("documentary");
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20 bg-slate-900 min-h-screen">
+    <section className="mx-auto max-w-7xl px-6 py-20 min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       <header className="max-w-3xl mb-14">
         <h1 className="text-4xl font-semibold mb-4 text-amber-300">
           Documentaries

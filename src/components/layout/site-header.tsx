@@ -146,7 +146,7 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-black text-white border-b border-white/10">
+    <header className="sticky top-0 z-50 text-white border-b border-white/10" style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-7xl px-6 h-16 flex items-center">
         
         {/* Brand with Logo */}
@@ -158,7 +158,7 @@ export function SiteHeader() {
           {/* Logo */}
           <div className="relative w-8 h-8 rounded-full overflow-hidden">
   <Image
-    src="/favicon.jpeg"
+    src="/favicon.svg"
     alt="Mic’d Up Initiative"
     fill
     sizes="32px"

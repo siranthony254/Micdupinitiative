@@ -33,31 +33,35 @@ export const videoType = defineType({
       name: 'type',
       title: 'Video Type',
       type: 'string',
-      options: [
-        { title: 'Podcast', value: 'podcast' },
-        { title: 'Talk', value: 'talk' },
-        { title: 'Documentary', value: 'documentary' },
-        { title: 'Interview', value: 'interview' },
-        { title: 'Workshop', value: 'workshop' },
-        { title: 'Event', value: 'event' },
-      ],
+      options: {
+        list: [
+          { title: 'Podcast', value: 'podcast' },
+          { title: 'Talk', value: 'talk' },
+          { title: 'Documentary', value: 'documentary' },
+          { title: 'Interview', value: 'interview' },
+          { title: 'Workshop', value: 'workshop' },
+          { title: 'Event', value: 'event' },
+        ]
+      },
       validation: Rule => Rule.required(),
     }),
     defineField({
       name: 'category',
       title: 'Category',
       type: 'string',
-      options: [
-        { title: 'Faith & Spiritual Growth', value: 'Faith & Spiritual Growth' },
-        { title: 'Personal Growth', value: 'Personal Growth' },
-        { title: 'Purpose & Meaning', value: 'Purpose & Meaning' },
-        { title: 'Student Life', value: 'Student Life' },
-        { title: 'Academic', value: 'Academic' },
-        { title: 'Leadership', value: 'Leadership' },
-        { title: 'Campus Culture', value: 'Campus Culture' },
-        { title: 'Mentorship', value: 'Mentorship' },
-        { title: 'Social Impact', value: 'Social Impact' },
-      ],
+      options: {
+        list: [
+          { title: 'Faith & Spiritual Growth', value: 'Faith & Spiritual Growth' },
+          { title: 'Personal Growth', value: 'Personal Growth' },
+          { title: 'Purpose & Meaning', value: 'Purpose & Meaning' },
+          { title: 'Student Life', value: 'Student Life' },
+          { title: 'Academic', value: 'Academic' },
+          { title: 'Leadership', value: 'Leadership' },
+          { title: 'Campus Culture', value: 'Campus Culture' },
+          { title: 'Mentorship', value: 'Mentorship' },
+          { title: 'Social Impact', value: 'Social Impact' },
+        ]
+      },
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -95,12 +99,13 @@ export const videoType = defineType({
       name: 'primaryPlatform',
       title: 'Primary Platform',
       type: 'string',
-      description: 'Main platform where this video is hosted',
-      options: [
-        { title: 'YouTube', value: 'youtube' },
-        { title: 'Vimeo', value: 'vimeo' },
-        { title: 'Self-hosted', value: 'self-hosted' },
-      ],
+      options: {
+        list: [
+          { title: 'YouTube', value: 'youtube' },
+          { title: 'Vimeo', value: 'vimeo' },
+          { title: 'Self-hosted', value: 'self-hosted' },
+        ]
+      },
       validation: Rule => Rule.required(),
     }),
     defineField({
@@ -108,9 +113,9 @@ export const videoType = defineType({
       title: 'YouTube Video ID',
       type: 'string',
       description: 'YouTube video ID (the part after v= in YouTube URLs)',
-      hidden: ({ document }) => document?.primaryPlatform !== 'youtube',
+      hidden: ({ document }) => (document as any)?.primaryPlatform !== 'youtube',
       validation: Rule => Rule.custom(value => {
-        if (document?.primaryPlatform === 'youtube' && !value) {
+        if ((document as any)?.primaryPlatform === 'youtube' && !value) {
           return 'YouTube ID is required when primary platform is YouTube'
         }
         return true
@@ -121,9 +126,9 @@ export const videoType = defineType({
       title: 'Vimeo Video ID',
       type: 'string',
       description: 'Vimeo video ID',
-      hidden: ({ document }) => document?.primaryPlatform !== 'vimeo',
+      hidden: ({ document }) => (document as any)?.primaryPlatform !== 'vimeo',
       validation: Rule => Rule.custom(value => {
-        if (document?.primaryPlatform === 'vimeo' && !value) {
+        if ((document as any)?.primaryPlatform === 'vimeo' && !value) {
           return 'Vimeo ID is required when primary platform is Vimeo'
         }
         return true
@@ -134,9 +139,9 @@ export const videoType = defineType({
       title: 'Self-hosted URL',
       type: 'url',
       description: 'URL for self-hosted video files',
-      hidden: ({ document }) => document?.primaryPlatform !== 'self-hosted',
+      hidden: ({ document }) => (document as any)?.primaryPlatform !== 'self-hosted',
       validation: Rule => Rule.custom(value => {
-        if (document?.primaryPlatform === 'self-hosted' && !value) {
+        if ((document as any)?.primaryPlatform === 'self-hosted' && !value) {
           return 'URL is required when primary platform is self-hosted'
         }
         return true
@@ -219,7 +224,7 @@ export const videoType = defineType({
       name: 'content',
       title: 'Content',
       type: 'array',
-      of: [{ type: blockContentType }],
+      of: [{ type: 'block' }],
       description: 'Additional content, transcript, or show notes',
     }),
     defineField({
@@ -239,9 +244,9 @@ export const videoType = defineType({
   ],
   preview: {
     select: {
-      title,
-      subtitle,
-      thumbnail,
+      title: 'title',
+      subtitle: 'description',
+      thumbnail: 'thumbnail',
     },
     prepare(selection) {
       const { title, subtitle, thumbnail } = selection

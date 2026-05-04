@@ -239,7 +239,7 @@ export async function getVideoCategories() {
     }`)
     
     // Get unique categories
-    const uniqueCategories = [...new Set(types.map((video: any) => video.category))]
+    const uniqueCategories = [...new Set(categories.map((video: any) => video.category))]
     
     return { data: uniqueCategories, error: null }
   } catch (error) {

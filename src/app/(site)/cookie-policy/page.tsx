@@ -11,7 +11,7 @@ export default function CookiePolicy() {
   }))
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -25,19 +25,19 @@ export default function CookiePolicy() {
 
         {/* Content */}
         <div className="space-y-8 prose prose-invert max-w-none">
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">1. How MUI Uses Cookies</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               Mic'd Up Initiative uses cookies to:
             </p>
             <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
-              <li>Maintain login sessions in the MUI Portal</li>
+              <li>Maintain login sessions in the MUI platform</li>
               <li>Understand how visitors interact with the website</li>
               <li>Improve website functionality and performance</li>
               <li>Provide a smoother navigation experience</li>
             </ul>
           </section>
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">2. Changes to This Cookie Policy</h2>
             <p className="text-gray-300 leading-relaxed">
               We may update this Cookie Policy from time to time to reflect changes in technology, 
@@ -45,7 +45,7 @@ export default function CookiePolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">3. Contact</h2>
             <p className="text-gray-300 leading-relaxed">
               For questions regarding this Cookie Policy, don't hesitate to get in touch with us through 
@@ -58,7 +58,7 @@ export default function CookiePolicy() {
         <div className="mt-12 bg-amber-900/20 border border-amber-800/50 rounded-lg p-6">
           <h3 className="text-lg font-semibold text-amber-400 mb-3">Cookie Consent</h3>
           <p className="text-gray-300 leading-relaxed">
-            By continuing to use the MUI Portal and website, you consent to our use of cookies as described 
+            By continuing to use the MUI platform and website, you consent to our use of cookies as described 
             in this policy. You can withdraw or modify your consent at any time through your browser settings.
           </p>
         </div>

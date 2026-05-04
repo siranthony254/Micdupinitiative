@@ -2,8 +2,8 @@
 
 export default function WhyWeExist() {
   return (
-   <section className="border-b border-white/10 bg-neutral-900 text-white">
-  <div className="mx-auto max-w-7xl px-6 py-7">
+   <section className="border-b border-white/10 text-white" style={{backgroundColor: '#0D1F35'}}>
+  <div className="mx-auto max-w-7xl px-6 py-7 text-center">
 
     {/* Eyebrow */}
     
@@ -12,22 +12,22 @@ export default function WhyWeExist() {
     </span>
 
     {/* Headline */}
-    <h2 className="mt-4 text-3xl lg:text-4xl font-semibold max-w-3xl text-white">
-      Why Mic’d Up Initiative Exists
+    <h2 className="mt-4 text-3xl lg:text-4xl font-semibold max-w-3xl text-white mx-auto">
+      Why Mic'd Up Initiative Exists
     </h2>
 
     {/* Editorial intro */}
-    <p className="mt-6 text-base text-white/70 max-w-3xl leading-relaxed">
+    <p className="mt-6 text-base text-white/70 max-w-3xl leading-relaxed mx-auto">
       Across campuses, ideas are forming, leaders are emerging, and culture is
       being shaped — yet much of this remains unseen, unheard, or misrepresented.
-      Mic’d Up Initiative exists to bring structure, clarity, and responsibility
+      Mic'd Up Initiative exists to bring structure, clarity, and responsibility
       to campus expression.
     </p>
 
     {/* Core reasons */}
     <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
 
-      <div>
+      <div className="text-center">
         <h3 className="text-sm font-semibold text-amber-500">
           Unheard Voices
         </h3>
@@ -37,7 +37,7 @@ export default function WhyWeExist() {
         </p>
       </div>
 
-      <div>
+      <div className="text-center">
         <h3 className="text-sm font-semibold text-amber-500">
           Distorted Visibility
         </h3>
@@ -47,17 +47,17 @@ export default function WhyWeExist() {
         </p>
       </div>
 
-      <div>
+      <div className="text-center">
         <h3 className="text-sm font-semibold text-amber-500">
           Untapped Leadership
         </h3>
         <p className="mt-2 text-sm text-white/70 leading-relaxed">
-          Campuses are forming not tomorrow’s leaders, but also leaders of today — yet their voices rarely enter
+          Campuses are forming not tomorrow's leaders, but also leaders of today — yet their voices rarely enter
           serious public discourse.
         </p>
       </div>
 
-      <div>
+      <div className="text-center">
         <h3 className="text-sm font-semibold text-amber-500">
           Content Without Direction
         </h3>
@@ -69,9 +69,9 @@ export default function WhyWeExist() {
     </div>
 
     {/* Closing conviction */}
-    <div className="mt-14 max-w-3xl">
+    <div className="mt-14 max-w-3xl mx-auto text-center">
       <p className="text-base font-medium text-white/70">
-        Mic’d Up Initiative exists to change the narrative — amplifying authentic
+        Mic'd Up Initiative exists to change the narrative — amplifying authentic
         campus voices, cultivating leadership, and shaping responsible cultural
         influence.
       </p>

@@ -103,7 +103,7 @@ export default function FAQsPage() {
   }
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-white">
+    <main className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-amber-400/10 to-transparent">
         <div className="mx-auto max-w-7xl px-6 py-20">
@@ -115,7 +115,7 @@ export default function FAQsPage() {
             className="text-center"
           >
             <span className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-amber-300">
-              Research & Insights
+              Insights
             </span>
             
             <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">

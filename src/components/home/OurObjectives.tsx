@@ -69,7 +69,7 @@ const objectives = [
 
 export default function OurObjectives() {
   return (
-    <section className="relative bg-slate-950 text-white py-20 overflow-hidden">
+    <section className="relative text-white py-20 overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       {/* Ambient Glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-[-200px] left-[-120px] h-[420px] w-[420px] rounded-full bg-amber-500/10 blur-[120px]" />
@@ -108,7 +108,7 @@ export default function OurObjectives() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group"
             >
-              <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
+              <div className="h-full rounded-2xl border border-white/10 p-6 shadow-lg hover:border-amber-400/30 transition-all duration-300" style={{backgroundColor: '#1A3A5C'}}>
                 {/* Number and Icon */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center justify-center w-12 h-12 rounded-full bg-amber-400/10 border border-amber-400/20">

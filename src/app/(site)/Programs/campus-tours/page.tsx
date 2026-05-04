@@ -42,7 +42,7 @@ export default function CampusToursPage() {
   }, []);
 
   return (
-    <section className="min-h-screen bg-neutral-950 text-white">
+    <section className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <AnimatePresence mode="wait">
@@ -273,11 +273,6 @@ export default function CampusToursPage() {
             </div>
           </div>
         </motion.section>
-
-        {/* Footer */}
-        <p className="mt-10 text-xs text-white/35 border-t border-white/10 pt-5 max-w-4xl">
-          © 2026 Mic’d Up Initiative. All rights reserved.
-        </p>
       </div>
     </section>
   );

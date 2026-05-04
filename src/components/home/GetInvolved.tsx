@@ -27,11 +27,11 @@ const paths = [
 
 export default function GetInvolved() {
   return (
-    <section className="bg-neutral-950 border-b border-white/10">
+    <section className="border-b border-white/10" style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-7xl px-6 py-20">
 
         {/* Intro */}
-        <div className="mb-14 max-w-3xl">
+        <div className="mb-14 max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white">
             Get Involved
           </h2>
@@ -51,11 +51,11 @@ export default function GetInvolved() {
               className="
                 group rounded-2xl
                 border border-white/10
-                bg-neutral-900
                 p-8 flex flex-col justify-between
                 transition
-                hover:border-emerald-500 hover:bg-neutral-900/80
+                hover:border-emerald-500 text-center
               "
+              style={{backgroundColor: '#1A3A5C'}}
             >
               <div>
                 <h3 className="text-xl font-semibold text-white group-hover:text-emerald-400 transition">
@@ -75,7 +75,7 @@ export default function GetInvolved() {
         </div>
 
         {/* Secondary CTA */}
-        <div className="mt-16 text-sm text-white/60">
+        <div className="mt-16 text-sm text-white/60 text-center">
           Not sure where you fit?{" "}
           <Link href="/contact" className="text-amber-500 underline underline-offset-4">
             Talk to us

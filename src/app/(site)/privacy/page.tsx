@@ -11,7 +11,7 @@ export default function PrivacyPolicy() {
   }))
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -25,18 +25,18 @@ export default function PrivacyPolicy() {
 
         {/* Content */}
         <div className="space-y-8 prose prose-invert max-w-none">
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">1. Introduction</h2>
             <p className="text-gray-300 leading-relaxed">
               Mic'd Up Initiative ("MUI", "we", "our", or "us") is committed to protecting the privacy of our users, participants, and visitors. 
-              This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website or access the MUI Portal.
+              This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website or access the MUI platform.
             </p>
             <p className="text-gray-300 leading-relaxed mt-4">
               By using our website and services, you agree to the terms of this Privacy Policy.
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">2. Information We Collect</h2>
             
             <h3 className="text-xl font-semibold text-white mb-3">Personal Information</h3>
@@ -67,13 +67,13 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">3. How We Use Your Information</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               We use the information we collect to:
             </p>
             <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
-              <li>Provide access to the MUI Portal</li>
+              <li>Provide access to the MUI platform</li>
               <li>Manage cohort programs and training sessions</li>
               <li>Track learning progress and participation</li>
               <li>Improve our website and learning platform</li>
@@ -86,18 +86,18 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">4. Data Storage and Protection</h2>
             <p className="text-gray-300 leading-relaxed">
               We take appropriate technical and organizational measures to protect user data from unauthorized access, 
               alteration, or disclosure.
             </p>
             <p className="text-gray-300 leading-relaxed mt-4">
-              User data may be stored securely through trusted infrastructure providers used to operate the MUI Portal.
+              User data may be stored securely through trusted infrastructure providers used to operate the MUI platform.
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">5. Third-Party Services</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               Our platform may use trusted third-party services to operate effectively, including tools for:
@@ -113,7 +113,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">6. Cookies and Tracking Technologies</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               Our website may use cookies and similar technologies to:
@@ -128,7 +128,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">7. User Rights</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               Users may request to:
@@ -143,7 +143,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">8. Children's Privacy</h2>
             <p className="text-gray-300 leading-relaxed">
               The MUI platform is designed primarily for university and college participants. 
@@ -151,7 +151,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">9. Updates to This Policy</h2>
             <p className="text-gray-300 leading-relaxed">
               We may update this Privacy Policy periodically. Any changes will be reflected on this page 
@@ -159,7 +159,7 @@ export default function PrivacyPolicy() {
             </p>
           </section>
 
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">10. Contact</h2>
             <p className="text-gray-300 leading-relaxed">
               If you have questions about this Privacy Policy, you may contact us through the official 

@@ -99,7 +99,7 @@ export default function AmbassadorsPage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-neutral-950 text-white overflow-hidden">
+    <main className="relative min-h-screen text-white overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <AnimatePresence mode="wait">
@@ -234,7 +234,7 @@ export default function AmbassadorsPage() {
                       required
                       value={formData.campusType}
                       onChange={handleChange}
-                      className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                      className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                     >
                       <option value="">Select campus type</option>
                       <option value="TVET">TVET</option>
@@ -250,7 +250,7 @@ export default function AmbassadorsPage() {
                     value={formData.campusName}
                     onChange={handleChange}
                     placeholder="Campus Name (e.g., University of Nairobi)"
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                    className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                   />
 
                   <input
@@ -259,7 +259,7 @@ export default function AmbassadorsPage() {
                     value={formData.year}
                     onChange={handleChange}
                     placeholder="Year of Study"
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                    className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                   />
 
                   <button type="submit" className="w-full bg-amber-400 text-black py-3 rounded-xl font-semibold hover:bg-amber-300 transition">
@@ -277,7 +277,7 @@ export default function AmbassadorsPage() {
                     value={formData.course}
                     onChange={handleChange}
                     placeholder="Course"
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                    className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                   />
 
                   <textarea
@@ -288,7 +288,7 @@ export default function AmbassadorsPage() {
                     onChange={handleChange}
                     rows={6}
                     placeholder="Why do you want to be an ambassador?"
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                    className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                   />
 
                   <div className="flex justify-between gap-4">
@@ -311,7 +311,7 @@ export default function AmbassadorsPage() {
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Full Name"
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                    className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                   />
 
                   <input
@@ -321,7 +321,7 @@ export default function AmbassadorsPage() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Email"
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                    className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                   />
 
                   <input
@@ -331,7 +331,7 @@ export default function AmbassadorsPage() {
                     onChange={handleChange}
                     placeholder="+2547XXXXXXXX"
                     pattern="^\+2547\07\01\d{8}$"
-                    className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm"
+                    className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm" style={{backgroundColor: '#1A3A5C'}}
                   />
 
                   <div className="flex justify-between gap-4">

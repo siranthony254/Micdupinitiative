@@ -10,7 +10,7 @@ export function Card({ children, className = '', hover = true }: CardProps) {
   const hoverClass = hover ? 'hover:border-gray-600 hover:shadow-lg' : ''
   
   return (
-    <div className={`bg-gray-900 border border-gray-800 rounded-lg p-6 transition-all duration-200 ${hoverClass} ${className}`}>
+    <div className={`border border-gray-800 rounded-lg p-6 transition-all duration-200 ${hoverClass} ${className}`} style={{backgroundColor: '#1A3A5C'}}>
       {children}
     </div>
   )
@@ -140,9 +140,10 @@ export function Input({
         onChange={(e) => onChange?.(e.target.value)}
         required={required}
         disabled={disabled}
-        className={`w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:bg-gray-900 disabled:cursor-not-allowed ${
+        className={`w-full px-3 py-2 border border-gray-700 rounded-md text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent disabled:cursor-not-allowed ${
           error ? 'border-red-500 focus:ring-red-500' : ''
         }`}
+        style={{backgroundColor: disabled ? '#1A3A5C' : '#374151'}}
       />
       {error && (
         <p className="text-sm text-red-500">{error}</p>

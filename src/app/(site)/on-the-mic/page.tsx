@@ -49,7 +49,7 @@ export default function OnTheMicPage() {
   const featuredUpdates = updates.filter(update => update.featured);
 
   return (
-    <main className="min-h-screen bg-neutral-950 text-white">
+    <main className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-amber-400/10 to-transparent">
         <div className="mx-auto max-w-7xl px-6 py-20">

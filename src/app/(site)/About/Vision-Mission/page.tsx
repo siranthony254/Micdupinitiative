@@ -14,7 +14,7 @@ const fadeUp = {
 
 export default function VisionMissionPage() {
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-24 bg-slate-900 min-h-screen text-white overflow-hidden">
+    <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-24 min-h-screen text-white overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       
       {/* Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none">
@@ -120,10 +120,6 @@ export default function VisionMissionPage() {
           Mic’d Up Initiative is a living movement —
           cultivating voices, shaping culture, and forming leaders who
           understand that influence carries responsibility.
-        </p>
-
-        <p className="mt-6 text-xs text-white/40">
-          © 2026 Mic’d Up Initiative. All rights reserved.
         </p>
       </motion.div>
     </section>

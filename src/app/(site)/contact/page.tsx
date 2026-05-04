@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function ContactPage() {
   return (
-    <section className="min-h-screen bg-slate-900 text-white">
+    <section className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-7xl px-6 py-20">
         <div className="grid gap-14 lg:grid-cols-2 lg:items-start">
           
@@ -77,7 +77,7 @@ export default function ContactPage() {
                   name="email"
                   required
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 
@@ -88,7 +88,7 @@ export default function ContactPage() {
                   type="text"
                   name="subject"
                   placeholder="What is this about?"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 
@@ -100,7 +100,7 @@ export default function ContactPage() {
                   rows={5}
                   required
                   placeholder="Write your message..."
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 

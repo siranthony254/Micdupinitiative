@@ -424,7 +424,7 @@ export default function CohortFrameworkPage() {
   };
 
   return (
-    <section className={`min-h-screen bg-[#080808] px-4 py-10 text-[#f6f3ec] [font-family:Arial,Helvetica,sans-serif] sm:px-6`}>
+    <section className={`min-h-screen px-4 py-10 text-[#f6f3ec] [font-family:Arial,Helvetica,sans-serif] sm:px-6`} style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-[720px]">
         <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-400">
           MUI - Internal Framework
@@ -474,7 +474,7 @@ export default function CohortFrameworkPage() {
                     </div>
                   </div>
                   {open && (
-                    <div className="border-t border-white/10 bg-black/20 px-4 pb-4 pt-3">
+                    <div className="border-t border-white/10 px-4 pb-4 pt-3" style={{backgroundColor: '#1A3A5C'}}>
                       <div className="mb-3">
                         <p className="mb-1 text-[10px] font-medium uppercase tracking-[0.1em] text-white/55">
                           Goal

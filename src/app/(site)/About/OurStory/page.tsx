@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function OurStoryPage() {
   return (
-    <section className="min-h-screen bg-slate-900 text-white">
+    <section className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-4xl px-6 py-20">
         {/* Header */}
         <motion.header
@@ -185,11 +185,8 @@ export default function OurStoryPage() {
               Our commitment is not just to be heard—but to ensure a generation
               is formed, grounded, and Mic’d Up. Voicing a Generation Transforming Culture.
             </p>
-              <p className="mt-1 text-base font-medium text-emerald-400">
+            <p className="mt-1 text-base font-medium text-emerald-400">
               Join us in this mission.
-      </p>
-            <p className="pt-10 text-xs text-white/40 border-t border-white/10">
-              © 2026 Mic’d Up Initiative. All rights reserved.
             </p>
           </motion.section>
         </div>

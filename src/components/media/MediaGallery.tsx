@@ -26,7 +26,7 @@ export function MediaGallery({ items }: MediaGalleryProps) {
 
   if (!items.length) {
     return (
-      <div className="rounded-3xl border border-white/10 bg-black/30 px-6 py-12 text-center text-white/70">
+      <div className="rounded-3xl border border-white/10 px-6 py-12 text-center text-white/70" style={{backgroundColor: '#1A3A5C'}}>
         No videos available yet.
       </div>
     );
@@ -35,7 +35,7 @@ export function MediaGallery({ items }: MediaGalleryProps) {
   return (
     <div className="space-y-10">
       {selectedItem && (
-        <section className="overflow-hidden rounded-3xl border border-white/10 bg-black/40 shadow-2xl shadow-black/30">
+        <section className="overflow-hidden rounded-3xl border border-white/10 shadow-2xl shadow-black/30" style={{backgroundColor: '#1A3A5C'}}>
           <div className="relative aspect-video bg-black">
             {selectedItem.youtubeId ? (
               <iframe
@@ -101,8 +101,9 @@ export function MediaGallery({ items }: MediaGalleryProps) {
               className={`group overflow-hidden rounded-2xl border text-left transition duration-300 ${
                 isActive
                   ? "border-amber-400 bg-amber-400/10 shadow-lg shadow-amber-500/10"
-                  : "border-white/10 bg-black/30 hover:-translate-y-1 hover:border-amber-400/60"
+                  : "border-white/10 hover:-translate-y-1 hover:border-amber-400/60"
               }`}
+              style={{backgroundColor: isActive ? undefined : '#1A3A5C'}}
             >
               <div className="relative aspect-video overflow-hidden bg-black">
                 <Image

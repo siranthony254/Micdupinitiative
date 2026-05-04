@@ -2,7 +2,7 @@
 
 export default function MentorsPage() {
   return (
-    <section className="min-h-screen bg-slate-950 text-white">
+    <section className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-4xl px-6 py-20">
         {/* Header */}
         <header className="mb-14 space-y-4">
@@ -75,7 +75,7 @@ export default function MentorsPage() {
                 name="name"
                 required
                 placeholder="Enter your full name"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
               />
             </div>
 
@@ -87,7 +87,7 @@ export default function MentorsPage() {
                 type="email"
                 required
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
               />
             </div>
 
@@ -100,7 +100,7 @@ export default function MentorsPage() {
                 name="profession"
                 required
                 placeholder="e.g. Journalism, Tech, Education"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
               />
             </div>
 
@@ -112,7 +112,7 @@ export default function MentorsPage() {
               <input
                 name="experience"
                 placeholder="e.g. 5"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
               />
             </div>
 
@@ -124,7 +124,7 @@ export default function MentorsPage() {
               <input
                 name="linkedin"
                 placeholder="https://linkedin.com/in/yourname"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
               />
             </div>
 
@@ -137,7 +137,7 @@ export default function MentorsPage() {
                 name="motivation"
                 rows={5}
                 placeholder="Why do you want to mentor with Mic’d Up Initiative?"
-                className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
               />
             </div>
 

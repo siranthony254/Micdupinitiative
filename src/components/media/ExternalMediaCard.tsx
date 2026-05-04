@@ -31,7 +31,7 @@ export function ExternalMediaCard({
     (isYouTube ? `https://www.youtube.com/watch?v=${youtubeId}` : undefined);
 
   return (
-    <div className="group relative overflow-hidden rounded-xl bg-black border border-white/10 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <div className="group relative overflow-hidden rounded-xl border border-white/10 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style={{backgroundColor: '#1A3A5C'}}>
       {/* ======================
           MEDIA PREVIEW
       ====================== */}

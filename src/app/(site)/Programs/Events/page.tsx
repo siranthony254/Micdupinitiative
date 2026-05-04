@@ -101,7 +101,7 @@ export default function CommunityEventsPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen bg-neutral-950 text-white overflow-hidden">
+    <main className="relative min-h-screen text-white overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <AnimatePresence mode="wait">
@@ -224,10 +224,6 @@ export default function CommunityEventsPage() {
             ))}
           </section>
 
-        {/* Footer */}
-        <p className="mt-12 text-xs text-white/35 border-t border-white/10 pt-5">
-          © 2026 Mic'd Up Initiative. All rights reserved.
-        </p>
         </div>
       </div>
     </main>

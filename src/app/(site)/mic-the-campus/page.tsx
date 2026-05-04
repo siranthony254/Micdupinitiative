@@ -284,7 +284,7 @@ function PaymentModal({
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.95 }}
-        className="w-full max-w-lg rounded-2xl bg-slate-900 border border-white/10 p-6"
+        className="w-full max-w-lg rounded-2xl border border-white/10 p-6" style={{backgroundColor: '#1A3A5C'}}
       >
         <h3 className="text-xl font-semibold text-white mb-2">
           Pay: {item.label}
@@ -352,7 +352,7 @@ function DeliveryModal({
         initial={{ scale: 0.95 }}
         animate={{ scale: 1 }}
         exit={{ scale: 0.95 }}
-        className="w-full max-w-lg rounded-2xl bg-slate-900 border border-white/10 p-6"
+        className="w-full max-w-lg rounded-2xl border border-white/10 p-6" style={{backgroundColor: '#1A3A5C'}}
       >
         <h3 className="text-xl font-semibold text-white mb-2">
           Promise Delivery: {item.label}

@@ -10,7 +10,7 @@ const fadeZoom = {
 
 export default function FoundingDirectorsPage() {
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20 bg-slate-900 min-h-screen">
+    <section className="mx-auto max-w-7xl px-6 py-20 min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Header */}
       <motion.header
         className="mb-16 max-w-3xl"
@@ -105,9 +105,9 @@ const DIRECTORS = [
     photo: "/directors/Communications.jpeg",
   },
   {
-    id: "Content, Research & Insights",
+    id: "Content & Insights",
     name: "Hopewin Adams",
-    department: "Content, Research & Insights",
+    department: "Content & Insights",
     bio: "Leads content direction, storytelling, and campus research initiatives. Translates student perspectives, trends, and insights into actionable strategies, engaging content, and knowledge-driven impact.",
     photo: "/directors/Content.jpeg",
   },

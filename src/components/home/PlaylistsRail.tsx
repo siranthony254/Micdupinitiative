@@ -6,6 +6,7 @@ import { MediaGallery } from "@/components/media/MediaGallery";
 import { getRailVideos } from "@/lib/videos";
 import { urlFor } from "@/sanity/lib/image";
 import type { SanityVideo } from "@/types/video";
+import type { MediaItem } from "@/components/media/types/media";
 
 interface PlaylistsRailProps {
   title: string;
@@ -58,14 +59,20 @@ export function PlaylistsRail({
     description: video.description,
     campus: video.campus,
     duration: video.duration,
-    thumbnail: video.thumbnail ? {
-      url: urlFor(video.thumbnail).width(400).height(225).url(),
-      alt: video.thumbnail.alt || video.title,
-    } : undefined,
-    primaryPlatform: video.primaryPlatform,
+    thumbnail: video.thumbnail ? urlFor(video.thumbnail).width(400).height(225).url() : '',
+    primaryPlatform: 'youtube' as keyof MediaItem['social'],
     youtubeId: video.youtubeId,
     externalUrl: video.externalUrl,
-    social: video.social,
+    social: {
+      youtube: video.social?.youtube || null,
+      spotify: video.social?.youtube || null,
+      apple: null,
+      instagram: video.social?.instagram || null,
+      tiktok: null,
+      facebook: video.social?.facebook || null,
+      x: null,
+      linkedin: null,
+    },
   }));
 
   return (

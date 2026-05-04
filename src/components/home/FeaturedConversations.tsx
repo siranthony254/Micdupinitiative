@@ -3,7 +3,7 @@ import { TopConversations } from "./TopConversations";
 
 export function FeaturedConversations() {
   return (
-    <section className="bg-black text-white">
+    <section className="text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Section Headline */}
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="text-center mb-12">

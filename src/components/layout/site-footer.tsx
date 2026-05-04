@@ -30,7 +30,7 @@ const SOCIALS = [
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-slate-950 text-white/70">
+    <footer className="border-t border-white/10 text-white/70" style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-7xl px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-10 text-sm">
         
         {/* Identity */}

@@ -9,7 +9,7 @@ const fadeUp = {
 
 export default function ClosingLine() {
   return (
-    <section className="relative bg-slate-950 text-white py-20 overflow-hidden">
+    <section className="relative text-white py-20 overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       {/* Ambient Glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-[-200px] left-[-120px] h-[420px] w-[420px] rounded-full bg-amber-500/10 blur-[120px]" />

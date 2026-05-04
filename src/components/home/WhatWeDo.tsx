@@ -34,7 +34,7 @@ const pillars = [
 
 export function WhatWeDo() {
   return (
-    <section className="bg-neutral-900 border-b border-white/10">
+    <section className="border-b border-white/10" style={{backgroundColor: '#0D1F35'}}>
   <div className="mx-auto max-w-7xl px-6 py-20">
     
     {/* Intro */}
@@ -56,10 +56,10 @@ export function WhatWeDo() {
           className="
             group rounded-2xl
             border border-white/10
-            bg-neutral-900
             p-8 transition
-            hover:border-emerald-500 hover:bg-neutral-900/80
+            hover:border-emerald-500 text-center
           "
+          style={{backgroundColor: '#1A3A5C'}}
         >
           <h3 className="text-xl font-semibold text-white group-hover:text-emerald-400 transition">
             {pillar.title}
@@ -69,7 +69,7 @@ export function WhatWeDo() {
             {pillar.description}
           </p>
 
-          <ul className="mt-6 space-y-1 text-sm text-white/60">
+          <ul className="mt-6 space-y-1 text-sm text-white/60 text-left">
             {pillar.outcomes.map((item) => (
               <li key={item}>• {item}</li>
             ))}

@@ -11,7 +11,7 @@ export default function DataProtectionPolicy() {
   }))
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       <div className="max-w-4xl mx-auto px-4 py-12">
         {/* Header */}
         <div className="mb-12 text-center">
@@ -19,17 +19,17 @@ export default function DataProtectionPolicy() {
             <h1 className="text-3xl font-bold text-amber-500">MUI</h1>
           </Link>
           <h1 className="text-4xl font-bold mb-4">Data Protection Policy</h1>
-          <p className="text-gray-400">Mic'd Up Initiative (MUI) – MUI Portal</p>
+          <p className="text-gray-400">Mic'd Up Initiative (MUI) – MUI platform</p>
           <p className="text-sm text-gray-500 mt-2">Last Updated: {currentDate}</p>
         </div>
 
         {/* Content */}
         <div className="space-y-8 prose prose-invert max-w-none">
           {/* Purpose Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">1. Purpose</h2>
             <p className="text-gray-300 leading-relaxed">
-              Mic'd Up Initiative (MUI) is committed to protecting the personal data of all users who interact with the MUI Portal. 
+              Mic'd Up Initiative (MUI) is committed to protecting the personal data of all users who interact with the MUI platform. 
               This Data Protection Policy outlines how personal information is collected, stored, processed, and protected within our platform.
             </p>
             <p className="text-gray-300 leading-relaxed mt-4">
@@ -38,10 +38,10 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Scope Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">2. Scope</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
-              This policy applies to all individuals who interact with MUI Portal, including:
+              This policy applies to all individuals who interact with MUI platform, including:
             </p>
             <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
               <li>Campus Ambassadors</li>
@@ -53,11 +53,11 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Personal Data Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">3. Personal Data We Collect</h2>
             
             <div className="space-y-6">
-              <div className="bg-black/30 p-4 rounded-lg border border-gray-700">
+              <div className="p-4 rounded-lg border border-gray-700" style={{backgroundColor: '#1A3A5C'}}>
                 <h3 className="text-xl font-semibold text-amber-400 mb-3">Identity Information</h3>
                 <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
                   <li>Full name</li>
@@ -67,7 +67,7 @@ export default function DataProtectionPolicy() {
                 </ul>
               </div>
 
-              <div className="bg-black/30 p-4 rounded-lg border border-gray-700">
+              <div className="p-4 rounded-lg border border-gray-700" style={{backgroundColor: '#1A3A5C'}}>
                 <h3 className="text-xl font-semibold text-amber-400 mb-3">Program Participation Data</h3>
                 <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
                   <li>Cohort enrollment</li>
@@ -78,7 +78,7 @@ export default function DataProtectionPolicy() {
                 </ul>
               </div>
 
-              <div className="bg-black/30 p-4 rounded-lg border border-gray-700">
+              <div className="p-4 rounded-lg border border-gray-700" style={{backgroundColor: '#1A3A5C'}}>
                 <h3 className="text-xl font-semibold text-amber-400 mb-3">Technical Information</h3>
                 <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
                   <li>Login timestamps</li>
@@ -91,13 +91,13 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Purpose of Processing Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">4. Purpose of Data Processing</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               Personal data is collected for the following purposes:
             </p>
             <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
-              <li>Providing access to <strong>MUI Portal</strong></li>
+              <li>Providing access to <strong>MUI platform</strong></li>
               <li>Managing cohort programs and educational initiatives</li>
               <li>Tracking learning progress and engagement</li>
               <li>Issuing certificates upon completion of training programs</li>
@@ -110,7 +110,7 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Data Storage and Security Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">5. Data Storage and Security</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               MUI implements reasonable technical and administrative safeguards to protect personal data from:
@@ -129,7 +129,7 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Data Retention Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">6. Data Retention</h2>
             <p className="text-gray-300 leading-relaxed">
               Participant data will be retained only for as long as necessary to:
@@ -146,10 +146,10 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* User Rights Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">7. User Rights</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
-              Users of MUI Portal have the right to:
+              Users of MUI platform have the right to:
             </p>
             <ul className="list-disc list-inside text-gray-300 space-y-2 ml-4">
               <li>Request access to personal information stored about them</li>
@@ -163,7 +163,7 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Data Sharing Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">8. Data Sharing</h2>
             <p className="text-gray-300 leading-relaxed mb-4">
               MUI does <strong>not sell, trade, or distribute personal data</strong> to third parties.
@@ -182,16 +182,16 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Responsible Use Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">9. Responsible Use of the Platform</h2>
             <p className="text-gray-300 leading-relaxed">
-              All users of MUI Portal are expected to respect the privacy and data protection of other participants. 
+              All users of MUI platform are expected to respect the privacy and data protection of other participants. 
               Unauthorized collection or misuse of personal information through the platform is strictly prohibited.
             </p>
           </section>
 
           {/* Policy Updates Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">10. Policy Updates</h2>
             <p className="text-gray-300 leading-relaxed">
               This Data Protection Policy may be updated periodically as the MUI platform evolves. 
@@ -200,7 +200,7 @@ export default function DataProtectionPolicy() {
           </section>
 
           {/* Contact Section */}
-          <section className="bg-gray-900/50 p-6 rounded-lg border border-gray-800">
+          <section className="p-6 rounded-lg border border-gray-800" style={{backgroundColor: '#1A3A5C'}}>
             <h2 className="text-2xl font-bold text-amber-500 mb-4">11. Contact</h2>
             <p className="text-gray-300 leading-relaxed">
               Questions regarding this policy or requests regarding personal data may be directed through the official 

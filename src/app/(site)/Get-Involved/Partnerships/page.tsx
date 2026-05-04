@@ -118,7 +118,7 @@ export default function PartnersPage() {
   ];
 
   return (
-    <section className="min-h-screen bg-slate-950 text-white">
+    <section className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Hero Section */}
       <div className="relative h-[60vh] min-h-[400px] overflow-hidden">
         <AnimatePresence mode="wait">
@@ -256,7 +256,7 @@ export default function PartnersPage() {
                   name="organization"
                   required
                   placeholder="Enter organization name"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 
@@ -270,7 +270,7 @@ export default function PartnersPage() {
                   name="contact_person"
                   required
                   placeholder="Full name"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 
@@ -285,7 +285,7 @@ export default function PartnersPage() {
                   type="email"
                   required
                   placeholder="you@example.com"
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 
@@ -298,7 +298,7 @@ export default function PartnersPage() {
                   id="website"
                   name="website"
                   placeholder="https://..."
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 
@@ -312,7 +312,7 @@ export default function PartnersPage() {
                   name="partnership_interest"
                   rows={5}
                   placeholder="Describe the type of partnership you're interested in..."
-                  className="w-full rounded-xl border border-white/15 bg-black/40 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30"
+                  className="w-full rounded-xl border border-white/15 px-4 py-3 text-sm outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/30" style={{backgroundColor: '#1A3A5C'}}
                 />
               </div>
 
@@ -337,10 +337,6 @@ export default function PartnersPage() {
                   ❌ Something went wrong. Please try again.
                 </p>
               )}
-
-              <p className="text-xs text-white/50 leading-relaxed text-center">
-                © {new Date().getFullYear()} Mic'd Up Initiative. All rights reserved.
-              </p>
             </form>
           </div>
         </motion.section>
