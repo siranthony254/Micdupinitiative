@@ -91,41 +91,6 @@ export default function MentorshipPage() {
 
         <div className="relative">
 
-        {/* Divider */}
-        <div className="my-10 h-px bg-white/10" />
-
-        {/* Why We Mentor */}
-        <motion.section
-          variants={bounce}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.55 }}
-          className="max-w-4xl"
-        >
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-8 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
-            <h2 className="text-2xl md:text-3xl font-semibold text-amber-400 mb-6">
-              Why We Mentor
-            </h2>
-
-            <div className="space-y-4">
-              <p className="text-lg text-white/80 leading-relaxed">
-                Institutions outlive moments. Content without character fades.
-                Platforms without people collapse.
-              </p>
-
-              <p className="text-lg text-white/80 leading-relaxed">
-                Mentorship ensures the mission is carried forward by individuals
-                formed in responsibility, values, and purpose.
-              </p>
-
-              <p className="text-xl font-medium text-white mt-6">
-                Impact is measured by people who can say: "I was formed here."
-              </p>
-            </div>
-          </div>
-        </motion.section>
-
         {/* Who It's For */}
         <motion.section
           variants={bounce}
@@ -199,8 +164,8 @@ export default function MentorshipPage() {
               >
                 <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
                   <div className="flex items-center space-x-3">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center">
-                      <span className="text-amber-400 font-bold text-sm">{index + 1}</span>
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#F0EDE6', border: '2px solid #1A5C38'}}>
+                      <span className="font-bold text-sm" style={{color: '#1A5C38'}}>{index + 1}</span>
                     </div>
                     <p className="text-white/80 leading-relaxed">{item}</p>
                   </div>
@@ -254,16 +219,16 @@ export default function MentorshipPage() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="group"
               >
-                <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
+                <div className="h-full rounded-2xl border border-white/10 p-6 shadow-lg hover:shadow-xl transition-all duration-300" style={{backgroundColor: '#F0EDE6'}}>
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 w-12 h-12 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <span className="text-amber-400 font-bold text-lg">{pillar.icon[0]}</span>
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-amber-200 mb-2">
+                      <h3 className="text-lg font-semibold mb-2" style={{color: '#1A5C38'}}>
                         {pillar.title}
                       </h3>
-                      <p className="text-white/70 leading-relaxed">
+                      <p className="leading-relaxed" style={{color: '#1A3A5C'}}>
                         {pillar.desc}
                       </p>
                     </div>
@@ -273,18 +238,7 @@ export default function MentorshipPage() {
             ))}
           </div>
 
-          <div className="mt-8 text-center">
-            <Link
-              href="/Programs/cohort-framework"
-              className="inline-flex items-center rounded-full border border-amber-400 bg-amber-400 px-8 py-3 text-sm font-semibold text-black
-                         hover:bg-amber-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-400/20
-                         transition active:scale-[0.97]"
-            >
-              Our Cohort Framework
-              <span className="ml-2 text-lg">+</span>
-            </Link>
-          </div>
-        </motion.section>
+          </motion.section>
 
         {/* CTA Block */}
         <motion.section
@@ -293,45 +247,58 @@ export default function MentorshipPage() {
           whileInView="visible"
           viewport={{ once: true }}
           transition={{ duration: 0.55 }}
-          className="mt-16 max-w-4xl"
+          className="mt-16"
         >
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
-            <h2 className="text-2xl md:text-3xl font-semibold text-amber-400 mb-6">
+          <div className="rounded-3xl border border-white/10 p-8 shadow-lg hover:shadow-xl transition-all duration-300 mx-auto" style={{backgroundColor: '#F0EDE6', maxWidth: '1200px'}}>
+            <h2 className="text-2xl md:text-3xl font-semibold mb-6 text-center" style={{color: '#1A5C38'}}>
               Get Involved
             </h2>
 
-            <p className="text-lg text-white/80 leading-relaxed mb-8">
+            <p className="text-lg leading-relaxed mb-8 text-center" style={{color: '#1A3A5C'}}>
               Mentorship at MUI is by invitation and alignment. Not everyone is
               called to the same lane - but everyone is called to steward what
               they carry.
             </p>
 
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-4 justify-center items-center">
               <Link
                 href="/mentorship/apply"
-                className="rounded-full bg-amber-400 px-8 py-3 text-sm font-semibold text-black
-                           hover:bg-amber-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-400/20
-                           transition active:scale-[0.97]"
+                className="rounded-full px-6 py-3 text-sm font-semibold
+                           hover:scale-[1.02] hover:shadow-lg hover:shadow-amber-400/20
+                           transition active:scale-[0.97] flex-shrink-0"
+                style={{backgroundColor: '#F0EDE6', color: '#1A5C38', border: `2px solid #1A5C38`}}
               >
                 Join a Mentorship Cohort
               </Link>
 
               <Link
                 href="/Get-Involved/Ambassadors"
-                className="rounded-full border border-white/20 px-8 py-3 text-sm font-semibold text-white
-                           hover:bg-white/5 hover:border-white/40 hover:scale-[1.02]
-                           transition active:scale-[0.97]"
+                className="rounded-full px-6 py-3 text-sm font-semibold
+                           hover:scale-[1.02]
+                           transition active:scale-[0.97] flex-shrink-0"
+                style={{backgroundColor: '#8BAAC4', color: '#F0EDE6', border: `2px solid #8BAAC4`}}
               >
                 Become a Campus Ambassador
               </Link>
 
               <Link
                 href="/Get-Involved/Partnerships"
-                className="rounded-full border border-white/20 px-8 py-3 text-sm font-semibold text-white
-                           hover:bg-white/5 hover:border-white/40 hover:scale-[1.02]
-                           transition active:scale-[0.97]"
+                className="rounded-full px-6 py-3 text-sm font-semibold
+                           hover:scale-[1.02]
+                           transition active:scale-[0.97] flex-shrink-0"
+                style={{backgroundColor: '#1A5C38', color: '#F0EDE6', border: `2px solid #1A5C38`}}
               >
                 Partner With Formation
+              </Link>
+
+              <Link
+                href="/Programs/cohort-framework"
+                className="rounded-full px-6 py-3 text-sm font-semibold
+                           hover:scale-[1.02] hover:shadow-lg
+                           transition active:scale-[0.97] flex-shrink-0"
+                style={{backgroundColor: '#F0EDE6', color: '#8BAAC4', border: `2px solid #8BAAC4`}}
+              >
+                Our Cohort Framework
               </Link>
             </div>
           </div>
