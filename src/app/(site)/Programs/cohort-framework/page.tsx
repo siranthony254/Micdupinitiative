@@ -426,9 +426,6 @@ export default function CohortFrameworkPage() {
   return (
     <section className={`min-h-screen px-4 py-10 text-[#f6f3ec] [font-family:Arial,Helvetica,sans-serif] sm:px-6`} style={{backgroundColor: '#0D1F35'}}>
       <div className="mx-auto max-w-[720px]">
-        <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.14em] text-emerald-400">
-          MUI - Internal Framework
-        </p>
         <h1 className={`mb-2 text-[clamp(2rem,3.8vw,2.8rem)] leading-[1.15] [font-family:Georgia,'Times New Roman',serif]`}>
           The Cohort Framework
         </h1>
