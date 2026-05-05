@@ -80,8 +80,9 @@ export function FeaturedVideoHero() {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href={`/videos/${featuredVideo.slug.current}`}
-                className="inline-flex items-center justify-center px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-colors"
+                href="/videos"
+                className="inline-flex items-center justify-center px-8 py-4 text-white font-semibold rounded-lg transition-colors border"
+                style={{backgroundColor: '#1A3A5C'}}
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -109,9 +110,9 @@ export function FeaturedVideoHero() {
           {/* Video Thumbnail */}
           <div className="relative">
             <div className="aspect-video rounded-lg overflow-hidden shadow-2xl">
-              {featuredVideo.thumbnail ? (
+              {featuredVideo._id ? (
                 <Image
-                  src={urlFor(featuredVideo.thumbnail).width(800).height(450).url()}
+                  src={`https://img.youtube.com/vi/${featuredVideo._id}/maxresdefault.jpg`}
                   alt={featuredVideo.thumbnail.alt || featuredVideo.title}
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-105"

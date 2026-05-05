@@ -6,7 +6,6 @@ import { WhatWeDo } from "@/components/home/WhatWeDo";
 import GetInvolved from "@/components/home/GetInvolved";
 import ClosingLine from "@/components/home/ClosingLine";
 import { FeaturedConversations } from "@/components/home/FeaturedConversations";
-import { PlaylistsRail } from "@/components/home/PlaylistsRail";
 
 export default function HomePage() {
   return (
@@ -21,11 +20,6 @@ export default function HomePage() {
       <FeaturedConversations />
 
       {/* Mixed-content editorial rail (podcasts, talks, documentaries) */}
-      <PlaylistsRail
-        title="Playlists"
-        subtitle="Podcasts, talks, and documentaries shaping campus culture"
-        viewAllHref="/media"
-      />
 
       <GetInvolved />
       

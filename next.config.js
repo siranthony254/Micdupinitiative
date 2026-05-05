@@ -17,6 +17,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "img.youtube.com",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
     ],
     // Enable modern image formats
     formats: ['image/webp', 'image/avif'],
