@@ -87,7 +87,7 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-amber-600 to-orange-700 text-white">
+      <div className="text-white" style={{backgroundColor: '#1A3A5C'}}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">

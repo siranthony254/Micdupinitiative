@@ -64,11 +64,11 @@ export function MediaGallery({ items }: MediaGalleryProps) {
 
           <div className="space-y-4 px-6 py-6 md:px-8">
             <div className="flex flex-wrap items-center gap-3 text-sm text-white/60">
-              <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-amber-200">
+              <span key="selected-type" className="rounded-full border border-amber-400/30 bg-amber-400/10 px-3 py-1 text-amber-200">
                 {selectedItem.type}
               </span>
-              {selectedItem.campus && <span>{selectedItem.campus}</span>}
-              {selectedItem.duration && <span>{selectedItem.duration}</span>}
+              {selectedItem.campus && <span key="selected-campus">{selectedItem.campus}</span>}
+              {selectedItem.duration && <span key="selected-duration">{selectedItem.duration}</span>}
             </div>
             <div>
               <h2 className="text-2xl font-semibold text-white md:text-3xl">
@@ -106,12 +106,21 @@ export function MediaGallery({ items }: MediaGalleryProps) {
               style={{backgroundColor: isActive ? undefined : '#1A3A5C'}}
             >
               <div className="relative aspect-video overflow-hidden bg-black">
-                <Image
-                  src={item.thumbnail || "/images/placeholder.png"}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition duration-300 group-hover:scale-105"
-                />
+                {item.thumbnail && item.thumbnail.trim() !== '' ? (
+                  <Image
+                    src={item.thumbnail}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-800 flex items-center justify-center">
+                    <svg className="w-16 h-16 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-black shadow-lg transition duration-300 group-hover:scale-95">
@@ -131,8 +140,8 @@ export function MediaGallery({ items }: MediaGalleryProps) {
 
               <div className="space-y-3 p-5">
                 <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.22em] text-white/45">
-                  <span>{item.type}</span>
-                  {item.campus && <span>{item.campus}</span>}
+                  <span key="type">{item.type}</span>
+                  {item.campus && <span key="campus">{item.campus}</span>}
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-white transition group-hover:text-amber-300">

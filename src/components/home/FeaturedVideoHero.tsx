@@ -80,7 +80,7 @@ export function FeaturedVideoHero() {
             
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                href="/videos"
+                href={`/videos/${featuredVideo._id}`}
                 className="inline-flex items-center justify-center px-8 py-4 text-white font-semibold rounded-lg transition-colors border"
                 style={{backgroundColor: '#1A3A5C'}}
               >
@@ -113,7 +113,7 @@ export function FeaturedVideoHero() {
               {featuredVideo._id ? (
                 <Image
                   src={`https://img.youtube.com/vi/${featuredVideo._id}/maxresdefault.jpg`}
-                  alt={featuredVideo.thumbnail.alt || featuredVideo.title}
+                  alt={featuredVideo.title}
                   fill
                   className="object-cover transition-transform duration-300 hover:scale-105"
                 />
