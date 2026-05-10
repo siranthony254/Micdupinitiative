@@ -1,10 +1,8 @@
 import type { Metadata } from 'next'
 import { SanityLive } from '@/sanity/lib/live'
-import { AuthProvider } from '@/contexts/auth-context'
 import { SiteHeader } from '@/components/layout/site-header'
 import { SiteFooter } from '@/components/layout/site-footer'
 import { CookieConsent } from '@/components/cookie-consent'
-import { PerformanceMonitor } from '@/components/performance-monitor'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -94,21 +92,17 @@ export default function SiteLayout({
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-black text-white">
-        <AuthProvider>
-          <PerformanceMonitor />
-          <SiteHeader />
-          
-          <main className="flex-1">
-            {children}
-          </main>
+        <SiteHeader />
 
-          <SiteFooter />
-          
-          {/* Cookie Consent Banner */}
-          <CookieConsent />
-          
-          <SanityLive />
-        </AuthProvider>
+        <main className="flex-1">
+          {children}
+        </main>
+
+        <SiteFooter />
+
+        <CookieConsent />
+
+        {process.env.NODE_ENV === 'development' ? <SanityLive /> : null}
       </body>
     </html>
   );

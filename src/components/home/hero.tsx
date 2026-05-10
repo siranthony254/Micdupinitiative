@@ -1,92 +1,32 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
-
-const BACKGROUNDS = [
-  "/images/background-1.jpg",
-  "/images/background-2.jpg",
-  "/images/background-3.jpg",
-  "/images/background-4.jpg",
-  "/images/background-5.jpg",
-];
 
 export function HomePage() {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % BACKGROUNDS.length);
-    }, 7000); // slow, premium cadence
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Top-right brand label */}
       <div className="absolute top-6 left-6 text-emerald-500 font-semibold tracking-wide">
-        Mic'd Up Initiative
+        Mic&apos;d Up Initiative
       </div>
 
-      {/* Background slideshow */}
       <div className="absolute inset-0 -z-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.9, ease: "easeInOut" }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={BACKGROUNDS[index]}
-              alt="Campus dialogue and collaboration"
-              fill
-              priority
-              className="object-cover object-center brightness-[0.6] contrast-[1.05]"
-            />
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Overlay */}
+        <Image
+          src="/images/background-1.jpg"
+          alt="Campus dialogue and collaboration"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center brightness-[0.6] contrast-[1.05]"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-slate-900/70 via-slate-900/60 to-slate-950/90" />
       </div>
 
-      {/* Content */}
-      <motion.section
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        className="relative max-w-4xl px-6 md:px-10 text-center"
-      >
-        {/* Headline */}
+      <section className="relative max-w-4xl px-6 md:px-10 text-center animate-[fadeUp_700ms_ease-out_both]">
         <h1 className="mb-6 tracking-tight leading-tight">
-          <span
-            className="
-              block text-4xl md:text-6xl lg:text-7xl
-              font-extrabold text-white
-              leading-[1.1] md:leading-[1.1]
-              mb-4
-            "
-          >
+          <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] md:leading-[1.1] mb-4">
             Join a Generation
           </span>
 
-                    <span
-            className="
-              block
-              text-2xl md:text-4xl lg:text-5xl
-              font-extrabold
-              bg-gradient-to-r from-amber-400 to-amber-500
-              bg-clip-text text-transparent
-              leading-[1.2]
-              text-center
-            "
-          >
+          <span className="block text-2xl md:text-4xl lg:text-5xl font-extrabold bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent leading-[1.2] text-center">
             <span className="block text-inherit leading-inherit">
               Becoming Clear Thinkers, Bold Voices And
             </span>
@@ -96,40 +36,27 @@ export function HomePage() {
           </span>
         </h1>
 
-        {/* Subtext */}
         <div className="mt-6 space-y-3">
-
           <p className="text-base md:text-lg text-white/75 leading-relaxed">
-            Because voices shape society and real problems will be solved by bold 
-            people who were heard, formed, and trusted even while they were still in school. 
-             MUI focuses on helping you express truth with clarity, conviction, and responsibility.
+            Because voices shape society and real problems will be solved by bold
+            people who were heard, formed, and trusted even while they were still
+            in school. MUI focuses on helping you express truth with clarity,
+            conviction, and responsibility.
           </p>
         </div>
 
-        {/* CTA */}
-        <motion.div
-          className="mt-10 flex justify-center"
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.97 }}
-        >
+        <div className="mt-10 flex justify-center">
           <Link
             href="/About/OurStory"
-            className="
-              inline-flex items-center gap-2
-              rounded-full
-              border border-white/60
-              px-8 py-3
-              text-sm md:text-base font-medium
-              text-white
-              hover:bg-white hover:text-slate-900
-              transition-all duration-300
-            "
+            className="inline-flex items-center gap-2 rounded-full border border-white/60 px-8 py-3 text-sm md:text-base font-medium text-white hover:bg-white hover:text-slate-900 hover:scale-[1.04] active:scale-[0.97] transition-all duration-300"
           >
             Learn More
-            <span className="text-lg leading-none">↓</span>
+            <span className="text-lg leading-none" aria-hidden="true">
+              ↓
+            </span>
           </Link>
-        </motion.div>
-      </motion.section>
+        </div>
+      </section>
     </main>
   );
 }
