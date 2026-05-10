@@ -18,7 +18,8 @@ function getVideoImage(video: SanityVideo) {
 
 export async function FeaturedVideoHero() {
   const result = await getFeaturedVideos(1);
-  const featuredVideo = result.data?.[0] ?? null;
+  const videos = (result.data ?? []) as SanityVideo[];
+  const featuredVideo = videos[0] ?? null;
 
   if (!featuredVideo) {
     return null;

@@ -2,10 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { getVideos } from "@/lib/videos";
 import { urlFor } from "@/sanity/lib/image";
+import type { SanityVideo } from "@/types/video";
 
 export async function TopConversations() {
   const result = await getVideos({ limit: 4 });
-  const videos = result.data ?? [];
+  const videos = (result.data ?? []) as SanityVideo[];
 
   if (videos.length === 0) {
     return null;
