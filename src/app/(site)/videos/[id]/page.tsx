@@ -14,9 +14,9 @@ export default async function VideoPlayerPage({ params }: { params: Promise<{ id
 
   // Group videos by type/category for recommendations
   const recommendations = {
-    podcast: allVideos.data?.filter((v) => v.type === "podcast" && v._id !== video._id) || [],
-    documentary: allVideos.data?.filter((v) => v.type === "documentary" && v._id !== video._id) || [],
-    talk: allVideos.data?.filter((v) => v.type === "talk" && v._id !== video._id) || [],
+    podcast: allVideos.data?.filter((v: SanityVideo) => v.type === "podcast" && v._id !== video._id) || [],
+    documentary: allVideos.data?.filter((v: SanityVideo) => v.type === "documentary" && v._id !== video._id) || [],
+    talk: allVideos.data?.filter((v: SanityVideo) => v.type === "talk" && v._id !== video._id) || [],
     // Add more categories as needed
   };
 
