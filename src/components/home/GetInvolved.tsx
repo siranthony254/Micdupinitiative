@@ -28,10 +28,10 @@ const paths = [
 export default function GetInvolved() {
   return (
     <section className="border-b border-white/10" style={{backgroundColor: '#0D1F35'}}>
-      <div className="mx-auto max-w-7xl px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-12">
 
         {/* Intro */}
-        <div className="mb-14 max-w-3xl mx-auto text-center">
+        <div className="mb-10 max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white">
             Get Involved
           </h2>
@@ -75,7 +75,7 @@ export default function GetInvolved() {
         </div>
 
         {/* Secondary CTA */}
-        <div className="mt-16 text-sm text-white/60 text-center">
+        <div className="mt-10 text-sm text-white/60 text-center">
           Not sure where you fit?{" "}
           <Link href="/contact" className="text-amber-500 underline underline-offset-4">
             Talk to us

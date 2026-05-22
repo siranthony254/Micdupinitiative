@@ -5,8 +5,8 @@ export function FeaturedConversations() {
   return (
     <section className="text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Section Headline */}
-      <div className="mx-auto max-w-7xl px-6 py-16">
-        <div className="text-center mb-12">
+      <div className="mx-auto max-w-7xl px-6 py-10">
+        <div className="text-center mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Featured Conversations
           </h2>
@@ -21,7 +21,7 @@ export function FeaturedConversations() {
       <FeaturedVideoHero />
 
       {/* Top Conversations */}
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      <div className="mx-auto max-w-7xl px-6 py-10">
         <div className="text-center mb-8">
           <p className="text-lg text-gray-300 mb-4">
             Every conversation is archived. Every voice is preserved.

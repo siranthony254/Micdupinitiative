@@ -23,7 +23,7 @@ export async function FeaturedVideoHero() {
 
   return (
     <section className="bg-gradient-to-br from-amber-900 via-orange-800 to-amber-700 text-white">
-      <div className="mx-auto max-w-7xl px-6 py-20">
+      <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-amber-600/20 border border-amber-400/30">

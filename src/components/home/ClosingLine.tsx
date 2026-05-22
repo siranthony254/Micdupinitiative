@@ -9,7 +9,7 @@ const fadeUp = {
 
 export default function ClosingLine() {
   return (
-    <section className="relative text-white py-20 overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
+    <section className="relative text-white py-12 overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       {/* Ambient Glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-[-200px] left-[-120px] h-[420px] w-[420px] rounded-full bg-amber-500/10 blur-[120px]" />
@@ -34,7 +34,7 @@ export default function ClosingLine() {
           </p>
 
           {/* Decorative Element */}
-          <div className="mt-12 flex justify-center">
+          <div className="mt-8 flex justify-center">
             <div className="h-px w-24 bg-gradient-to-r from-transparent via-amber-400/50 to-transparent"></div>
           </div>
         </motion.div>

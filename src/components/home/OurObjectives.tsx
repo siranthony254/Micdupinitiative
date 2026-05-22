@@ -69,7 +69,7 @@ const objectives = [
 
 export default function OurObjectives() {
   return (
-    <section className="relative text-white py-20 overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
+    <section className="relative text-white py-12 overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
       {/* Ambient Glow */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute top-[-200px] left-[-120px] h-[420px] w-[420px] rounded-full bg-amber-500/10 blur-[120px]" />
@@ -84,7 +84,7 @@ export default function OurObjectives() {
           whileInView="visible"
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-10"
         >
           <span className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-amber-300">
             Our Objectives
@@ -143,7 +143,7 @@ export default function OurObjectives() {
           whileInView="visible"
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-center mt-16"
+          className="text-center mt-10"
         >
           <div className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-6 py-3">
             <span className="text-amber-300 text-sm font-medium">

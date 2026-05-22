@@ -34,7 +34,7 @@ export default function WhyWeExist() {
           Why Mic&apos;d Up Initiative Exists
         </h2>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {reasons.map((reason) => (
             <div key={reason.title} className="text-left">
               <h3 className="text-base font-bold text-amber-500">
@@ -47,7 +47,7 @@ export default function WhyWeExist() {
           ))}
         </div>
 
-        <p className="mt-12 text-base font-medium text-emerald-400">
+        <p className="mt-8 text-base font-medium text-emerald-400">
           How campuses express themselves today shapes the society of tomorrow!
         </p>
       </div>

@@ -43,7 +43,7 @@ export function WhatWeDo() {
             What We Do As MUI
           </h2>
           <p className="mt-6 text-lg text-white/70 max-w-4xl mx-auto leading-relaxed">
-            Mic'd Up Initiative is a campus-centered movement that discovers voices, shapes leaders, hosts dialogue, and produces insight—turning youth expression into societal impact across Africa and beyond.
+            Mic'd Up Initiative is a campus-centered movement that discovers and shapes voices, hosts dialogue, curate narratives, and produces insight—turning youth expression into societal impact across Africa and beyond for a brighter tomorrow.
           </p>
         </div>
 
