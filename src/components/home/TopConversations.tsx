@@ -14,7 +14,7 @@ export async function TopConversations() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-2xl font-bold text-amber-300">Top Conversations</h3>
+        <h3 className="text-2xl font-bold text-white">Top Conversations</h3>
         <Link
           href="/videos"
           className="text-amber-400 hover:text-amber-300 font-medium transition-colors flex items-center gap-2"
@@ -34,7 +34,7 @@ export async function TopConversations() {
             <Link
               key={video._id}
               href={video._id ? `/videos/${video._id}` : "/videos"}
-              className="group bg-gray-800/50 hover:bg-gray-700/50 rounded-lg p-4 transition-all duration-200 border border-gray-700 hover:border-amber-500/30"
+              className="group bg-white/5 hover:bg-white/10 rounded-lg p-4 transition-all duration-200 border border-white/10 hover:border-amber-500/30"
             >
               <div className="flex gap-4">
                 <div className="relative w-24 h-16 rounded overflow-hidden flex-shrink-0 bg-gray-700">
@@ -67,7 +67,7 @@ export async function TopConversations() {
                     {video.title || "Untitled video"}
                   </h4>
 
-                  <div className="flex items-center gap-3 text-gray-400 text-xs">
+                  <div className="flex items-center gap-3 text-white/60 text-xs">
                     <span className="flex items-center gap-1">
                       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />

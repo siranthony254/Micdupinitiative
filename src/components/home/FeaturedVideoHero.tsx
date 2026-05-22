@@ -22,12 +22,12 @@ export async function FeaturedVideoHero() {
     : "/videos";
 
   return (
-    <section className="bg-gradient-to-br from-amber-900 via-orange-800 to-amber-700 text-white">
+    <section className="text-[#0D1F35]" style={{ backgroundColor: "#F0EDE6" }}>
       <div className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
-            <div className="inline-flex items-center px-3 py-1 rounded-full bg-amber-600/20 border border-amber-400/30">
-              <span className="text-sm font-medium text-amber-200">
+            <div className="inline-flex items-center px-3 py-1 rounded-full bg-[#0D1F35]/5 border border-[#0D1F35]/15">
+              <span className="text-sm font-medium text-[#0D1F35]">
                 Featured Conversation
               </span>
             </div>
@@ -37,12 +37,12 @@ export async function FeaturedVideoHero() {
             </h1>
 
             {featuredVideo.description && (
-              <p className="text-xl text-amber-100 leading-relaxed">
+              <p className="text-xl text-[#0D1F35]/75 leading-relaxed">
                 {featuredVideo.description}
               </p>
             )}
 
-            <div className="flex flex-wrap items-center gap-4 text-amber-200">
+            <div className="flex flex-wrap items-center gap-4 text-[#0D1F35]/70">
               <span className="flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -69,8 +69,7 @@ export async function FeaturedVideoHero() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href={videoHref}
-                className="inline-flex items-center justify-center px-8 py-4 text-white font-semibold rounded-lg transition-colors border"
-                style={{ backgroundColor: "#1A3A5C" }}
+                className="inline-flex items-center justify-center px-8 py-4 text-[#0D1F35] font-semibold rounded-lg transition-colors border border-[#0D1F35]/30 hover:bg-[#0D1F35]/10"
               >
                 <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -84,7 +83,7 @@ export async function FeaturedVideoHero() {
                   href={featuredVideo.externalUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-colors border border-white/20"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-[#0D1F35]/5 hover:bg-[#0D1F35]/10 text-[#0D1F35] font-semibold rounded-lg transition-colors border border-[#0D1F35]/20"
                 >
                   <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L16 8" />
@@ -116,8 +115,8 @@ export async function FeaturedVideoHero() {
             </div>
 
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-20 h-20 bg-amber-500/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                <svg className="w-8 h-8 text-white ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-20 h-20 bg-[#F0EDE6]/90 rounded-full flex items-center justify-center backdrop-blur-sm">
+                <svg className="w-8 h-8 text-[#0D1F35] ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 </svg>
               </div>
