@@ -3,19 +3,19 @@
 export default function WhyWeExist() {
   const reasons = [
     {
-      title: "1. To Amplify Meaningful Campus Voices",
+      title: "To Amplify Meaningful Campus Voices",
       body: "Many students have ideas, experiences, and perspectives that remain unheard or misrepresented. MUI exists to create intentional platforms where authentic campus voices can be heard with clarity and depth.",
     },
     {
-      title: "2. To Form Responsible Influence",
+      title: "To Form Responsible Influence",
       body: "In an age of viral content and digital noise, MUI exists to help young people understand that influence carries responsibility - shaping thinkers, creators, and leaders who impact culture consciously.",
     },
     {
-      title: "3. To Bridge Campus and Society",
+      title: "To Bridge Campus and Society",
       body: "MUI exists to connect students with mentors, professionals, institutions, and opportunities beyond the classroom - ensuring campuses do not remain isolated from the real world.",
     },
     {
-      title: "4. To Challenge and Transform Campus Culture",
+      title: "To Challenge and Transform Campus Culture",
       body: "Campus culture shapes future society. MUI exists to confront unhealthy cultural patterns, encourage meaningful dialogue, and cultivate a generation marked by purpose, integrity, and intellectual depth.",
     },
   ];
@@ -36,8 +36,8 @@ export default function WhyWeExist() {
 
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {reasons.map((reason) => (
-            <div key={reason.title} className="text-center">
-              <h3 className="text-sm font-semibold text-amber-500">
+            <div key={reason.title} className="text-left">
+              <h3 className="text-base font-bold text-amber-500">
                 {reason.title}
               </h3>
               <p className="mt-2 text-sm text-white/70 leading-relaxed">

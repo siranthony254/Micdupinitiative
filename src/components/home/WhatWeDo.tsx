@@ -69,7 +69,7 @@ export function WhatWeDo() {
                   {pillar.title}
                 </h3>
 
-                <p className="mt-3 text-white/70 leading-relaxed">
+                <p className="mt-3 text-left text-white/70 leading-relaxed">
                   {pillar.description}
                 </p>
 
