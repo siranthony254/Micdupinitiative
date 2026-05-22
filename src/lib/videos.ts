@@ -1,6 +1,8 @@
 import { client } from '@/sanity/lib/client'
 
 import type { SanityVideo, VideoFilter } from '@/types/video'
+import type { MediaItem } from '@/components/media/types/media'
+import { extractYouTubeId, getYouTubeThumbnailUrl as getDerivedYouTubeThumbnailUrl, getYouTubeWatchUrl } from '@/lib/youtube'
 
 // GROQ Queries
 const VIDEO_FIELDS = `
@@ -240,6 +242,45 @@ export function groupVideosByType(videos: SanityVideo[]) {
     acc[type].push(video)
     return acc
   }, {} as Record<string, SanityVideo[]>)
+}
+
+export function getVideoYouTubeId(video: Pick<SanityVideo, 'youtubeId' | 'youtubeUrl'>): string | null {
+  return video.youtubeId || extractYouTubeId(video.youtubeUrl)
+}
+
+export function getVideoThumbnailUrl(video: Pick<SanityVideo, 'youtubeId' | 'youtubeUrl'>): string {
+  return getDerivedYouTubeThumbnailUrl(getVideoYouTubeId(video))
+}
+
+export function toMediaItem(video: SanityVideo): MediaItem {
+  const youtubeId = getVideoYouTubeId(video) ?? undefined
+
+  return {
+    id: video._id,
+    type: video.type || 'talk',
+    category: video.category || 'General',
+    title: video.title || 'Untitled video',
+    description: video.description || '',
+    campus: video.campus || '',
+    duration: video.duration,
+    thumbnail: getDerivedYouTubeThumbnailUrl(youtubeId),
+    primaryPlatform: 'youtube',
+    youtubeId,
+    externalUrl: video.youtubeUrl || getYouTubeWatchUrl(youtubeId),
+    social: {
+      youtube: video.youtubeUrl || getYouTubeWatchUrl(youtubeId) || null,
+      spotify: video.social?.spotify || null,
+      apple: video.social?.apple || null,
+      instagram: video.social?.instagram || null,
+      tiktok: video.social?.tiktok || null,
+      facebook: video.social?.facebook || null,
+      x: video.social?.x || null,
+      linkedin: video.social?.linkedin || null,
+    },
+    comingSoon: video.comingSoon,
+    featured: video.featured,
+    showInRail: video.showInRail,
+  }
 }
 
 // Helper function to get YouTube URL from ID

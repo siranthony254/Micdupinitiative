@@ -3,10 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { MediaGallery } from "@/components/media/MediaGallery";
-import { getRailVideos } from "@/lib/videos";
-import { urlFor } from "@/sanity/lib/image";
+import { getRailVideos, toMediaItem } from "@/lib/videos";
 import type { SanityVideo } from "@/types/video";
-import type { MediaItem } from "@/components/media/types/media";
 
 interface PlaylistsRailProps {
   title: string;
@@ -50,30 +48,7 @@ export function PlaylistsRail({
     );
   }
 
-  // Transform SanityVideo to MediaItem format for MediaGallery
-  const mediaItems = videos.map((video) => ({
-    id: video._id,
-    type: video.type,
-    category: video.category,
-    title: video.title,
-    description: video.description,
-    campus: video.campus,
-    duration: video.duration,
-    thumbnail: video.thumbnail ? urlFor(video.thumbnail).width(400).height(225).url() : '',
-    primaryPlatform: 'youtube' as keyof MediaItem['social'],
-    youtubeId: video.youtubeId,
-    externalUrl: video.externalUrl,
-    social: {
-      youtube: video.social?.youtube || null,
-      spotify: video.social?.youtube || null,
-      apple: null,
-      instagram: video.social?.instagram || null,
-      tiktok: null,
-      facebook: video.social?.facebook || null,
-      x: null,
-      linkedin: null,
-    },
-  }));
+  const mediaItems = videos.map(toMediaItem);
 
   return (
     <section className="bg-slate-900 text-white">

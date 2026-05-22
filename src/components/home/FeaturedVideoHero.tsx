@@ -1,13 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedVideos } from "@/lib/videos";
+import { getFeaturedVideos, getVideoThumbnailUrl } from "@/lib/videos";
 import type { SanityVideo } from "@/types/video";
 
 function getVideoImage(video: SanityVideo) {
-  if (video.youtubeId) {
-    return `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
-  }
-  return null;
+  return getVideoThumbnailUrl(video) || null;
 }
 
 export async function FeaturedVideoHero() {
@@ -36,12 +33,14 @@ export async function FeaturedVideoHero() {
             </div>
 
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              {featuredVideo.title}
+              {featuredVideo.title || "Featured Conversation"}
             </h1>
 
-            <p className="text-xl text-amber-100 leading-relaxed">
-              {featuredVideo.description}
-            </p>
+            {featuredVideo.description && (
+              <p className="text-xl text-amber-100 leading-relaxed">
+                {featuredVideo.description}
+              </p>
+            )}
 
             <div className="flex flex-wrap items-center gap-4 text-amber-200">
               <span className="flex items-center gap-2">
@@ -49,14 +48,16 @@ export async function FeaturedVideoHero() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
-                {featuredVideo.campus}
+                {featuredVideo.campus || "MUC"}
               </span>
-              <span className="flex items-center gap-2">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {featuredVideo.duration}
-              </span>
+              {featuredVideo.duration && (
+                <span className="flex items-center gap-2">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {featuredVideo.duration}
+                </span>
+              )}
               <span className="flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 4v16M17 4v16M3 8h4m10 0h4" />
@@ -99,7 +100,7 @@ export async function FeaturedVideoHero() {
               {imageUrl ? (
                 <Image
                   src={imageUrl}
-                  alt={featuredVideo.thumbnail?.alt || featuredVideo.title}
+                  alt={featuredVideo.title || "Featured video thumbnail"}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover transition-transform duration-300 hover:scale-105"

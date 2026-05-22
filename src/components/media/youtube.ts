@@ -1,3 +1,5 @@
+export { extractYouTubeId, getYouTubeThumbnailUrl, getYouTubeWatchUrl } from "@/lib/youtube";
+
 interface YouTubeEmbedOptions {
   autoplay?: boolean;
   controls?: boolean;

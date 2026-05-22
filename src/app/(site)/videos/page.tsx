@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { MediaGallery } from "@/components/media/MediaGallery";
-import { getVideos } from "@/lib/videos";
-import { urlFor } from "@/sanity/lib/image";
+import { getVideos, toMediaItem } from "@/lib/videos";
 import type { SanityVideo } from "@/types/video";
-import type { MediaItem } from "@/components/media/types/media";
 
 // Constant for consistent background color
 const BACKGROUND_COLOR = '#1A3A5C';
@@ -42,30 +40,7 @@ export default function VideosPage() {
     );
   }
 
-  // Transform SanityVideo to MediaItem format for MediaGallery
-  const mediaItems: MediaItem[] = videos.map((video) => ({
-    id: video._id,
-    type: video.type,
-    category: video.category,
-    title: video.title,
-    description: video.description,
-    campus: video.campus,
-    duration: video.duration,
-    thumbnail: video.youtubeId ? `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg` : '',
-    primaryPlatform: 'youtube' as keyof MediaItem['social'],
-    youtubeId: video.youtubeId,
-    externalUrl: undefined,
-    social: {
-      youtube: video.youtubeUrl || null,
-      spotify: null,
-      apple: null,
-      instagram: null,
-      tiktok: null,
-      facebook: null,
-      x: null,
-      linkedin: null,
-    },
-  }));
+  const mediaItems = videos.map(toMediaItem);
 
   return (
     <div className="min-h-screen text-white" style={{backgroundColor: BACKGROUND_COLOR}}>

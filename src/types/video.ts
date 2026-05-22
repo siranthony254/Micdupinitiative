@@ -3,13 +3,13 @@ import { PortableTextBlock } from '@portabletext/types'
 export interface SanityVideo {
   _id: string
   _type: 'video'
-  title: string
-  slug: {
+  title?: string
+  slug?: {
     current: string
   }
-  description: string
+  description?: string
   youtubeUrl: string
-  youtubeId: string
+  youtubeId?: string
   vimeoId?: string
   selfHostedUrl?: string
   externalUrl?: string
@@ -32,9 +32,9 @@ export interface SanityVideo {
     linkedin?: string | null
   }
   type: 'podcast' | 'talk' | 'documentary' | 'interview' | 'workshop' | 'event'
-  category: string
-  campus: string
-  duration: string
+  category?: string
+  campus?: string
+  duration?: string
   featured?: boolean
   showInRail?: boolean
   comingSoon?: boolean

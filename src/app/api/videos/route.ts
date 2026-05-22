@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getVideos, getRailVideos, getVideosByType, getFeaturedVideos } from "@/lib/videos";
+import { getVideos, getRailVideos, getVideosByType, getFeaturedVideos, toMediaItem } from "@/lib/videos";
 import type { SanityVideo } from "@/types/video";
 
 export async function GET(req: Request) {
@@ -55,7 +55,7 @@ export async function GET(req: Request) {
     }
 
     return NextResponse.json({
-      videos: filtered,
+      videos: filtered.map(toMediaItem),
       nextCursor: null,
       total: filtered.length,
     });

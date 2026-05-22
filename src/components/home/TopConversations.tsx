@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getVideos } from "@/lib/videos";
+import { getVideos, getVideoThumbnailUrl } from "@/lib/videos";
 import type { SanityVideo } from "@/types/video";
 
 export async function TopConversations() {
@@ -28,9 +28,7 @@ export async function TopConversations() {
 
       <div className="grid gap-4">
         {videos.map((video) => {
-          const thumbnailUrl = video.youtubeId
-            ? `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`
-            : null;
+          const thumbnailUrl = getVideoThumbnailUrl(video);
 
           return (
             <Link
@@ -43,7 +41,7 @@ export async function TopConversations() {
                   {thumbnailUrl ? (
                     <Image
                       src={thumbnailUrl}
-                      alt={video.title}
+                      alt={video.title || "Video thumbnail"}
                       fill
                       sizes="96px"
                       className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -57,14 +55,16 @@ export async function TopConversations() {
                     </div>
                   )}
 
-                  <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 py-0.5 rounded">
-                    {video.duration}
-                  </div>
+                  {video.duration && (
+                    <div className="absolute bottom-1 right-1 bg-black/80 text-white text-xs px-1 py-0.5 rounded">
+                      {video.duration}
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex-1 min-w-0">
                   <h4 className="font-semibold text-white group-hover:text-amber-300 transition-colors line-clamp-2 text-sm leading-tight mb-1">
-                    {video.title}
+                    {video.title || "Untitled video"}
                   </h4>
 
                   <div className="flex items-center gap-3 text-gray-400 text-xs">
@@ -73,7 +73,7 @@ export async function TopConversations() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      {video.campus}
+                      {video.campus || "MUC"}
                     </span>
 
                     <span className="flex items-center gap-1">
