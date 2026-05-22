@@ -3,7 +3,7 @@ import { client } from '@/sanity/lib/client'
 import type { SanityVideo, VideoFilter } from '@/types/video'
 
 // GROQ Queries
-const VIDEOS_QUERY = `*[_type == "video" && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
+const VIDEO_FIELDS = `
   _id,
   _type,
   title,
@@ -11,72 +11,41 @@ const VIDEOS_QUERY = `*[_type == "video" && (!defined(expiryDate) || expiryDate 
   description,
   youtubeUrl,
   youtubeId,
+  vimeoId,
+  selfHostedUrl,
+  externalUrl,
+  thumbnail,
+  primaryPlatform,
+  social,
   type,
   category,
   campus,
   duration,
   featured,
   showInRail,
+  comingSoon,
   publishedAt,
   expiryDate,
-  order
+  order,
+  content,
+  tags,
+  guests
+`
+
+const VIDEOS_QUERY = `*[_type == "video" && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
+  ${VIDEO_FIELDS}
 }`
 
 const FEATURED_VIDEOS_QUERY = `*[_type == "video" && featured == true && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
-  _id,
-  _type,
-  title,
-  slug,
-  description,
-  youtubeUrl,
-  youtubeId,
-  type,
-  category,
-  campus,
-  duration,
-  featured,
-  showInRail,
-  publishedAt,
-  expiryDate,
-  order
+  ${VIDEO_FIELDS}
 }`
 
 const VIDEOS_BY_TYPE_QUERY = `*[_type == "video" && type == $type && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
-  _id,
-  _type,
-  title,
-  slug,
-  description,
-  youtubeUrl,
-  youtubeId,
-  type,
-  category,
-  campus,
-  duration,
-  featured,
-  showInRail,
-  publishedAt,
-  expiryDate,
-  order
+  ${VIDEO_FIELDS}
 }`
 
 const RAIL_VIDEOS_QUERY = `*[_type == "video" && showInRail == true && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) [0...6] {
-  _id,
-  _type,
-  title,
-  slug,
-  description,
-  youtubeUrl,
-  youtubeId,
-  type,
-  category,
-  campus,
-  duration,
-  featured,
-  showInRail,
-  publishedAt,
-  expiryDate,
-  order
+  ${VIDEO_FIELDS}
 }`
 
 // Video Functions

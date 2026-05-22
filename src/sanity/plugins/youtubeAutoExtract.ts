@@ -1,5 +1,23 @@
 import { definePlugin } from 'sanity'
 
+type VideoCommit = {
+  patches: Array<{
+    set?: {
+      youtubeUrl?: unknown
+      youtubeId?: string
+    }
+  }>
+}
+
+type VideoCommitContext = {
+  schemaType: {
+    name: string
+  }
+  document?: {
+    youtubeUrl?: unknown
+  }
+}
+
 // Extract YouTube ID from URL
 function extractYouTubeId(url: string): string | null {
   if (!url) return null
@@ -22,12 +40,12 @@ export const youtubeAutoExtractPlugin = definePlugin(() => {
   return {
     document: {
       // Hook into the prepare phase before the document is saved
-      async beforeCommit(commit, context) {
+      async beforeCommit(commit: VideoCommit, context: VideoCommitContext) {
         if (context.schemaType.name === 'video') {
           const doc = commit.patches[0]?.set || {}
           const youtubeUrl = doc.youtubeUrl || context.document?.youtubeUrl
           
-          if (youtubeUrl) {
+          if (typeof youtubeUrl === 'string') {
             const extractedId = extractYouTubeId(youtubeUrl)
             if (extractedId) {
               commit.patches.push({

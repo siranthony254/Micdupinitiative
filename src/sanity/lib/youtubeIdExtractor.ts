@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useFormValue } from 'sanity'
 
 // Helper to extract YouTube ID from URL
@@ -19,7 +19,7 @@ export function useYouTubeIdExtractor() {
   const youtubeUrl = useFormValue(['youtubeUrl'])
   
   useEffect(() => {
-    if (youtubeUrl) {
+    if (typeof youtubeUrl === 'string') {
       const extracted = extractYouTubeIdFromUrl(youtubeUrl)
       if (extracted) {
         // Dispatch event to update the youtubeId field

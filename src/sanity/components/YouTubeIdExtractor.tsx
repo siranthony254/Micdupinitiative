@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
-import { set } from 'sanity'
+import { useEffect, useState } from 'react'
 
 // Extract YouTube ID from various URL formats
 export function extractYouTubeIdFromUrl(url: string): string | null {
