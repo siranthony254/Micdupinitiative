@@ -297,13 +297,13 @@ export function SiteHeader() {
                   </button>
 
                   {mobileActive === nav.label && (
-                    <div className="ml-4 mt-2 space-y-3 border-l border-white/10 pl-4">
+                    <div className="ml-4 mt-1 space-y-2 border-l border-white/10 pl-4">
                       {nav.items.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
                           onClick={() => setMobileOpen(false)}
-                          className="block text-sm text-white/70 hover:text-white"
+                          className="block text-xs text-white/70 hover:text-white"
                         >
                           {item.title}
                         </Link>

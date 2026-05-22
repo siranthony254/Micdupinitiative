@@ -18,10 +18,10 @@ export function MegaMenu({
   return (
     <div
       className={`
-        absolute top-full mt-4 z-40
+        absolute top-full mt-2 z-40
         ${align === "right" ? "right-0" : "left-0"}
-        w-[180px]
-        rounded-2xl
+        w-[160px]
+        rounded-xl
         bg-slate-900 text-slate-100
         border border-slate-800
         shadow-2xl
@@ -39,26 +39,21 @@ export function MegaMenu({
         `}
       />
 
-      <ul className="relative p-5 space-y-3">
+      <ul className="relative p-1.5 space-y-0.5">
         {items.map((item) => (
           <li key={item.title}>
             <Link
               href={item.href}
               className="
-                group block rounded-xl px-4 py-3
+                group block rounded-md px-2.5 py-1.5
                 transition
                 hover:bg-slate-800/60
               "
             >
-              <h4 className="text-sm font-medium leading-tight text-slate-100 group-hover:text-amber-400 transition">
+              <h4 className="text-xs font-medium leading-tight text-slate-100 group-hover:text-amber-400 transition">
                 {item.title}
               </h4>
 
-              {item.description && (
-                <p className="mt-1 text-xs text-slate-400 leading-snug">
-                  {item.description}
-                </p>
-              )}
             </Link>
           </li>
         ))}
