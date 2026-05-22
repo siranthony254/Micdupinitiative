@@ -17,12 +17,10 @@ const NAV_ITEMS = [
     items: [
       {
         title: "Our Story",
-        description: "Our origin and journey",
         href: "/About/OurStory",
       },
       {
         title: "Vision & Mission",
-        description: "What Mic’d Up stands for",
         href: "/About/Vision-Mission",
       },
       //{
@@ -32,7 +30,6 @@ const NAV_ITEMS = [
       //},
       {
         title: "Tools of Influence",
-        description: "MUI's framework for cultural impact",
         href: "/About/Tools-of-Influence",
       },
     ],
@@ -42,19 +39,14 @@ const NAV_ITEMS = [
     items: [
       {
         title: "Dialogue Tours",
-        description:
-          "We visit campuses to listen, form and amplify voices",
         href: "/Programs/campus-tours",
       },
       {
         title: "Mentorship & Leadership",
-        description:
-          "Identifying and nurturing voices for global impact",
         href: "/Get-Involved/ment-lead",
       },
       {
         title: "Events & Summits",
-        description: "Campus dialogues and convenings",
         href: "/Programs/Events",
       },
     ],
@@ -64,12 +56,10 @@ const NAV_ITEMS = [
     items: [
       {
         title: "Blogs",
-        description: "Brief, timely takes on campus culture and youth trends",
         href: "/blog",
       },
       {
         title: "FAQs",
-        description: "Frequently asked questions about MUI",
         href: "/research/faqs",
       },
     ],
@@ -79,17 +69,14 @@ const NAV_ITEMS = [
     items: [
       {
         title: "Campus Podcast",
-        description: "Long-form campus conversations",
         href: "/Media/Podcast",
       },
       {
         title: "MUC Talks",
-        description: "Stage talks and panels",
         href: "/Media/Talks",
       },
       {
         title: "Documentaries",
-        description: "Deep-dive visual stories",
         href: "/Media/Documentaries",
       },
     ],
@@ -99,22 +86,18 @@ const NAV_ITEMS = [
     items: [
       {
         title: "Ambassadors",
-        description: "Represent Mic’d Up on your campus",
         href: "/Get-Involved/Ambassadors",
       },
       {
         title: "Partners",
-        description: "Collaborate with the initiative",
         href: "/Get-Involved/Partnerships",
       },
       {
         title: "Mentors",
-        description: "Guide emerging voices",
         href: "/Get-Involved/Mentors",
       },
       {
         title: "Contact Us",
-        description: "Get in touch with us",
         href: "/contact",
       },
     ],
