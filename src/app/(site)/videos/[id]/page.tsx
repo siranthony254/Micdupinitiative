@@ -1,7 +1,6 @@
 import { MediaGallery } from "@/components/media/MediaGallery";
 import { getVideos } from "@/lib/videos";
 import { notFound } from "next/navigation";
-import { useMemo } from "react";
 import type { SanityVideo } from "@/types/video";
 
 export default async function VideoPlayerPage({ params }: { params: Promise<{ id: string }> }) {
@@ -35,10 +34,12 @@ export default async function VideoPlayerPage({ params }: { params: Promise<{ id
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             />
-          ) : video.externalUrl ? (
-            <a href={video.externalUrl} target="_blank" rel="noopener noreferrer" className="text-blue-400 underline">Watch External Video</a>
           ) : (
-            <div>No video available</div>
+            <div className="w-full h-full flex items-center justify-center bg-gray-800">
+              <div className="text-center">
+                <p className="text-gray-400">Video not available</p>
+              </div>
+            </div>
           )}
         </div>
         <p className="mb-8 text-lg text-white/80">{video.description}</p>

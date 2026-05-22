@@ -1,5 +1,14 @@
 import { defineField, defineType } from 'sanity'
-import { blockContentType } from './blockContentType'
+
+// Helper to extract YouTube ID from URL
+function extractYouTubeId(url: string): string | null {
+  if (!url) return null
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+  if (match?.[1]) return match[1]
+  const match2 = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/)
+  if (match2?.[1]) return match2[1]
+  return null
+}
 
 export const videoType = defineType({
   name: 'video',
@@ -28,6 +37,36 @@ export const videoType = defineType({
       type: 'text',
       rows: 3,
       validation: Rule => Rule.required().min(10).max(500),
+    }),
+    defineField({
+      name: 'youtubeUrl',
+      title: 'YouTube Video URL',
+      type: 'url',
+      description: 'Paste the full YouTube URL (e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ or https://youtu.be/dQw4w9WgXcQ). The video ID will be extracted automatically.',
+      validation: Rule => Rule.required().custom(value => {
+        if (value && !value.includes('youtube.com') && !value.includes('youtu.be')) {
+          return 'Please provide a valid YouTube URL'
+        }
+        return true
+      }),
+    }),
+    defineField({
+      name: 'youtubeId',
+      title: 'YouTube Video ID',
+      type: 'string',
+      description: 'Auto-generated from YouTube URL - do not edit',
+      readOnly: true,
+      validation: Rule => Rule.required().custom(function(value, context) {
+        const youtubeUrl = (context.document as any)?.youtubeUrl
+        if (!youtubeUrl) {
+          return 'YouTube URL is required'
+        }
+        const extracted = extractYouTubeId(youtubeUrl)
+        if (!extracted) {
+          return 'Could not extract YouTube ID from URL. Make sure the URL is valid.'
+        }
+        return true
+      }),
     }),
     defineField({
       name: 'type',
@@ -75,110 +114,8 @@ export const videoType = defineType({
       name: 'duration',
       title: 'Duration',
       type: 'string',
-      description: 'Duration in format "XX min" or "XX:XX"',
-      validation: Rule => Rule.required().regex(/^\d{1,3}(\.\d{1,2})?\s(min|hr)$/),
-    }),
-    defineField({
-      name: 'thumbnail',
-      title: 'Thumbnail',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
-      fields: [
-        defineField({
-          name: 'alt',
-          title: 'Alt Text',
-          type: 'string',
-          description: 'Important for SEO and accessibility',
-        }),
-      ],
+      description: 'Duration in format "XX min" or "XX:XX" (e.g., "12 min" or "1:23:45")',
       validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'primaryPlatform',
-      title: 'Primary Platform',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'YouTube', value: 'youtube' },
-          { title: 'Vimeo', value: 'vimeo' },
-          { title: 'Self-hosted', value: 'self-hosted' },
-        ]
-      },
-      validation: Rule => Rule.required(),
-    }),
-    defineField({
-      name: 'youtubeId',
-      title: 'YouTube Video ID',
-      type: 'string',
-      description: 'YouTube video ID (the part after v= in YouTube URLs)',
-      hidden: ({ document }) => (document as any)?.primaryPlatform !== 'youtube',
-      validation: Rule => Rule.custom(value => {
-        if ((document as any)?.primaryPlatform === 'youtube' && !value) {
-          return 'YouTube ID is required when primary platform is YouTube'
-        }
-        return true
-      }),
-    }),
-    defineField({
-      name: 'vimeoId',
-      title: 'Vimeo Video ID',
-      type: 'string',
-      description: 'Vimeo video ID',
-      hidden: ({ document }) => (document as any)?.primaryPlatform !== 'vimeo',
-      validation: Rule => Rule.custom(value => {
-        if ((document as any)?.primaryPlatform === 'vimeo' && !value) {
-          return 'Vimeo ID is required when primary platform is Vimeo'
-        }
-        return true
-      }),
-    }),
-    defineField({
-      name: 'selfHostedUrl',
-      title: 'Self-hosted URL',
-      type: 'url',
-      description: 'URL for self-hosted video files',
-      hidden: ({ document }) => (document as any)?.primaryPlatform !== 'self-hosted',
-      validation: Rule => Rule.custom(value => {
-        if ((document as any)?.primaryPlatform === 'self-hosted' && !value) {
-          return 'URL is required when primary platform is self-hosted'
-        }
-        return true
-      }),
-    }),
-    defineField({
-      name: 'externalUrl',
-      title: 'External URL',
-      type: 'url',
-      description: 'External platform URL (YouTube, Vimeo, etc.)',
-    }),
-    defineField({
-      name: 'social',
-      title: 'Social Links',
-      type: 'object',
-      fields: [
-        defineField({
-          name: 'youtube',
-          title: 'YouTube URL',
-          type: 'url',
-        }),
-        defineField({
-          name: 'twitter',
-          title: 'Twitter URL',
-          type: 'url',
-        }),
-        defineField({
-          name: 'instagram',
-          title: 'Instagram URL',
-          type: 'url',
-        }),
-        defineField({
-          name: 'facebook',
-          title: 'Facebook URL',
-          type: 'url',
-        }),
-      ],
     }),
     defineField({
       name: 'featured',
@@ -193,13 +130,6 @@ export const videoType = defineType({
       type: 'boolean',
       description: 'Include in homepage playlist rail',
       initialValue: true,
-    }),
-    defineField({
-      name: 'comingSoon',
-      title: 'Coming Soon',
-      type: 'boolean',
-      description: 'Mark as coming soon (will show placeholder)',
-      initialValue: false,
     }),
     defineField({
       name: 'publishedAt',
@@ -217,43 +147,24 @@ export const videoType = defineType({
       name: 'order',
       title: 'Order',
       type: 'number',
-      description: 'Manual ordering override',
+      description: 'Manual ordering - lower numbers appear first',
       initialValue: 0,
-    }),
-    defineField({
-      name: 'content',
-      title: 'Content',
-      type: 'array',
-      of: [{ type: 'block' }],
-      description: 'Additional content, transcript, or show notes',
-    }),
-    defineField({
-      name: 'tags',
-      title: 'Tags',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Tags for categorization and search',
-    }),
-    defineField({
-      name: 'guests',
-      title: 'Guests/Speakers',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'List of guests or speakers in the video',
     }),
   ],
   preview: {
     select: {
       title: 'title',
-      subtitle: 'description',
-      thumbnail: 'thumbnail',
+      subtitle: 'type',
+      youtubeId: 'youtubeId',
     },
     prepare(selection) {
-      const { title, subtitle, thumbnail } = selection
+      const { title, subtitle, youtubeId } = selection
       return {
         title: title || 'Untitled Video',
-        subtitle: subtitle || 'No subtitle',
-        media: thumbnail,
+        subtitle: subtitle || 'No type selected',
+        media: youtubeId ? 
+          `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : 
+          undefined,
       }
     },
   },

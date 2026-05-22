@@ -8,38 +8,17 @@ export interface SanityVideo {
     current: string
   }
   description: string
+  youtubeUrl: string
+  youtubeId: string
   type: 'podcast' | 'talk' | 'documentary' | 'interview' | 'workshop' | 'event'
   category: string
   campus: string
   duration: string
-  thumbnail?: {
-    _type: 'image'
-    asset: {
-      _ref: string
-      _type: 'reference'
-    }
-    alt?: string
-  }
-  primaryPlatform: 'youtube' | 'vimeo' | 'self-hosted'
-  youtubeId?: string
-  vimeoId?: string
-  selfHostedUrl?: string
-  externalUrl?: string
-  social?: {
-    youtube?: string
-    twitter?: string
-    instagram?: string
-    facebook?: string
-  }
   featured?: boolean
   showInRail?: boolean
-  comingSoon?: boolean
   publishedAt?: string
   expiryDate?: string
   order?: number
-  content?: PortableTextBlock[]
-  tags?: string[]
-  guests?: string[]
 }
 
 export interface VideoFilter {
@@ -63,4 +42,23 @@ export interface VideoSearchResult {
   videos: SanityVideo[]
   total: number
   query: string
+}
+
+// Helper function to extract YouTube ID from various URL formats
+export function extractYouTubeId(url: string): string | null {
+  if (!url) return null
+  
+  // youtube.com/watch?v=ID format
+  const match1 = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+  if (match1 && match1[1]) return match1[1]
+  
+  // youtube.com/watch?v=ID&... format with additional params
+  const match2 = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/)
+  if (match2 && match2[1]) return match2[1]
+  
+  // youtu.be/ID format
+  const match3 = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/)
+  if (match3 && match3[1]) return match3[1]
+  
+  return null
 }

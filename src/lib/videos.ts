@@ -9,26 +9,17 @@ const VIDEOS_QUERY = `*[_type == "video" && (!defined(expiryDate) || expiryDate 
   title,
   slug,
   description,
+  youtubeUrl,
+  youtubeId,
   type,
   category,
   campus,
   duration,
-  thumbnail,
-  primaryPlatform,
-  youtubeId,
-  vimeoId,
-  selfHostedUrl,
-  externalUrl,
-  social,
   featured,
   showInRail,
-  comingSoon,
   publishedAt,
   expiryDate,
-  order,
-  content,
-  tags,
-  guests
+  order
 }`
 
 const FEATURED_VIDEOS_QUERY = `*[_type == "video" && featured == true && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
@@ -37,26 +28,17 @@ const FEATURED_VIDEOS_QUERY = `*[_type == "video" && featured == true && (!defin
   title,
   slug,
   description,
+  youtubeUrl,
+  youtubeId,
   type,
   category,
   campus,
   duration,
-  thumbnail,
-  primaryPlatform,
-  youtubeId,
-  vimeoId,
-  selfHostedUrl,
-  externalUrl,
-  social,
   featured,
   showInRail,
-  comingSoon,
   publishedAt,
   expiryDate,
-  order,
-  content,
-  tags,
-  guests
+  order
 }`
 
 const VIDEOS_BY_TYPE_QUERY = `*[_type == "video" && type == $type && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
@@ -65,26 +47,17 @@ const VIDEOS_BY_TYPE_QUERY = `*[_type == "video" && type == $type && (!defined(e
   title,
   slug,
   description,
+  youtubeUrl,
+  youtubeId,
   type,
   category,
   campus,
   duration,
-  thumbnail,
-  primaryPlatform,
-  youtubeId,
-  vimeoId,
-  selfHostedUrl,
-  externalUrl,
-  social,
   featured,
   showInRail,
-  comingSoon,
   publishedAt,
   expiryDate,
-  order,
-  content,
-  tags,
-  guests
+  order
 }`
 
 const RAIL_VIDEOS_QUERY = `*[_type == "video" && showInRail == true && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) [0...6] {
@@ -93,26 +66,17 @@ const RAIL_VIDEOS_QUERY = `*[_type == "video" && showInRail == true && (!defined
   title,
   slug,
   description,
+  youtubeUrl,
+  youtubeId,
   type,
   category,
   campus,
   duration,
-  thumbnail,
-  primaryPlatform,
-  youtubeId,
-  vimeoId,
-  selfHostedUrl,
-  externalUrl,
-  social,
   featured,
   showInRail,
-  comingSoon,
   publishedAt,
   expiryDate,
-  order,
-  content,
-  tags,
-  guests
+  order
 }`
 
 // Video Functions

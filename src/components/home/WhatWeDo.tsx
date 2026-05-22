@@ -3,18 +3,18 @@ import Link from "next/link";
 
 const pillars = [
   {
-    title: "Discover Voices",
+    title: "Discover and Shape Voices",
     description:
-      "We identify emerging voices, talent, and stories across campuses—creating pathways for expression, confidence, and visibility for the younger generation in universities, colleges and TVET institutions.",
-    outcomes: ["Campus talent", "Untold stories", "Emerging leaders"],
-    href: "/programs/talent",
-  },
-  {
-    title: "Shape Leaders",
-    description:
-      "Through mentorship, leadership formation, and ethical grounding, we equip young people to lead with clarity and responsible cultural influence across generations.",
+      "We identify emerging voices, talent, and stories across campuses—creating pathways for expression, confidence, and visibility. We equip young people to lead with clarity and responsible cultural influence across generations.",
     outcomes: ["Mentorship", "Leadership formation", "Values-based influence"],
     href: "/programs/leadership",
+  },
+  {
+    title: "Curate Narratives",
+    description:
+      "We create purpose-driven creative narratives—documentaries, online dramas, and compelling stories that help shape the narratives youth consume for entertainment, information, learning, and inspiration.",
+    outcomes: ["Documentaries", "Online dramas", "Purposeful storytelling"],
+    href: "/programs/narratives",
   },
   {
     title: "Host Dialogue",
@@ -26,7 +26,7 @@ const pillars = [
   {
     title: "Produce Insight",
     description:
-      "We turn conversations into impact through media, research, and policy-oriented insight that informs society.",
+      "We turn conversations into impact through media, research, and policy-oriented insight that informs society. We produce podcasts, reports, and youth insights that shape public discourse and influence decision-making.",
     outcomes: ["Podcasts", "Reports", "Youth insights"],
     href: "/research",
   },

@@ -1,18 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getFeaturedVideos } from "@/lib/videos";
-import { urlFor } from "@/sanity/lib/image";
 import type { SanityVideo } from "@/types/video";
 
 function getVideoImage(video: SanityVideo) {
-  if (video.thumbnail) {
-    return urlFor(video.thumbnail).width(960).height(540).url();
-  }
-
   if (video.youtubeId) {
     return `https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`;
   }
-
   return null;
 }
 
@@ -26,8 +20,8 @@ export async function FeaturedVideoHero() {
   }
 
   const imageUrl = getVideoImage(featuredVideo);
-  const videoHref = featuredVideo.slug?.current
-    ? `/videos/${featuredVideo.slug.current}`
+  const videoHref = featuredVideo._id
+    ? `/videos/${featuredVideo._id}`
     : "/videos";
 
   return (
