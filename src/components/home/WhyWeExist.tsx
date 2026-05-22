@@ -1,87 +1,56 @@
 // src/components/home/WhyWeExist.tsx
 
 export default function WhyWeExist() {
+  const reasons = [
+    {
+      title: "1. To Amplify Meaningful Campus Voices",
+      body: "Many students have ideas, experiences, and perspectives that remain unheard or misrepresented. MUI exists to create intentional platforms where authentic campus voices can be heard with clarity and depth.",
+    },
+    {
+      title: "2. To Form Responsible Influence",
+      body: "In an age of viral content and digital noise, MUI exists to help young people understand that influence carries responsibility - shaping thinkers, creators, and leaders who impact culture consciously.",
+    },
+    {
+      title: "3. To Bridge Campus and Society",
+      body: "MUI exists to connect students with mentors, professionals, institutions, and opportunities beyond the classroom - ensuring campuses do not remain isolated from the real world.",
+    },
+    {
+      title: "4. To Challenge and Transform Campus Culture",
+      body: "Campus culture shapes future society. MUI exists to confront unhealthy cultural patterns, encourage meaningful dialogue, and cultivate a generation marked by purpose, integrity, and intellectual depth.",
+    },
+  ];
+
   return (
-   <section className="border-b border-white/10 text-white" style={{backgroundColor: '#0D1F35'}}>
-  <div className="mx-auto max-w-7xl px-6 py-7 text-center">
+    <section
+      className="border-b border-white/10 text-white"
+      style={{ backgroundColor: "#0D1F35" }}
+    >
+      <div className="mx-auto max-w-7xl px-6 py-7 text-center">
+        <span className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
+          Our Purpose
+        </span>
 
-    {/* Eyebrow */}
-    
-    <span className="text-xs font-semibold tracking-widest text-emerald-400 uppercase">
-      Our Purpose
-    </span>
+        <h2 className="mt-4 text-3xl lg:text-4xl font-semibold max-w-3xl text-white mx-auto">
+          Why Mic&apos;d Up Initiative Exists
+        </h2>
 
-    {/* Headline */}
-    <h2 className="mt-4 text-3xl lg:text-4xl font-semibold max-w-3xl text-white mx-auto">
-      Why Mic'd Up Initiative Exists
-    </h2>
+        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {reasons.map((reason) => (
+            <div key={reason.title} className="text-center">
+              <h3 className="text-sm font-semibold text-amber-500">
+                {reason.title}
+              </h3>
+              <p className="mt-2 text-sm text-white/70 leading-relaxed">
+                {reason.body}
+              </p>
+            </div>
+          ))}
+        </div>
 
-    {/* Editorial intro */}
-    <p className="mt-6 text-base text-white/70 max-w-3xl leading-relaxed mx-auto">
-      Across campuses, ideas are forming, leaders are emerging, and culture is
-      being shaped — yet much of this remains unseen, unheard, or misrepresented.
-      Mic'd Up Initiative exists to bring structure, clarity, and responsibility
-      to campus expression.
-    </p>
-
-    {/* Core reasons */}
-    <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-
-      <div className="text-center">
-        <h3 className="text-sm font-semibold text-amber-500">
-          Unheard Voices
-        </h3>
-        <p className="mt-2 text-sm text-white/70 leading-relaxed">
-          Talent and ideas exist across campuses, but few platforms amplify them
-          with intention, depth, and purpose.
+        <p className="mt-12 text-base font-medium text-emerald-400">
+          How campuses express themselves today shapes the society of tomorrow!
         </p>
       </div>
-
-      <div className="text-center">
-        <h3 className="text-sm font-semibold text-amber-500">
-          Distorted Visibility
-        </h3>
-        <p className="mt-2 text-sm text-white/70 leading-relaxed">
-          Digital attention often rewards extremes rather than excellence,
-          substance, or integrity.
-        </p>
-      </div>
-
-      <div className="text-center">
-        <h3 className="text-sm font-semibold text-amber-500">
-          Untapped Leadership
-        </h3>
-        <p className="mt-2 text-sm text-white/70 leading-relaxed">
-          Campuses are forming not tomorrow's leaders, but also leaders of today — yet their voices rarely enter
-          serious public discourse.
-        </p>
-      </div>
-
-      <div className="text-center">
-        <h3 className="text-sm font-semibold text-amber-500">
-          Content Without Direction
-        </h3>
-        <p className="mt-2 text-sm text-white/70 leading-relaxed">
-          Influence without values creates noise, not progress.
-        </p>
-      </div>
-
-    </div>
-
-    {/* Closing conviction */}
-    <div className="mt-14 max-w-3xl mx-auto text-center">
-      <p className="text-base font-medium text-white/70">
-        Mic'd Up Initiative exists to change the narrative — amplifying authentic
-        campus voices, cultivating leadership, and shaping responsible cultural
-        influence.
-      </p>
-      <p className="mt-1 text-base font-medium text-emerald-400">
-       Society is shaped by voices and that's what we exist to amplify across the Campuses. How campuses express themselves today shapes the society of
-        tomorrow! 
-      </p>
-    </div>
-
-  </div>
-</section>
+    </section>
   );
 }
