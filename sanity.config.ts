@@ -5,6 +5,7 @@ import { structureTool } from 'sanity/structure'
 import { apiVersion, dataset, projectId } from './src/sanity/env'
 import { schema } from './src/sanity/schemaTypes'
 import { structure } from './src/sanity/structure'
+import deleteFromWebsite from './src/sanity/plugins/deleteFromWebsite'
 
 export default defineConfig({
   name: 'default', 
@@ -18,5 +19,6 @@ export default defineConfig({
   plugins: [
     structureTool({ structure }),
     visionTool({ defaultApiVersion: apiVersion }),
+    deleteFromWebsite,
   ],
 })
