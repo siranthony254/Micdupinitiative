@@ -290,16 +290,6 @@ export default function MentorshipPage() {
               >
                 Partner With Formation
               </Link>
-
-              <Link
-                href="/Programs/cohort-framework"
-                className="rounded-full px-6 py-3 text-sm font-semibold
-                           hover:scale-[1.02] hover:shadow-lg
-                           transition active:scale-[0.97] flex-shrink-0"
-                style={{backgroundColor: '#F0EDE6', color: '#8BAAC4', border: `2px solid #8BAAC4`}}
-              >
-                Our Cohort Framework
-              </Link>
             </div>
           </div>
         </motion.section>
