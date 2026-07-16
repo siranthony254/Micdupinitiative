@@ -91,6 +91,31 @@ export const updateType = defineType({
       title: 'Expiry Date',
       description: 'When this update should no longer be shown (optional)',
     }),
+    defineField({
+      name: 'showInRail',
+      type: 'boolean',
+      title: 'Show in News Rail',
+      description: 'Display this update in the animated news rail at the bottom of the hero section',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'memoContent',
+      type: 'blockContent',
+      title: 'Memo Content',
+      description: 'Content to be rendered in the memo-like PDF viewer when clicked from the rail',
+    }),
+    defineField({
+      name: 'memoSender',
+      type: 'string',
+      title: 'Memo Sender',
+      description: 'Name/department of the memo sender (e.g., "MUI Administration")',
+    }),
+    defineField({
+      name: 'memoReference',
+      type: 'string',
+      title: 'Memo Reference',
+      description: 'Reference number for the memo (e.g., "MUI/2024/001")',
+    }),
   ],
   preview: {
     select: {

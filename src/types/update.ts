@@ -20,6 +20,10 @@ export interface SanityUpdate {
   order?: number
   publishedAt?: string
   expiryDate?: string
+  showInRail?: boolean
+  memoContent?: PortableTextBlock[]
+  memoSender?: string
+  memoReference?: string
 }
 
 export interface UpdateGroup {

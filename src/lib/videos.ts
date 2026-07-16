@@ -2,7 +2,7 @@ import { client } from '@/sanity/lib/client'
 
 import type { SanityVideo, VideoFilter } from '@/types/video'
 import type { MediaItem } from '@/components/media/types/media'
-import { extractYouTubeId, getYouTubeThumbnailUrl as getDerivedYouTubeThumbnailUrl, getYouTubeWatchUrl } from '@/lib/youtube'
+import { extractYouTubeId, extractYouTubeIdFromIframe, getYouTubeThumbnailUrl as getDerivedYouTubeThumbnailUrl, getYouTubeWatchUrl } from '@/lib/youtube'
 
 // GROQ Queries
 const VIDEO_FIELDS = `
@@ -11,7 +11,7 @@ const VIDEO_FIELDS = `
   title,
   slug,
   description,
-  youtubeUrl,
+  youtubeEmbed,
   youtubeId,
   vimeoId,
   selfHostedUrl,
@@ -244,11 +244,11 @@ export function groupVideosByType(videos: SanityVideo[]) {
   }, {} as Record<string, SanityVideo[]>)
 }
 
-export function getVideoYouTubeId(video: Pick<SanityVideo, 'youtubeId' | 'youtubeUrl'>): string | null {
-  return video.youtubeId || extractYouTubeId(video.youtubeUrl)
+export function getVideoYouTubeId(video: Pick<SanityVideo, 'youtubeId' | 'youtubeEmbed'>): string | null {
+  return video.youtubeId || extractYouTubeId(video.youtubeEmbed) || extractYouTubeIdFromIframe(video.youtubeEmbed)
 }
 
-export function getVideoThumbnailUrl(video: Pick<SanityVideo, 'youtubeId' | 'youtubeUrl'>): string {
+export function getVideoThumbnailUrl(video: Pick<SanityVideo, 'youtubeId' | 'youtubeEmbed'>): string {
   return getDerivedYouTubeThumbnailUrl(getVideoYouTubeId(video))
 }
 
@@ -266,9 +266,9 @@ export function toMediaItem(video: SanityVideo): MediaItem {
     thumbnail: getDerivedYouTubeThumbnailUrl(youtubeId),
     primaryPlatform: 'youtube',
     youtubeId,
-    externalUrl: video.youtubeUrl || getYouTubeWatchUrl(youtubeId),
+    externalUrl: getYouTubeWatchUrl(youtubeId),
     social: {
-      youtube: video.youtubeUrl || getYouTubeWatchUrl(youtubeId) || null,
+      youtube: getYouTubeWatchUrl(youtubeId) || null,
       spotify: video.social?.spotify || null,
       apple: video.social?.apple || null,
       instagram: video.social?.instagram || null,

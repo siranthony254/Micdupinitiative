@@ -13,7 +13,7 @@ export interface Video {
   channelUrl?: string;       // Creator page
   instagramUrl?: string;
   tiktokUrl?: string;
-  youtubeUrl?: string;
+  youtubeEmbed?: string;     // YouTube iframe embed code
 
   category: string;
 }

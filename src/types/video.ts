@@ -8,7 +8,7 @@ export interface SanityVideo {
     current: string
   }
   description?: string
-  youtubeUrl: string
+  youtubeEmbed: string
   youtubeId?: string
   vimeoId?: string
   selfHostedUrl?: string

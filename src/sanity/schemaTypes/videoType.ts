@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { extractYouTubeId, getYouTubeThumbnailUrl } from '@/lib/youtube'
+import { extractYouTubeId, extractYouTubeIdFromIframe, getYouTubeThumbnailUrl } from '@/lib/youtube'
 
 export const videoType = defineType({
   name: 'video',
@@ -7,14 +7,15 @@ export const videoType = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'youtubeUrl',
-      title: 'YouTube Link',
-      type: 'url',
-      description: 'Paste a YouTube watch, share, shorts, live, or embed link.',
+      name: 'youtubeEmbed',
+      title: 'YouTube Embed Code',
+      type: 'text',
+      description: 'Paste the YouTube iframe embed code (e.g., <iframe src="https://www.youtube-nocookie.com/embed/VIDEO_ID"...></iframe>)',
       validation: Rule =>
         Rule.required().custom(value => {
           if (!value) return true
-          return extractYouTubeId(value) ? true : 'Paste a valid YouTube link.'
+          const id = extractYouTubeId(value) || extractYouTubeIdFromIframe(value)
+          return id ? true : 'Paste a valid YouTube iframe embed code or YouTube link.'
         }),
     }),
     defineField({
@@ -96,10 +97,10 @@ export const videoType = defineType({
     select: {
       title: 'title',
       subtitle: 'type',
-      youtubeUrl: 'youtubeUrl',
+      youtubeEmbed: 'youtubeEmbed',
     },
     prepare(selection) {
-      const youtubeId = extractYouTubeId(selection.youtubeUrl)
+      const youtubeId = extractYouTubeId(selection.youtubeEmbed) || extractYouTubeIdFromIframe(selection.youtubeEmbed)
 
       return {
         title: selection.title || 'YouTube video',

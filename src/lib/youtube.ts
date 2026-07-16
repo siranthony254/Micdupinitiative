@@ -27,6 +27,17 @@ export function extractYouTubeId(url?: string | null): string | null {
   return null
 }
 
+export function extractYouTubeIdFromIframe(iframe?: string | null): string | null {
+  if (!iframe) return null
+
+  // Extract src attribute from iframe tag
+  const srcMatch = iframe.match(/src=["']([^"']+)["']/)
+  if (!srcMatch) return null
+
+  const src = srcMatch[1]
+  return extractYouTubeId(src)
+}
+
 export function getYouTubeThumbnailUrl(videoId?: string | null) {
   return videoId ? `https://img.youtube.com/vi/${videoId}/hqdefault.jpg` : ''
 }

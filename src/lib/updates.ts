@@ -17,7 +17,11 @@ const UPDATES_QUERY = `*[_type == "update" && (!defined(expiryDate) || expiryDat
   featured,
   order,
   publishedAt,
-  expiryDate
+  expiryDate,
+  showInRail,
+  memoContent,
+  memoSender,
+  memoReference
 }`
 
 const FEATURED_UPDATES_QUERY = `*[_type == "update" && featured == true && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
@@ -32,7 +36,11 @@ const FEATURED_UPDATES_QUERY = `*[_type == "update" && featured == true && (!def
   featured,
   order,
   publishedAt,
-  expiryDate
+  expiryDate,
+  showInRail,
+  memoContent,
+  memoSender,
+  memoReference
 }`
 
 const UPDATES_BY_TYPE_QUERY = `*[_type == "update" && type == $type && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
@@ -47,7 +55,11 @@ const UPDATES_BY_TYPE_QUERY = `*[_type == "update" && type == $type && (!defined
   featured,
   order,
   publishedAt,
-  expiryDate
+  expiryDate,
+  showInRail,
+  memoContent,
+  memoSender,
+  memoReference
 }`
 
 // Update Functions
@@ -81,7 +93,11 @@ export async function getUpdates(options: UpdateFilter = {}) {
       featured,
       order,
       publishedAt,
-      expiryDate
+      expiryDate,
+      showInRail,
+      memoContent,
+      memoSender,
+      memoReference
     }`
 
     const updates = await client.fetch(query)
@@ -106,7 +122,11 @@ export async function getFeaturedUpdates(limit: number = 5) {
       featured,
       order,
       publishedAt,
-      expiryDate
+      expiryDate,
+      showInRail,
+      memoContent,
+      memoSender,
+      memoReference
     }`)
 
     return { data: updates, error: null }
@@ -135,7 +155,11 @@ export async function getUpdatesByType(type: string, limit?: number) {
       featured,
       order,
       publishedAt,
-      expiryDate
+      expiryDate,
+      showInRail,
+      memoContent,
+      memoSender,
+      memoReference
     }`
 
     const updates = await client.fetch(query)
@@ -175,7 +199,11 @@ export async function searchUpdates(query: string, limit: number = 10) {
         featured,
         order,
         publishedAt,
-        expiryDate
+        expiryDate,
+        showInRail,
+        memoContent,
+        memoSender,
+        memoReference
       }`
     )
 

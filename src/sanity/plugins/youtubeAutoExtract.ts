@@ -3,7 +3,7 @@ import { definePlugin } from 'sanity'
 type VideoCommit = {
   patches: Array<{
     set?: {
-      youtubeUrl?: unknown
+      youtubeEmbed?: unknown
       youtubeId?: string
     }
   }>
@@ -14,17 +14,26 @@ type VideoCommitContext = {
     name: string
   }
   document?: {
-    youtubeUrl?: unknown
+    youtubeEmbed?: unknown
   }
 }
 
-// Extract YouTube ID from URL
-function extractYouTubeId(url: string): string | null {
-  if (!url) return null
+// Extract YouTube ID from URL or iframe
+function extractYouTubeId(input: string): string | null {
+  if (!input) return null
   try {
-    const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+    // Try to extract from iframe src attribute
+    const srcMatch = input.match(/src=["']([^"']+)["']/)
+    if (srcMatch) {
+      const url = srcMatch[1]
+      const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
+      if (match?.[1]) return match[1]
+    }
+    
+    // Try direct URL match
+    const match = input.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube-nocookie\.com\/embed\/)([a-zA-Z0-9_-]{11})/)
     if (match?.[1]) return match[1]
-    const match2 = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/)
+    const match2 = input.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/)
     if (match2?.[1]) return match2[1]
   } catch (error) {
     console.error('Error extracting YouTube ID:', error)
@@ -33,7 +42,7 @@ function extractYouTubeId(url: string): string | null {
 }
 
 /**
- * Plugin that auto-extracts YouTube ID from youtubeUrl field
+ * Plugin that auto-extracts YouTube ID from youtubeEmbed field
  * Runs when a video document is saved
  */
 export const youtubeAutoExtractPlugin = definePlugin(() => {
@@ -43,10 +52,10 @@ export const youtubeAutoExtractPlugin = definePlugin(() => {
       async beforeCommit(commit: VideoCommit, context: VideoCommitContext) {
         if (context.schemaType.name === 'video') {
           const doc = commit.patches[0]?.set || {}
-          const youtubeUrl = doc.youtubeUrl || context.document?.youtubeUrl
+          const youtubeEmbed = doc.youtubeEmbed || context.document?.youtubeEmbed
           
-          if (typeof youtubeUrl === 'string') {
-            const extractedId = extractYouTubeId(youtubeUrl)
+          if (typeof youtubeEmbed === 'string') {
+            const extractedId = extractYouTubeId(youtubeEmbed)
             if (extractedId) {
               commit.patches.push({
                 set: {
