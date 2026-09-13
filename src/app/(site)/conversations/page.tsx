@@ -11,7 +11,7 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
-export default function OnTheMicPage() {
+export default function ConversationsPage() {
   const [updates, setUpdates] = useState<SanityUpdate[]>([]);
   const [types, setTypes] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string>("all");
@@ -61,15 +61,15 @@ export default function OnTheMicPage() {
             className="text-center"
           >
             <span className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-amber-300">
-              Live Updates
+              This Semester
             </span>
-            
+
             <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-6">
-              On the Mic
+              MUI Conversations
             </h1>
-            
+
             <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto">
-              Stay updated with the latest from Mic'd Up Initiative - new episodes, blog posts, events, campus tours, and important announcements.
+              The work is the conversation. The media is how we carry it further. This is the record of what MUI is listening to, convening, and documenting right now — podcasts, talks, tours, and the announcements that come out of them.
             </p>
           </motion.div>
         </div>
@@ -101,7 +101,7 @@ export default function OnTheMicPage() {
                     : "border border-white/20 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
                 }`}
               >
-                All Updates
+                All Conversations
               </button>
               {types.map((type) => (
                 <button
@@ -130,7 +130,7 @@ export default function OnTheMicPage() {
               className="mb-16"
             >
               <h2 className="text-2xl font-semibold text-amber-400 mb-8 text-center">
-                Featured Updates
+                Latest Conversations
               </h2>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {featuredUpdates.map((update, index) => (
@@ -191,7 +191,7 @@ export default function OnTheMicPage() {
               viewport={{ once: true }}
               className="text-center py-12"
             >
-              <p className="text-white/50">No updates found for this category.</p>
+              <p className="text-white/50">No conversations found for this category yet.</p>
             </motion.div>
           )}
 
@@ -199,7 +199,7 @@ export default function OnTheMicPage() {
           {loading && (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-400 mx-auto"></div>
-              <p className="mt-4 text-white/70">Loading updates...</p>
+              <p className="mt-4 text-white/70">Loading conversations...</p>
             </div>
           )}
 

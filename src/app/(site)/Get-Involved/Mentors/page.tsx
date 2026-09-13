@@ -10,8 +10,9 @@ export default function MentorsPage() {
             Become a Mentor
           </h1>
           <p className="max-w-2xl text-white/70 leading-relaxed">
-            Support the next generation of campus voices by sharing your
-            experience, insight, and professional guidance through Mic’d Up
+            Bring perspective to the conversation. As a mentor, you help us
+            examine ideas with experience, insight, and professional guidance —
+            supporting the next generation of campus voices through Mic’d Up
             Initiative.
           </p>
         </header>

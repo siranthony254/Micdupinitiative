@@ -99,12 +99,18 @@ export default function CampusToursPage() {
             What a Campus Tour Is
           </h2>
 
-          <p className="text-white/80 leading-relaxed text-sm md:text-base mb-6">
-            A Campus Tour is not a single event. It is a structured engagement
-            combining conversation, creativity, research, and leadership
-            formation — adapted to each campus while preserving MUI's mission.
+          <p className="text-white/80 leading-relaxed text-sm md:text-base mb-4">
+            A Campus Tour is a listening journey. When MUI enters a campus, we
+            don't simply arrive with a programme — we listen, we ask, we
+            converse, we document, we learn, and where appropriate, we connect
+            what we learn to the wider MUI network.
           </p>
-          
+
+          <p className="text-white/80 leading-relaxed text-sm md:text-base mb-6">
+            In practice, that one visit takes several forms — adapted to each
+            campus while preserving MUI's mission.
+          </p>
+
           <div className="flex flex-wrap gap-3">
             <span className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-xs tracking-widest uppercase text-amber-300">
               Structured
@@ -129,11 +135,12 @@ export default function CampusToursPage() {
         >
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-semibold text-amber-400">
-              What Happens on Tour
+              Inside One Listening Journey
             </h2>
             <p className="mt-2 text-white/65 text-sm md:text-base max-w-3xl mx-auto">
-              Each engagement is designed to surface authentic student realities,
-              strengthen leadership, and document culture responsibly.
+              These aren't six separate offerings — they're the steps inside a
+              single visit, each one designed to surface authentic student
+              realities, strengthen leadership, and document culture responsibly.
             </p>
           </div>
 

@@ -27,9 +27,9 @@ export default function WhyThisMatters() {
         >
           {/* Section Header */}
           <span className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-amber-300">
-            Why This Matters Now
+            The Stakes
           </span>
-          
+
           <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-8">
             Why This Matters Now
           </h2>
@@ -45,8 +45,10 @@ export default function WhyThisMatters() {
               </p>
               
               <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-                Campuses are formation ground. And right now, formation is broken.
-                We are not waiting for governments to fix it. We are building the fix from inside.
+                Campuses are formation ground. But to understand what higher education
+                is becoming, we have to listen to the people living inside it — and to
+                the people shaping what comes after it. Before we prescribe, we listen.
+                Before we build, we understand. Before we speak for a generation, we hear from it.
               </p>
             </div>
           </div>

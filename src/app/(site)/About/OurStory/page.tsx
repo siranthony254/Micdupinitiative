@@ -114,7 +114,7 @@ export default function OurStoryPage() {
               Through podcasts, documentaries, campus research, creative
               storytelling, mentorship programs, and purpose-driven events, we
               amplify voices that shape culture responsibly and truthfully. 
-              This is the story and zeal behind the existence of Mic'd Up Initiative.
+              This is the story and zeal behind the existence of Mic’d Up Initiative.
             </p>
 
             <p className="font-medium text-amber-300">
@@ -138,7 +138,7 @@ export default function OurStoryPage() {
               MUI is rooted in timeless principles, including the wisdom of Romans 12, which calls us into renewing
               our minds, our belief that what we consume shapes our thoughts and inspired by the wisdom of Titus
               2, which emphasizes teaching soundness. We are committed to
-              iniatives that builds clarity, not confusion.
+              initiatives that build clarity, not confusion.
             </p>
 
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -176,9 +176,10 @@ export default function OurStoryPage() {
               strategic partnerships, research-driven programs, and scalable
               youth-focused solutions—designed to outlive individuals and serve
               generations. 
-              From campus conversations to continental dialogues, we are
-              equipping young people to think critically, lead responsibly,
-              influence meaningfully, and transform the world around them.
+              We are starting with campus conversations, and working our way
+              toward continental dialogues — equipping young people to think
+              critically, lead responsibly, influence meaningfully, and
+              transform the world around them.
             </p>
 
             <p className="font-semibold text-amber-300">

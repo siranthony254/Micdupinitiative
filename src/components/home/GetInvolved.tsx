@@ -5,21 +5,21 @@ const paths = [
   {
     title: "Ambassadors",
     description:
-      "Represent Mic’d Up Initiative within your campus, listen the campus and help surface voices that deserve to be heard.",
+      "Help us listen to campus. Surface conversations, people, and questions that deserve attention.",
     href: "/Get-Involved/Ambassadors",
     cta: "Become an Ambassador",
   },
   {
     title: "Mentors & Advisors",
     description:
-      "Support the youth, mentor and shape emerging leaders through guidance, expertise, and ethical leadership—shaping the next generation.",
+      "Bring perspective to the conversation. Help us examine ideas with experience, expertise, and wisdom.",
     href: "/Get-Involved/Mentors",
     cta: "Join as a Mentor",
   },
   {
     title: "Partners & Institutions",
     description:
-      "Collaborate with us to support campus dialogue, research, and youth-led initiatives at scale.",
+      "Open the conversation. Help connect campus perspectives with wider society, research, and youth-led initiatives.",
     href: "/Get-Involved/Partnerships",
     cta: "Partner with Us",
   },
@@ -33,12 +33,12 @@ export default function GetInvolved() {
         {/* Intro */}
         <div className="mb-10 max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white">
-            Get Involved
+            Help Us Listen Better
           </h2>
           <p className="mt-4 text-lg text-white/70">
-            Mic’d Up Initiative thrives through collaboration. Whether you’re
-            a student, professional, or institution, there’s a meaningful way
-            to contribute to shaping campus culture, youth leadership and influence.
+            MUI&rsquo;s listening only goes as far as the people who help carry it.
+            Whether you&rsquo;re a student, professional, or institution, there&rsquo;s
+            a way to help us hear more, and hear it well.
           </p>
         </div>
 

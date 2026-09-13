@@ -86,6 +86,12 @@ export const videoType = defineType({
       initialValue: () => new Date().toISOString(),
     }),
     defineField({
+      name: 'expiryDate',
+      type: 'datetime',
+      title: 'Expiry Date',
+      description: 'When this video should no longer be shown (optional)',
+    }),
+    defineField({
       name: 'order',
       title: 'Order',
       type: 'number',

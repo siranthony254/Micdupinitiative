@@ -133,7 +133,7 @@ export default function AmbassadorsPage() {
               Campus Ambassadors
             </h1>
             <p className="mx-auto text-lg md:text-xl text-white/90 leading-relaxed max-w-3xl">
-              Represent Mic'd Up Initiative on your campus and help amplify student voices through media, dialogue, and leadership.
+              Help us listen to campus. As an Ambassador, you surface the conversations, people, and questions on your campus that deserve attention — and help carry them through media, dialogue, and leadership.
             </p>
           </motion.div>
         </div>

@@ -107,7 +107,10 @@ export default function MentorshipPage() {
 
             <p className="text-lg text-white/80 leading-relaxed mb-6">
               This track is selective - designed for individuals ready for
-              responsibility, not visibility.
+              responsibility, not visibility. It runs as a small, early cohort
+              — two intakes a year, one semester each — not yet a large-scale
+              formation programme. We are building it deliberately, one cohort
+              at a time.
             </p>
 
             <div className="space-y-3">

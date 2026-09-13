@@ -55,7 +55,7 @@ const objectives = [
   },
   {
     number: "5",
-    title: "Create High-Impact Events That Connects Campus to The World",
+    title: "Create High-Impact Events That Connect Campus to The World",
     description: "Host summits, mentorship programs, and campus engagements that expose campus potential to the world.",
     icon: "🌍"
   },
@@ -87,12 +87,18 @@ export default function OurObjectives() {
           className="text-center mb-10"
         >
           <span className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-amber-300">
-            Our Objectives
+            The Horizon
           </span>
-          
+
           <h2 className="mt-4 text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-white">
-            Key Objectives
+            Where This Can Lead
           </h2>
+
+          <p className="mt-6 text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
+            Conversations are only the beginning. As we listen, learn, and understand
+            more, MUI will build toward the objectives below — not as departments that
+            already exist at scale, but as the direction the work is heading.
+          </p>
         </motion.div>
 
         {/* Objectives Grid */}

@@ -9,29 +9,17 @@ const VIDEO_FIELDS = `
   _id,
   _type,
   title,
-  slug,
   description,
   youtubeEmbed,
-  youtubeId,
-  vimeoId,
-  selfHostedUrl,
-  externalUrl,
-  thumbnail,
-  primaryPlatform,
-  social,
   type,
   category,
   campus,
   duration,
   featured,
   showInRail,
-  comingSoon,
   publishedAt,
   expiryDate,
-  order,
-  content,
-  tags,
-  guests
+  order
 `
 
 const VIDEOS_QUERY = `*[_type == "video" && (!defined(expiryDate) || expiryDate > now())] | order(order asc, publishedAt desc) {
@@ -118,33 +106,12 @@ export async function getRailVideos() {
 
 export async function searchVideos(query: string, limit: number = 10) {
   try {
-    const videos = await client.fetch(`*[_type == "video" && (title match "*${query}*" || description match "*${query}*") && (!defined(expiryDate) || expiryDate > now())] | order(publishedAt desc)[0...${limit}] {
-      _id,
-      _type,
-      title,
-      slug,
-      description,
-      type,
-      category,
-      campus,
-      duration,
-      thumbnail,
-      primaryPlatform,
-      youtubeId,
-      vimeoId,
-      selfHostedUrl,
-      externalUrl,
-      social,
-      featured,
-      showInRail,
-      comingSoon,
-      publishedAt,
-      expiryDate,
-      order,
-      content,
-      tags,
-      guests
-    }`)
+    const videos = await client.fetch(
+      `*[_type == "video" && (title match $term || description match $term) && (!defined(expiryDate) || expiryDate > now())] | order(publishedAt desc)[0...${limit}] {
+        ${VIDEO_FIELDS}
+      }`,
+      { term: `*${query}*` }
+    )
 
     return { data: videos, error: null }
   } catch (error) {
@@ -182,36 +149,15 @@ export async function getVideoCategories() {
   }
 }
 
-export async function getVideoBySlug(slug: string) {
+export async function getVideoById(id: string) {
   try {
-    const video = await client.fetch(`*[_type == "video" && slug.current == $slug && (!defined(expiryDate) || expiryDate > now())][0]{
-      _id,
-      _type,
-      title,
-      slug,
-      description,
-      type,
-      category,
-      campus,
-      duration,
-      thumbnail,
-      primaryPlatform,
-      youtubeId,
-      vimeoId,
-      selfHostedUrl,
-      externalUrl,
-      social,
-      featured,
-      showInRail,
-      comingSoon,
-      publishedAt,
-      expiryDate,
-      order,
-      content,
-      tags,
-      guests
-    }`)
-    
+    const video = await client.fetch(
+      `*[_type == "video" && _id == $id && (!defined(expiryDate) || expiryDate > now())][0]{
+        ${VIDEO_FIELDS}
+      }`,
+      { id }
+    )
+
     return { data: video, error: null }
   } catch (error) {
     return { data: null, error: error as Error }
@@ -244,11 +190,11 @@ export function groupVideosByType(videos: SanityVideo[]) {
   }, {} as Record<string, SanityVideo[]>)
 }
 
-export function getVideoYouTubeId(video: Pick<SanityVideo, 'youtubeId' | 'youtubeEmbed'>): string | null {
-  return video.youtubeId || extractYouTubeId(video.youtubeEmbed) || extractYouTubeIdFromIframe(video.youtubeEmbed)
+export function getVideoYouTubeId(video: Pick<SanityVideo, 'youtubeEmbed'>): string | null {
+  return extractYouTubeId(video.youtubeEmbed) || extractYouTubeIdFromIframe(video.youtubeEmbed)
 }
 
-export function getVideoThumbnailUrl(video: Pick<SanityVideo, 'youtubeId' | 'youtubeEmbed'>): string {
+export function getVideoThumbnailUrl(video: Pick<SanityVideo, 'youtubeEmbed'>): string {
   return getDerivedYouTubeThumbnailUrl(getVideoYouTubeId(video))
 }
 
@@ -269,15 +215,14 @@ export function toMediaItem(video: SanityVideo): MediaItem {
     externalUrl: getYouTubeWatchUrl(youtubeId),
     social: {
       youtube: getYouTubeWatchUrl(youtubeId) || null,
-      spotify: video.social?.spotify || null,
-      apple: video.social?.apple || null,
-      instagram: video.social?.instagram || null,
-      tiktok: video.social?.tiktok || null,
-      facebook: video.social?.facebook || null,
-      x: video.social?.x || null,
-      linkedin: video.social?.linkedin || null,
+      spotify: null,
+      apple: null,
+      instagram: null,
+      tiktok: null,
+      facebook: null,
+      x: null,
+      linkedin: null,
     },
-    comingSoon: video.comingSoon,
     featured: video.featured,
     showInRail: video.showInRail,
   }

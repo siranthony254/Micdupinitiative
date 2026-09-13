@@ -94,7 +94,7 @@ export default function BlogPage() {
               MUI Blog
             </h1>
             <p className="text-xl md:text-2xl mb-8 text-blue-100">
-              Insights, tutorials, and stories from the MUI community
+              From the conversation: stories, insights, and questions that came out of what we&apos;re listening to.
             </p>
 
             {/* Search Bar */}

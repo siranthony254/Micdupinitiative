@@ -9,63 +9,16 @@ import { MegaMenu } from "./mega-menu";
 
 /* -----------------------------
    Navigation Structure
+
+   Centred on Conversations: this semester's actual work leads,
+   the wider institutional programme (About, Get Involved) follows,
+   and standalone "Campus" / "What's Next" links stay direct rather
+   than hiding behind a dropdown for a single destination.
 ------------------------------*/
 const NAV_ITEMS = [
   {
-    label: "About",
-    href: "",
-    items: [
-      {
-        title: "Our Story",
-        href: "/About/OurStory",
-      },
-      {
-        title: "Vision & Mission",
-        href: "/About/Vision-Mission",
-      },
-      //{
-        //title: "MUI Leadership",
-        //description: "Founding directors and governance",
-        //href: "/About/MUI-Leadership",
-      //},
-      {
-        title: "Tools of Influence",
-        href: "/About/Tools-of-Influence",
-      },
-    ],
-  },
-  {
-    label: "Initiatives",
-    items: [
-      {
-        title: "Dialogue Tours",
-        href: "/Programs/campus-tours",
-      },
-      {
-        title: "Mentorship & Leadership",
-        href: "/Get-Involved/ment-lead",
-      },
-      {
-        title: "Events & Summits",
-        href: "/Programs/Events",
-      },
-    ],
-  },
-  {
-    label: "Insights",
-    items: [
-      {
-        title: "Blogs",
-        href: "/blog",
-      },
-      {
-        title: "FAQs",
-        href: "/research/faqs",
-      },
-    ],
-  },
-  {
-    label: "Media",
+    label: "Conversations",
+    href: "/conversations",
     items: [
       {
         title: "Campus Podcast",
@@ -82,7 +35,49 @@ const NAV_ITEMS = [
     ],
   },
   {
+    label: "Insights",
+    href: "",
+    items: [
+      {
+        title: "Blogs",
+        href: "/blog",
+      },
+      {
+        title: "FAQs",
+        href: "/research/faqs",
+      },
+    ],
+  },
+  {
+    label: "Campus",
+    href: "/Programs/campus-tours",
+    items: [],
+  },
+  {
+    label: "About",
+    href: "",
+    items: [
+      {
+        title: "Our Story",
+        href: "/About/OurStory",
+      },
+      {
+        title: "Vision & Mission",
+        href: "/About/Vision-Mission",
+      },
+      {
+        title: "Tools of Influence",
+        href: "/About/Tools-of-Influence",
+      },
+      {
+        title: "MUI Leadership",
+        href: "/About/MUI-Leadership",
+      },
+    ],
+  },
+  {
     label: "Get Involved",
+    href: "",
     items: [
       {
         title: "Ambassadors",
@@ -97,10 +92,19 @@ const NAV_ITEMS = [
         href: "/Get-Involved/Mentors",
       },
       {
+        title: "Mentorship & Leadership",
+        href: "/Get-Involved/ment-lead",
+      },
+      {
         title: "Contact Us",
         href: "/contact",
       },
     ],
+  },
+  {
+    label: "What's Next",
+    href: "/Programs/Events",
+    items: [],
   },
 ];
 
@@ -186,7 +190,7 @@ export function SiteHeader() {
             <div
               key={nav.label}
               className="relative"
-              onMouseEnter={() => handleEnter(nav.label)}
+              onMouseEnter={() => nav.items.length > 0 && handleEnter(nav.label)}
               onMouseLeave={handleLeave}
             >
               <Link
@@ -194,14 +198,14 @@ export function SiteHeader() {
                 className={`
                   relative text-sm font-medium transition
                   ${
-                    active === nav.label
+                    active === nav.label || pathname === nav.href
                       ? "text-amber-400"
                       : "text-white/80 hover:text-white"
                   }
                   after:absolute after:left-0 after:-bottom-1
                   after:h-px after:bg-amber-400 after:transition-all
                   ${
-                    active === nav.label
+                    active === nav.label || pathname === nav.href
                       ? "after:w-full"
                       : "after:w-0 hover:after:w-full"
                   }
@@ -210,31 +214,11 @@ export function SiteHeader() {
                 {nav.label}
               </Link>
 
-              {active === nav.label && <MegaMenu items={nav.items} />}
+              {active === nav.label && nav.items.length > 0 && (
+                <MegaMenu items={nav.items} />
+              )}
             </div>
           ))}
-
-          {/* On The Mic Button */}
-          <Link
-            href="/on-the-mic"
-            className={`
-              relative text-sm font-medium transition rounded-full border border-amber-400/30 px-4 py-2
-              ${
-                pathname === "/on-the-mic"
-                  ? "text-amber-400 bg-amber-400/10 border-amber-400"
-                  : "text-white/80 hover:text-amber-400 hover:bg-amber-400/10 hover:border-amber-400"
-              }
-              after:absolute after:left-0 after:-bottom-1
-              after:h-px after:bg-amber-400 after:transition-all
-              ${
-                pathname === "/on-the-mic"
-                  ? "after:w-full"
-                  : "after:w-0 hover:after:w-full"
-              }
-            `}
-          >
-            On The Mic
-          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -277,52 +261,52 @@ export function SiteHeader() {
                 Home
               </Link>
 
-              {NAV_ITEMS.map((nav) => (
-                <div key={nav.label}>
-                  <button
-                    onClick={() =>
-                      setMobileActive(
-                        mobileActive === nav.label ? null : nav.label
-                      )
-                    }
-                    className="w-full flex items-center justify-between py-3 text-left text-base font-medium"
+              {NAV_ITEMS.map((nav) =>
+                nav.items.length > 0 ? (
+                  <div key={nav.label}>
+                    <button
+                      onClick={() =>
+                        setMobileActive(
+                          mobileActive === nav.label ? null : nav.label
+                        )
+                      }
+                      className="w-full flex items-center justify-between py-3 text-left text-base font-medium"
+                    >
+                      {nav.label}
+                      <ChevronDown
+                        size={18}
+                        className={`transition ${
+                          mobileActive === nav.label ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+
+                    {mobileActive === nav.label && (
+                      <div className="ml-4 mt-1 space-y-2 border-l border-white/10 pl-4">
+                        {nav.items.map((item) => (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setMobileOpen(false)}
+                            className="block text-xs text-white/70 hover:text-white"
+                          >
+                            {item.title}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    key={nav.label}
+                    href={nav.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block py-3 text-base font-medium text-white"
                   >
                     {nav.label}
-                    <ChevronDown
-                      size={18}
-                      className={`transition ${
-                        mobileActive === nav.label ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {mobileActive === nav.label && (
-                    <div className="ml-4 mt-1 space-y-2 border-l border-white/10 pl-4">
-                      {nav.items.map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setMobileOpen(false)}
-                          className="block text-xs text-white/70 hover:text-white"
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-
-              {/* On the Mic Mobile Button */}
-              <div>
-                <Link
-                  href="/on-the-mic"
-                  onClick={() => setMobileOpen(false)}
-                  className="block py-3 text-base font-medium text-amber-400 rounded-full border border-amber-400/30 px-4 bg-amber-400/10"
-                >
-                  On The Mic
-                </Link>
-              </div>
+                  </Link>
+                )
+              )}
             </div>
           </div>
         </div>

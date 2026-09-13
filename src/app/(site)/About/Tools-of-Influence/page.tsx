@@ -23,10 +23,11 @@ const tools = [
   {
     title: "Mentorship & Formation",
     tagline: "We shape people.",
+    stage: "Early stage",
     points: ["Character and values", "Clarity of purpose", "Leadership and responsibility"],
     body: [
       "Platforms are only as strong as the people who carry them.",
-      "Through selective ambassador cohorts and mentorship pipelines, MUI forms individuals capable of carrying vision, values, and responsibility across campuses and beyond.",
+      "Through a small, selective ambassador and mentorship cohort, MUI is beginning to form individuals capable of carrying vision, values, and responsibility across campuses and beyond.",
     ],
   },
   {
@@ -109,9 +110,16 @@ export default function ToolsOfInfluencePage() {
                          hover:border-amber-400/30 hover:bg-white/[0.07]
                          hover:shadow-xl hover:shadow-amber-400/10 transition"
             >
-              <h2 className="text-xl font-semibold text-amber-200">
-                {tool.title}
-              </h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="text-xl font-semibold text-amber-200">
+                  {tool.title}
+                </h2>
+                {tool.stage && (
+                  <span className="inline-flex items-center rounded-full border border-white/15 px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-white/50">
+                    {tool.stage}
+                  </span>
+                )}
+              </div>
 
               <p className="mt-1 text-sm font-medium text-white/85">
                 {tool.tagline}

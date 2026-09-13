@@ -45,6 +45,10 @@ export function HomePage() {
         </div>
 
         <section className="relative max-w-4xl px-6 md:px-10 text-center animate-[fadeUp_700ms_ease-out_both]">
+          <p className="text-lg md:text-2xl font-semibold text-amber-400 mb-4">
+            Conversations That Matter. Voices That Shape Society.
+          </p>
+
           <h1 className="mb-6 tracking-tight leading-tight">
             <span className="block text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.1] md:leading-[1.1] mb-4">
               Join a Generation
@@ -62,14 +66,21 @@ export function HomePage() {
 
           <div className="mt-6 space-y-3">
             <p className="text-base md:text-lg text-white/75 leading-relaxed">
-              Because voices shape society and real problems will be solved by bold
-              people who were heard, formed, and trusted even while they were still
-              in school. MUI focuses on helping you express truth with clarity,
-              conviction, and responsibility.
+              Mic&apos;d Up Initiative creates spaces where students, educators,
+              professionals, leaders and society can ask better questions, examine
+              ideas, and make sense of the world we are becoming. Because voices
+              shape society, and real problems will be solved by bold people who
+              were heard, formed, and trusted even while they were still in school.
             </p>
           </div>
 
-          <div className="mt-10 flex justify-center">
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
+            <Link
+              href="/conversations"
+              className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-8 py-3 text-sm md:text-base font-semibold text-slate-900 hover:bg-amber-300 hover:scale-[1.04] active:scale-[0.97] transition-all duration-300"
+            >
+              Join the Conversation
+            </Link>
             <Link
               href="/About/OurStory"
               className="inline-flex items-center gap-2 rounded-full border border-white/60 px-8 py-3 text-sm md:text-base font-medium text-white hover:bg-white hover:text-slate-900 hover:scale-[1.04] active:scale-[0.97] transition-all duration-300"

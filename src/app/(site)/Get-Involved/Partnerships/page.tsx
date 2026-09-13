@@ -152,7 +152,7 @@ export default function PartnersPage() {
               Partnerships & Collaborations
             </h1>
             <p className="mx-auto text-lg md:text-xl text-white/90 leading-relaxed max-w-3xl">
-              Mic'd Up Initiative partners with institutions, leaders, and organizations committed to shaping responsible campus culture, youth excellence, and meaningful public discourse.
+              Open the conversation. We partner with institutions, leaders, and organizations who can help connect campus perspectives with wider society — shaping responsible campus culture, youth excellence, and meaningful public discourse.
             </p>
           </motion.div>
         </div>

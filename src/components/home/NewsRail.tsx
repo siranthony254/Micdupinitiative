@@ -41,7 +41,7 @@ export function NewsRail({ updates, onUpdateClick }: NewsRailProps) {
   const hasUpdates = filteredUpdates.length > 0;
 
   // Create enough duplicates to fill at least 2 full cycles for seamless looping
-  const displayItems = hasUpdates ? filteredUpdates : [{ _id: 'no-updates', title: 'No recent updates. Check later' } as any];
+  const displayItems = hasUpdates ? filteredUpdates : [{ _id: 'no-updates', title: 'No recent updates. Check back later.' } as any];
   const duplicatedItems = [...displayItems, ...displayItems, ...displayItems, ...displayItems, ...displayItems, ...displayItems];
 
   return (

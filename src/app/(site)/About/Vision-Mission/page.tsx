@@ -41,6 +41,10 @@ export default function VisionMissionPage() {
           defining why we exist, what we pursue, and the future we are
           intentionally shaping across campuses.
         </p>
+        <p className="mt-4 text-base italic text-amber-300/90">
+          This is the horizon MUI is listening its way toward — not a
+          description of the institution as it stands this semester.
+        </p>
       </motion.header>
 
       {/* Vision & Mission Cards */}

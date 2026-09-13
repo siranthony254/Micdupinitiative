@@ -48,9 +48,32 @@ function CTAButton({
 /* -----------------------------
    Event Formats Data
 ------------------------------ */
-const eventCards = [
+type EventBand = "now" | "format" | "future";
+
+const BAND_COPY: Record<EventBand, { label: string; description: string }> = {
+  now: {
+    label: "Happening Now",
+    description: "Running this semester — formats you can show up to or hear evidence of today.",
+  },
+  format: {
+    label: "Conversation Formats We Convene",
+    description: "Spaces MUI can bring together as the need and the invitation arise.",
+  },
+  future: {
+    label: "Where We're Going",
+    description: "The scale we're building toward — not yet running at this size.",
+  },
+};
+
+const eventCards: Array<{
+  title: string;
+  points: string[];
+  note: string;
+  band: EventBand;
+}> = [
   {
     title: "Campus Tours",
+    band: "now",
     points: [
       "Live podcast recordings",
       "Student dialogue and listening sessions",
@@ -61,6 +84,7 @@ const eventCards = [
   },
   {
     title: "MUC Talks (Stage Conversations)",
+    band: "now",
     points: [
       "Students and young thinkers",
       "Academics and educators",
@@ -70,22 +94,24 @@ const eventCards = [
     note: "These conversations are curated, recorded, and preserved—ensuring ideas outlive the event itself.",
   },
   {
-    title: "Summits & Forums",
-    points: [
-      "Connect campuses across regions",
-      "Encourage cross-cultural learning",
-      "Address pressing youth and campus themes",
-    ],
-    note: "These forums shape collective direction and thought leadership.",
-  },
-  {
     title: "Community Dialogues",
+    band: "format",
     points: [
       "Address specific campus or youth issues",
       "Encourage honest reflection",
       "Build trust across institutions and systems",
     ],
     note: "Sometimes transformation begins in a room—not on a stage.",
+  },
+  {
+    title: "Summits & Forums",
+    band: "future",
+    points: [
+      "Connect campuses across regions",
+      "Encourage cross-cultural learning",
+      "Address pressing youth and campus themes",
+    ],
+    note: "These forums shape collective direction and thought leadership.",
   },
 ];
 
@@ -195,34 +221,56 @@ export default function CommunityEventsPage() {
             </div>
           </motion.section>
 
-          {/* Event Formats */}
-          <section className="mt-14 grid gap-5 sm:grid-cols-2">
-            {eventCards.map((event, i) => (
-              <motion.div
-                key={event.title}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.55, delay: i * 0.08 }}
-                whileHover={{ y: -6 }}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 hover:border-amber-400/30 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-amber-400/10 transition"
-              >
-                <h3 className="text-lg font-semibold text-amber-200 mb-3">
-                  {event.title}
-                </h3>
+          {/* Event Formats, grouped by how real they are right now */}
+          {(["now", "format", "future"] as EventBand[]).map((band) => {
+            const cardsInBand = eventCards.filter((event) => event.band === band);
+            if (cardsInBand.length === 0) return null;
 
-                <ul className="space-y-1 text-sm text-white/75 list-disc pl-5">
-                  {event.points.map((p) => (
-                    <li key={p}>{p}</li>
+            return (
+              <section key={band} className="mt-14">
+                <div className="mb-5">
+                  <h2 className="text-xl md:text-2xl font-semibold text-white">
+                    {BAND_COPY[band].label}
+                  </h2>
+                  <p className="mt-1 text-sm text-white/55">
+                    {BAND_COPY[band].description}
+                  </p>
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {cardsInBand.map((event, i) => (
+                    <motion.div
+                      key={event.title}
+                      initial={{ opacity: 0, y: 18 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.55, delay: i * 0.08 }}
+                      whileHover={{ y: -6 }}
+                      className={`rounded-2xl border p-6 transition ${
+                        band === "future"
+                          ? "border-dashed border-white/15 bg-white/[0.02] hover:border-amber-400/30"
+                          : "border-white/10 bg-white/[0.04] hover:border-amber-400/30 hover:bg-white/[0.07] hover:shadow-xl hover:shadow-amber-400/10"
+                      }`}
+                    >
+                      <h3 className="text-lg font-semibold text-amber-200 mb-3">
+                        {event.title}
+                      </h3>
+
+                      <ul className="space-y-1 text-sm text-white/75 list-disc pl-5">
+                        {event.points.map((p) => (
+                          <li key={p}>{p}</li>
+                        ))}
+                      </ul>
+
+                      <p className="mt-3 text-sm text-white/60 leading-relaxed">
+                        {event.note}
+                      </p>
+                    </motion.div>
                   ))}
-                </ul>
-
-                <p className="mt-3 text-sm text-white/60 leading-relaxed">
-                  {event.note}
-                </p>
-              </motion.div>
-            ))}
-          </section>
+                </div>
+              </section>
+            );
+          })}
 
         </div>
       </div>

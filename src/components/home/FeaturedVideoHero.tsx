@@ -77,20 +77,6 @@ export async function FeaturedVideoHero() {
                 </svg>
                 Watch Now
               </Link>
-
-              {featuredVideo.externalUrl && (
-                <a
-                  href={featuredVideo.externalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-[#0D1F35]/5 hover:bg-[#0D1F35]/10 text-[#0D1F35] font-semibold rounded-lg transition-colors border border-[#0D1F35]/20"
-                >
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L16 8" />
-                  </svg>
-                  External
-                </a>
-              )}
             </div>
           </div>
 

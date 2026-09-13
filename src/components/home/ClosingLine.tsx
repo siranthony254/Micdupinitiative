@@ -26,7 +26,7 @@ export default function ClosingLine() {
           className="text-center"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-amber-400 mb-6">
-            Voices shape Society!
+            Voices shape society!
           </h2>
           
           <p className="text-lg md:text-xl text-white/80 leading-relaxed max-w-4xl mx-auto">

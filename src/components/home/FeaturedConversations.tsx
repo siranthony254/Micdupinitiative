@@ -12,7 +12,7 @@ export function FeaturedConversations() {
           </h2>
           <p className="text-lg md:text-xl text-white/75 max-w-4xl mx-auto leading-relaxed">
             Big ideas. Real campus conversations.
-            These are not highlights. These are beginning of a record — a growing archive of what African students are actually thinking, feeling, building, and asking. The conversations happen on campuses. The impact travels further.
+            These are not highlights. These are the beginning of a record — a growing archive of what African students are actually thinking, feeling, building, and asking. The conversations happen on campuses. The impact travels further.
           </p>
         </div>
       </div>

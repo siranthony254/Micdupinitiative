@@ -167,24 +167,6 @@ export default function PrivacyPolicy() {
             </p>
           </section>
         </div>
-
-        {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-gray-800 text-center">
-          <p className="text-amber-500 font-bold text-lg mb-2">Mic'd Up Initiative (MUI)</p>
-          <p className="text-gray-400">Empowering voices. Shaping society.</p>
-          
-          <div className="mt-6 space-x-4">
-            <Link href="/" className="text-amber-400 hover:text-amber-300 underline">
-              Back to Home
-            </Link>
-            <Link href="/cookie-policy" className="text-amber-400 hover:text-amber-300 underline">
-              Cookie Policy
-            </Link>
-            <Link href="/data-protection" className="text-amber-400 hover:text-amber-300 underline">
-              Data Protection Policy
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   )

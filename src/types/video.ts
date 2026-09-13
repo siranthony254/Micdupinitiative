@@ -1,49 +1,18 @@
-import { PortableTextBlock } from '@portabletext/types'
-
 export interface SanityVideo {
   _id: string
   _type: 'video'
   title?: string
-  slug?: {
-    current: string
-  }
   description?: string
   youtubeEmbed: string
-  youtubeId?: string
-  vimeoId?: string
-  selfHostedUrl?: string
-  externalUrl?: string
-  thumbnail?: {
-    asset?: {
-      _ref?: string
-      _type?: string
-    }
-    alt?: string
-  }
-  primaryPlatform?: string
-  social?: {
-    youtube?: string | null
-    spotify?: string | null
-    apple?: string | null
-    instagram?: string | null
-    tiktok?: string | null
-    facebook?: string | null
-    x?: string | null
-    linkedin?: string | null
-  }
   type: 'podcast' | 'talk' | 'documentary' | 'interview' | 'workshop' | 'event'
   category?: string
   campus?: string
   duration?: string
   featured?: boolean
   showInRail?: boolean
-  comingSoon?: boolean
   publishedAt?: string
   expiryDate?: string
   order?: number
-  content?: PortableTextBlock[]
-  tags?: string[]
-  guests?: string[]
 }
 
 export interface VideoFilter {

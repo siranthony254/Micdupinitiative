@@ -208,24 +208,6 @@ export default function DataProtectionPolicy() {
             </p>
           </section>
         </div>
-
-        {/* Footer */}
-        <div className="mt-16 pt-8 border-t border-gray-800 text-center">
-          <p className="text-amber-500 font-bold text-lg mb-2">Mic'd Up Initiative (MUI)</p>
-          <p className="text-gray-400">Empowering voices. Building the next Responsible Cultural Influencers</p>
-          
-          <div className="mt-6 space-x-4">
-            <Link href="/" className="text-amber-400 hover:text-amber-300 underline">
-              Back to Home
-            </Link>
-            <Link href="/privacy" className="text-amber-400 hover:text-amber-300 underline">
-              Privacy Policy
-            </Link>
-            <Link href="/cookie-policy" className="text-amber-400 hover:text-amber-300 underline">
-              Cookie Policy
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   )

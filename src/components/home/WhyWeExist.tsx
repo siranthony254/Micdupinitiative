@@ -3,20 +3,20 @@
 export default function WhyWeExist() {
   const reasons = [
     {
-      title: "To Amplify Meaningful Campus Voices",
-      body: "Many students have ideas, experiences, and perspectives that remain unheard or misrepresented. MUI exists to create intentional platforms where authentic campus voices can be heard with clarity and depth.",
+      title: "We Listen To Understand Campus",
+      body: "Students have experiences, ideas, and perspectives that can easily remain unheard or misunderstood. We create intentional spaces where authentic campus voices can be heard with clarity and depth.",
     },
     {
-      title: "To Form Responsible Influence",
-      body: "In an age of viral content and digital noise, MUI exists to help young people understand that influence carries responsibility - shaping thinkers, creators, and leaders who impact culture consciously.",
+      title: "We Listen Because Influence Needs Responsibility",
+      body: "People are already shaping one another through conversations, content, and culture — often without realising it. We listen so that influence can be exercised consciously, not carelessly.",
     },
     {
-      title: "To Bridge Campus and Society",
-      body: "MUI exists to connect students with mentors, professionals, institutions, and opportunities beyond the classroom - ensuring campuses do not remain isolated from the real world.",
+      title: "We Listen Because Campus And Society Are Not Separate Worlds",
+      body: "What happens in higher education eventually enters workplaces, communities, institutions, and public life. We listen to keep that connection honest.",
     },
     {
-      title: "To Challenge and Transform Campus Culture",
-      body: "Campus culture shapes future society. MUI exists to confront unhealthy cultural patterns, encourage meaningful dialogue, and cultivate a generation marked by purpose, integrity, and intellectual depth.",
+      title: "We Listen Because Culture Should Be Understood Before It Is Changed",
+      body: "Campus culture shapes the society of tomorrow. Before we can encourage meaningful dialogue or cultivate change, we have to understand what is actually happening — and why.",
     },
   ];
 
@@ -31,7 +31,7 @@ export default function WhyWeExist() {
         </span>
 
         <h2 className="mt-4 text-3xl lg:text-4xl font-semibold max-w-3xl text-white mx-auto">
-          Why Mic&apos;d Up Initiative Exists
+          Why We Listen
         </h2>
 
         <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">

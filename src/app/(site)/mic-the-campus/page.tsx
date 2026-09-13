@@ -23,7 +23,7 @@ export default function MicTheCampusPage() {
   return (
     <PageShell
       title="Mic the Campus"
-      subtitle="Voices shape culture. Infrastructure determines which ones endure."
+      subtitle="Help us keep documenting these conversations. Voices shape culture — infrastructure determines which ones endure."
     >
       {/* SECTION 1 — WHY */}
       <motion.section
