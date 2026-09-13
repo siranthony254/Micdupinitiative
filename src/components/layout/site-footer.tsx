@@ -69,8 +69,7 @@ export function SiteFooter() {
             The Initiative
           </h4>
           <ul className="space-y-2">
-            <li><Link href="/About/OurStory" className="hover:underline">Our Story</Link></li>
-            <li><Link href="/About/Vision-Mission" className="hover:underline">Vision & Mission</Link></li>
+            <li><Link href="/About/Vision-Mission" className="hover:underline">Vision, Mission & How We Work</Link></li>
             <li><Link href="/privacy" className="hover:underline">Privacy Policy</Link></li>
             <li><Link href="/cookie-policy" className="hover:underline">Cookie Policy</Link></li>
             <li><Link href="/data-protection" className="hover:underline">Data Protection Policy</Link></li>

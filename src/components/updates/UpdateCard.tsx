@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Mic, FileText, Calendar, MapPin, Info, Megaphone, Handshake, Users } from "lucide-react";
 import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import { getOptimizedImageProps } from "@/lib/performance";
@@ -36,23 +37,23 @@ export function UpdateCard({ update, index = 0 }: UpdateCardProps) {
   const getTypeIcon = (type: string) => {
     switch (type) {
       case 'podcast':
-        return '🎙️';
+        return Mic;
       case 'blog':
-        return '📝';
+        return FileText;
       case 'event':
-        return '📅';
+        return Calendar;
       case 'tour':
-        return '🎓';
+        return MapPin;
       case 'general':
-        return '📢';
+        return Info;
       case 'announcement':
-        return '📣';
+        return Megaphone;
       case 'partnership':
-        return '🤝';
+        return Handshake;
       case 'mentorship':
-        return '👥';
+        return Users;
       default:
-        return '📢';
+        return Megaphone;
     }
   };
 
@@ -118,7 +119,7 @@ export function UpdateCard({ update, index = 0 }: UpdateCardProps) {
             {/* Type Badge */}
             <div className="mb-4 flex items-center justify-between">
               <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${getTypeColor(update.type)}`}>
-                <span className="text-base">{getTypeIcon(update.type)}</span>
+                {(() => { const TypeIcon = getTypeIcon(update.type); return <TypeIcon className="h-3.5 w-3.5" strokeWidth={2} />; })()}
                 <span>{getTypeDisplayName(update.type)}</span>
               </div>
               {update.featured && (
@@ -174,7 +175,7 @@ export function UpdateCard({ update, index = 0 }: UpdateCardProps) {
           {/* Type Badge */}
           <div className="mb-4 flex items-center justify-between">
             <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium ${getTypeColor(update.type)}`}>
-              <span className="text-base">{getTypeIcon(update.type)}</span>
+              {(() => { const TypeIcon = getTypeIcon(update.type); return <TypeIcon className="h-3.5 w-3.5" strokeWidth={2} />; })()}
               <span>{getTypeDisplayName(update.type)}</span>
             </div>
             {update.featured && (

@@ -58,16 +58,8 @@ const NAV_ITEMS = [
     href: "",
     items: [
       {
-        title: "Our Story",
-        href: "/About/OurStory",
-      },
-      {
-        title: "Vision & Mission",
+        title: "Vision, Mission & How We Work",
         href: "/About/Vision-Mission",
-      },
-      {
-        title: "Tools of Influence",
-        href: "/About/Tools-of-Influence",
       },
       {
         title: "MUI Leadership",

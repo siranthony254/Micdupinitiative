@@ -76,13 +76,7 @@ export default function ConversationsPage() {
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 md:px-12 lg:px-20 py-12">
-        {/* Premium Ambient Glow */}
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-[-200px] left-[-120px] h-[420px] w-[420px] rounded-full bg-amber-500/10 blur-[120px]" />
-          <div className="absolute bottom-[-220px] right-[-180px] h-[520px] w-[520px] rounded-full bg-white/5 blur-[140px]" />
-        </div>
-
-        <div className="relative max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Type Filter */}
           <motion.div
             variants={fadeUp}

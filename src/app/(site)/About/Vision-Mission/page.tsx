@@ -12,15 +12,62 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
+const tools = [
+  {
+    title: "Content & Storytelling",
+    tagline: "We mic what matters.",
+    points: [
+      "Podcasts and long-form conversations",
+      "Documentaries and campus features",
+      "Short-form storytelling",
+      "The MUC Talks (TED-Style Campus Talks)",
+    ],
+    body: [
+      "MUI amplifies meaningful student voices, ideas, talents, and conversations through intentional storytelling.",
+      "We shape culture—by preserving ideas, elevating substance, and giving voice to perspectives that deserve longevity.",
+    ],
+  },
+  {
+    title: "Mentorship & Formation",
+    tagline: "We shape people.",
+    stage: "Early stage",
+    points: ["Character and values", "Clarity of purpose", "Leadership and responsibility"],
+    body: [
+      "Platforms are only as strong as the people who carry them.",
+      "Through a small, selective ambassador and mentorship cohort, MUI is beginning to form individuals capable of carrying vision, values, and responsibility across campuses and beyond.",
+    ],
+  },
+  {
+    title: "Insights",
+    tagline: "We speak with credibility.",
+    points: [
+      "Content and storytelling direction",
+      "Programs and mentorship frameworks",
+      "Public conversations and forums",
+    ],
+    body: [
+      "Influence without understanding is fragile.",
+      "By grounding our work in evidence and lived experience, we ensure that our influence is trusted, relevant, and responsibly applied.",
+    ],
+  },
+  {
+    title: "Community & Events",
+    tagline: "We connect campus to the world.",
+    points: [
+      "Contributors, not just audiences",
+      "Thinkers, not just speakers",
+      "Participants in shaping the future",
+    ],
+    body: [
+      "Campus is not separate from society. It is one of its most generative spaces.",
+      "Community is how ideas travel. Events are how connection becomes influence.",
+    ],
+  },
+];
+
 export default function VisionMissionPage() {
   return (
-    <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-24 min-h-screen text-white overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
-      
-      {/* Ambient Glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-[-220px] left-[-180px] w-[500px] h-[500px] rounded-full bg-amber-400/10 blur-[140px]" />
-        <div className="absolute bottom-[-260px] right-[-200px] w-[600px] h-[600px] rounded-full bg-white/5 blur-[160px]" />
-      </div>
+    <section className="mx-auto max-w-7xl px-6 py-16 md:py-24 min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
 
       {/* Page Header */}
       <motion.header
@@ -28,18 +75,18 @@ export default function VisionMissionPage() {
         initial="hidden"
         animate="visible"
         transition={{ duration: 0.6 }}
-        className="relative z-10 max-w-3xl mb-20"
+        className="max-w-3xl mb-20"
       >
          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
-          Vision & Mission
+          Vision, Mission &amp; How We Work
         </span>
         <h1 className="text-4xl md:text-5xl font-semibold tracking-tight">
-          Vision & Mission
+          Vision, Mission &amp; How We Work
         </h1>
         <p className="mt-5 text-lg text-white/70 leading-relaxed">
-          The philosophical foundation guiding the Mic’d Up Initiative —
-          defining why we exist, what we pursue, and the future we are
-          intentionally shaping across campuses.
+          The philosophical foundation guiding the Mic’d Up Initiative — why we
+          exist, what we pursue, and the intentional tools we use to shape
+          people and culture rather than chase trends.
         </p>
         <p className="mt-4 text-base italic text-amber-300/90">
           This is the horizon MUI is listening its way toward — not a
@@ -53,7 +100,7 @@ export default function VisionMissionPage() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-12 relative z-10"
+        className="grid grid-cols-1 md:grid-cols-2 gap-12"
       >
         <Card
           title="Our Mission"
@@ -81,7 +128,7 @@ export default function VisionMissionPage() {
         whileInView="visible"
         viewport={{ once: true }}
         transition={{ duration: 0.8 }}
-        className="mt-28 relative z-10"
+        className="mt-28"
       >
          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
           Core Values
@@ -111,6 +158,97 @@ export default function VisionMissionPage() {
         </motion.div>
       </motion.section>
 
+      {/* How We Work — Tools of Influence */}
+      <motion.section
+        initial={{ opacity: 0, y: 18 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.65 }}
+        className="mt-28"
+      >
+        <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
+          How We Work
+        </span>
+
+        <header className="max-w-3xl mb-14">
+          <h2 className="mt-4 text-3xl md:text-4xl font-semibold tracking-tight text-white">
+            MUI&rsquo;s Tools of Influence
+          </h2>
+          <div className="mt-5 space-y-3 text-lg leading-relaxed text-white/75">
+            <p>Influence is not accidental. It is built.</p>
+            <p>
+              We do not rely on trends, virality, or noise. We work through
+              intentional tools that shape people, culture, and institutions
+              over time — the tools guide how we listen, speak, form, and connect.
+            </p>
+          </div>
+        </header>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {tools.map((tool, i) => (
+            <motion.div
+              key={tool.title}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.55, delay: i * 0.08 }}
+              whileHover={{ y: -6 }}
+              className="group rounded-2xl border border-white/10 bg-white/[0.04] p-7
+                         hover:border-amber-400/30 hover:bg-white/[0.07]
+                         hover:shadow-xl hover:shadow-amber-400/10 transition"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-xl font-semibold text-amber-200">
+                  {tool.title}
+                </h3>
+                {tool.stage && (
+                  <span className="inline-flex items-center rounded-full border border-white/15 px-2.5 py-0.5 text-[10px] uppercase tracking-wider text-white/50">
+                    {tool.stage}
+                  </span>
+                )}
+              </div>
+
+              <p className="mt-1 text-sm font-medium text-white/85">
+                {tool.tagline}
+              </p>
+
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-white/70">
+                {tool.body.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </div>
+
+              <ul className="mt-4 space-y-1 text-sm text-white/70 list-disc pl-5">
+                {tool.points.map((p) => (
+                  <li key={p}>{p}</li>
+                ))}
+              </ul>
+
+              <div className="mt-5 h-[1px] w-0 bg-amber-400/60 transition-all duration-500 group-hover:w-full" />
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mt-8 max-w-4xl rounded-2xl border border-white/10 bg-white/[0.03] p-7"
+        >
+          <h3 className="text-xl font-semibold text-amber-200 mb-3">
+            Influence With Intention
+          </h3>
+          <div className="space-y-3 text-white/75 leading-relaxed">
+            <p>These tools do not operate in isolation. They reinforce one another.</p>
+            <p>
+              Content amplifies insight. Mentorship sustains culture. Research
+              grounds credibility. Community extends reach.
+            </p>
+          </div>
+        </motion.div>
+      </motion.section>
+
       {/* Closing */}
       <motion.div
         variants={fadeUp}
@@ -118,12 +256,13 @@ export default function VisionMissionPage() {
         whileInView="visible"
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mt-24 max-w-4xl relative z-10"
+        className="mt-24 max-w-4xl"
       >
         <p className="text-lg text-white/70 leading-relaxed">
           Mic’d Up Initiative is a living movement —
           cultivating voices, shaping culture, and forming leaders who
-          understand that influence carries responsibility.
+          understand that influence carries responsibility. This is how MUI
+          builds influence that lasts.
         </p>
       </motion.div>
     </section>

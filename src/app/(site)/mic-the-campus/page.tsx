@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { PageShell } from "@/components/layout/PageShell";
 import { motion, AnimatePresence } from "framer-motion";
+import { Mic, Camera, Lightbulb } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -134,8 +135,11 @@ export default function MicTheCampusPage() {
               variants={fadeUp}
               className="rounded-2xl border border-white/10 bg-white/5 p-6"
             >
+              <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-400">
+                <item.icon className="h-5 w-5" strokeWidth={1.75} />
+              </div>
               <h3 className="text-lg font-semibold text-white">
-                {item.icon} {item.name}
+                {item.name}
               </h3>
 
               <p className="mt-3 text-sm text-white/70">
@@ -448,7 +452,7 @@ const ENDORSEMENT_LEVELS = [
 const EQUIPMENT_ITEMS = [
   {
     id: "podcast-mic",
-    icon: "🎤",
+    icon: Mic,
     name: "Podcast Microphone Kit",
     description: "Professional audio setup for interviews and podcasts.",
     price: "KES 25,000",
@@ -461,7 +465,7 @@ const EQUIPMENT_ITEMS = [
   },
   {
     id: "camera",
-    icon: "📷",
+    icon: Camera,
     name: "Mirrorless Production Camera",
     description: "High-quality recording for documentaries and talks.",
     price: "KES 65,000",
@@ -474,7 +478,7 @@ const EQUIPMENT_ITEMS = [
   },
   {
     id: "lighting",
-    icon: "💡",
+    icon: Lightbulb,
     name: "LED Lighting Kit",
     description: "Consistent lighting for indoor productions.",
     price: "KES 15,000",

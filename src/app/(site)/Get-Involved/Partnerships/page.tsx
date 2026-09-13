@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { GraduationCap, Tv, Landmark, Mic, FlaskConical, Handshake, Globe, Briefcase } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -68,49 +69,49 @@ export default function PartnersPage() {
 
   const partnershipTypes = [
     {
-      icon: "🎓",
+      icon: GraduationCap,
       title: "Educational Institutions",
       description: "Universities & colleges, student unions, campus clubs, alumni associations",
       purpose: "Facilitate campus programs, mentorship, and student engagement"
     },
     {
-      icon: "📺",
+      icon: Tv,
       title: "Media & Content Platforms",
       description: "Journalism schools, filmmakers, documentary producers",
       purpose: "Co-produce podcasts, videos, and youth-focused media content"
     },
     {
-      icon: "🏛️",
+      icon: Landmark,
       title: "Government & Policy Makers",
       description: "Ministry of Education, education boards, youth councils",
       purpose: "Conduct policy research, host national youth summits and forums"
     },
     {
-      icon: "🎤",
+      icon: Mic,
       title: "Influencers & Thought Leaders",
       description: "Student leaders, alumni, motivational speakers, content creators",
       purpose: "Guest appearances, masterclasses, mentorship, and campaigns"
     },
     {
-      icon: "🔬",
+      icon: FlaskConical,
       title: "Research & Think Tanks",
       description: "Campus research centers, media institutes, youth policy think tanks",
       purpose: "Provide data-driven insights, credibility, and influence policy"
     },
     {
-      icon: "🤝",
+      icon: Handshake,
       title: "NGOs & Nonprofits",
       description: "Mental health organizations, literacy & education NGOs",
       purpose: "Co-host mentorship programs, workshops, and awareness campaigns"
     },
     {
-      icon: "🌍",
+      icon: Globe,
       title: "International Youth Movements",
       description: "Global media bodies, leadership networks, research organizations",
       purpose: "Co-create research reports, cross-cultural learning, global conferences"
     },
     {
-      icon: "📊",
+      icon: Briefcase,
       title: "Corporate Partners",
       description: "Youth-focused brands, tech companies, educational publishers",
       purpose: "Sponsor programs, provide resources, career opportunities"
@@ -190,8 +191,8 @@ export default function PartnersPage() {
                 className="group"
               >
                 <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
-                  <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                    {partner.icon}
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-400 group-hover:scale-110 transition-transform duration-300">
+                    <partner.icon className="h-6 w-6" strokeWidth={1.75} />
                   </div>
                   <h3 className="text-lg font-semibold mb-3 text-amber-400">
                     {partner.title}

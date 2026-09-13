@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Mic, MessagesSquare, Sparkles, Ear, Handshake, BadgeCheck } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -149,32 +150,32 @@ export default function CampusToursPage() {
               {
                 title: "Campus Podcast Recordings",
                 desc: "Live or recorded conversations capturing authentic student experiences and campus realities.",
-                icon: "🎙️"
+                icon: Mic
               },
               {
                 title: "MUI Talks & Panel Conversations",
                 desc: "Curated discussions around purpose, leadership, culture, and responsibility.",
-                icon: "💬"
+                icon: MessagesSquare
               },
               {
                 title: "Creative & Talent Showcases",
                 desc: "Performances, spoken word, drama, and artistic expression revealing campus creativity.",
-                icon: "🎭"
+                icon: Sparkles
               },
               {
                 title: "Campus Listening Sessions",
                 desc: "Research-driven dialogues surfacing student needs, challenges, and opportunities.",
-                icon: "👂"
+                icon: Ear
               },
               {
                 title: "Leadership & Club Engagements",
                 desc: "Strategic meetings with student leaders and societies for alignment and long-term impact.",
-                icon: "🤝"
+                icon: Handshake
               },
               {
                 title: "Ambassador Identification",
                 desc: "Recognizing and onboarding purpose-driven students to steward MUI's mission.",
-                icon: "⭐"
+                icon: BadgeCheck
               },
             ].map((item, index) => (
               <motion.div
@@ -191,8 +192,8 @@ export default function CampusToursPage() {
                            hover:border-amber-400/40 hover:bg-white/[0.07]
                            hover:shadow-lg hover:shadow-amber-400/10
                            cursor-default transition-all duration-300">
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {item.icon}
+                  <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-amber-400/10 border border-amber-400/20 text-amber-400 group-hover:scale-110 transition-transform duration-300">
+                    <item.icon className="h-5 w-5" strokeWidth={1.75} />
                   </div>
                   <h3 className="text-sm md:text-base font-semibold text-white group-hover:text-amber-300 transition">
                     {item.title}

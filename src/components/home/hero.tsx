@@ -82,7 +82,7 @@ export function HomePage() {
               Join the Conversation
             </Link>
             <Link
-              href="/About/OurStory"
+              href="/About/Vision-Mission"
               className="inline-flex items-center gap-2 rounded-full border border-white/60 px-8 py-3 text-sm md:text-base font-medium text-white hover:bg-white hover:text-slate-900 hover:scale-[1.04] active:scale-[0.97] transition-all duration-300"
             >
               Learn More

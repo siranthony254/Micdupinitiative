@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Clapperboard, Sprout, GraduationCap, Star, Globe, Trophy } from "lucide-react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -33,50 +34,44 @@ const objectives = [
     number: "1",
     title: "Transform Mindsets Through Purposeful Media",
     description: "Produce value-driven films, podcasts, and educational content that renew minds and inspire excellence in academics and life.",
-    icon: "🎬"
+    icon: Clapperboard
   },
   {
     number: "2",
     title: "Build a Generation Rooted in Values & Wisdom",
     description: "Produce content that instills sound doctrine, moral clarity, and practical wisdom, equipping youth to navigate school and life.",
-    icon: "🌱"
+    icon: Sprout
   },
   {
     number: "3",
     title: "Inspire Academic & Life Excellence",
     description: "Promote a balanced approach to success through consistent, relatable, and impactful multimedia content.",
-    icon: "🎓"
+    icon: GraduationCap
   },
   {
     number: "4",
     title: "Raise Talented, Confident, and Responsible Youth",
     description: "Identify, mentor, and uplift students with creative, leadership, and storytelling potential through programs and events.",
-    icon: "⭐"
+    icon: Star
   },
   {
     number: "5",
     title: "Create High-Impact Events That Connect Campus to The World",
     description: "Host summits, mentorship programs, and campus engagements that expose campus potential to the world.",
-    icon: "🌍"
+    icon: Globe
   },
   {
     number: "6",
     title: "Global Ethical Content Leadership",
     description: "Position Mic'd Up Initiative as a thought leader in ethical and transformative youth content, establishing standards for creativity, integrity, and impact.",
-    icon: "🏆"
+    icon: Trophy
   }
 ];
 
 export default function OurObjectives() {
   return (
-    <section className="relative text-white py-12 overflow-hidden" style={{backgroundColor: '#0D1F35'}}>
-      {/* Ambient Glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute top-[-200px] left-[-120px] h-[420px] w-[420px] rounded-full bg-amber-500/10 blur-[120px]" />
-        <div className="absolute bottom-[-220px] right-[-180px] h-[520px] w-[520px] rounded-full bg-white/5 blur-[140px]" />
-      </div>
-
-      <div className="relative mx-auto max-w-7xl px-6">
+    <section className="text-white py-12" style={{backgroundColor: '#0D1F35'}}>
+      <div className="mx-auto max-w-7xl px-6">
         {/* Section Header */}
         <motion.div
           variants={fadeUp}
@@ -120,8 +115,8 @@ export default function OurObjectives() {
                   <div className="flex items-center justify-center w-12 h-12 rounded-full bg-amber-400/10 border border-amber-400/20">
                     <span className="text-amber-400 font-bold text-lg">{objective.number}</span>
                   </div>
-                  <div className="text-3xl group-hover:scale-110 transition-transform duration-300">
-                    {objective.icon}
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-white/5 border border-white/10 text-amber-400 group-hover:scale-110 group-hover:border-amber-400/30 transition-all duration-300">
+                    <objective.icon className="h-6 w-6" strokeWidth={1.75} />
                   </div>
                 </div>
 
