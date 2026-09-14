@@ -12,8 +12,9 @@ import { MegaMenu } from "./mega-menu";
 
    Centred on Conversations: this semester's actual work leads,
    the wider institutional programme (About, Get Involved) follows,
-   and standalone "Campus" / "What's Next" links stay direct rather
-   than hiding behind a dropdown for a single destination.
+   and "What's Next" stays a direct link rather than hiding behind a
+   dropdown for a single destination. Campus Tours lives inside the
+   Events page (as its smallest-scale format), not as its own nav item.
 ------------------------------*/
 const NAV_ITEMS = [
   {
@@ -47,11 +48,6 @@ const NAV_ITEMS = [
         href: "/research/faqs",
       },
     ],
-  },
-  {
-    label: "Campus",
-    href: "/Programs/campus-tours",
-    items: [],
   },
   {
     label: "About",

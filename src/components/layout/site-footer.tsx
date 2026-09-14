@@ -55,8 +55,7 @@ export function SiteFooter() {
           </h4>
           <ul className="space-y-2">
             <li><Link href="/" className="hover:underline">Home</Link></li>
-            <li><Link href="/Programs/Events" className="hover:underline">Events and Summits</Link></li>
-            <li><Link href="/Programs/campus-tours" className="hover:underline">Campus Tours</Link></li>
+            <li><Link href="/Programs/Events" className="hover:underline">Events, Tours &amp; Summits</Link></li>
             <li><Link href="/conversations" className="hover:underline">MUI Conversations</Link></li>
             <li><Link href="/blog" className="hover:underline">Blog</Link></li>
            

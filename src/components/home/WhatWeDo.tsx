@@ -8,7 +8,7 @@ const steps = [
     description:
       "We go where students and communities are and pay attention to what people are experiencing, asking, and building.",
     outcomes: ["Campus visits", "Listening sessions", "Emerging voices"],
-    href: "/Programs/campus-tours",
+    href: "/Programs/Events",
     future: false,
   },
   {
