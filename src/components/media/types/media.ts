@@ -31,7 +31,6 @@ export interface MediaItem {
   primaryPlatform: keyof MediaSocialLinks;
   externalUrl?: string;
   social: MediaSocialLinks;
-  comingSoon?: boolean;
   featured?: boolean;
   showInRail?: boolean;
 }

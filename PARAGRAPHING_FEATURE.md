@@ -22,22 +22,18 @@ blockquotes, bullet/numbered lists, bold/italic marks, and links.
 
 ## Not implemented
 
-`src/components/blog/ParagraphBlock.tsx` defines a richer paragraph component
-with per-paragraph alignment, background color, text color, margin, and a
-drop-cap option. It is not wired into the schema (there's no corresponding
-Studio field for any of those options) and is not invoked by
-`PortableTextComponents.tsx`, so none of that configurability is available to
-editors or visible on the site today. Treat it as a prototype, not a shipped
-feature.
+A richer per-paragraph editor (alignment, background color, text color,
+margin, drop-cap) was prototyped once as `ParagraphBlock.tsx`, but it was
+never wired into the schema and never invoked by `PortableTextComponents.tsx`
+— it was removed during cleanup since it wasn't reachable from anywhere. If
+that configurability is wanted later, it needs to be built as real schema
+fields (a custom object type with `style`, `alignment`, `backgroundColor`,
+`textColor`, `marginBottom`, `dropCap`) with a matching renderer registered
+in `PortableTextComponents.tsx` — not resurrected from history as-is, since
+it predates the current schema.
 
 ## Extending this
 
 To add a new named style (e.g. another accent color):
 1. Add it to the `styles` array in `blockContentType.ts`.
 2. Add a matching entry under `block` in `PortableTextComponents.tsx`.
-
-To actually ship the `ParagraphBlock` options, they'd need to become real
-schema fields (likely a custom object type with `style`, `alignment`,
-`backgroundColor`, `textColor`, `marginBottom`, `dropCap`) and
-`PortableTextComponents.tsx` would need to render that type via
-`ParagraphBlock` instead of its current per-style `<p>` renderers.

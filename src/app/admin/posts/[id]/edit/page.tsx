@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { PostForm } from '@/components/admin/PostForm'
 import { getAdminPost, getAdminAuthors, getAdminCategories } from '@/lib/admin-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditPostPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const [post, authors, categories] = await Promise.all([

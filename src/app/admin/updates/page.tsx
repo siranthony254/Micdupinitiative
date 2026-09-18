@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { Card, Button, Badge } from '@/components/ui'
 import { getAdminUpdates } from '@/lib/admin-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminUpdatesPage() {
   const updates = await getAdminUpdates()
 

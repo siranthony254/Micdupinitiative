@@ -127,7 +127,7 @@ export async function getFAQCategories() {
 export async function searchFAQs(query: string, limit: number = 10) {
   try {
     const faqs = await client.fetch(
-      `*[_type == "faq" && question match "*${query}*"] | order(category asc, order asc, publishedAt desc)[0...${limit}] {
+      `*[_type == "faq" && question match $term] | order(category asc, order asc, publishedAt desc)[0...${limit}] {
         _id,
         _type,
         question,
@@ -136,7 +136,8 @@ export async function searchFAQs(query: string, limit: number = 10) {
         order,
         featured,
         publishedAt
-      }`
+      }`,
+      { term: `*${query}*` }
     )
 
     return { data: faqs, error: null }

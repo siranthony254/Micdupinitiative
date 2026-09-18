@@ -1,9 +1,5 @@
 import { client } from '@/sanity/lib/client'
 
-import type { SanityPost, SanityPostWithRelations, SanityCategory, SanityAuthor, BlogTag, BlogComment } from '@/types/blog'
-
-import type { PortableTextBlock } from '@portabletext/types'
-
 // GROQ Queries
 const POSTS_QUERY = `*[_type == "post"] | order(publishedAt desc) {
   _id,
@@ -44,15 +40,6 @@ const CATEGORIES_QUERY = `*[_type == "category"] | order(title asc) {
   title,
   slug,
   description
-}`
-
-const AUTHORS_QUERY = `*[_type == "author"] | order(name asc) {
-  _id,
-  _type,
-  name,
-  slug,
-  image,
-  bio
 }`
 
 // Blog Posts
@@ -176,38 +163,11 @@ export async function getBlogCategory(slug: string) {
   }
 }
 
-// Authors
-export async function getBlogAuthors() {
-  try {
-    const authors = await client.fetch(AUTHORS_QUERY)
-    return { data: authors, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
-export async function getBlogAuthor(slug: string) {
-  try {
-    const author = await client.fetch(`*[_type == "author" && slug.current == $slug][0] {
-      _id,
-      _type,
-      name,
-      slug,
-      image,
-      bio
-    }`, { slug })
-
-    return { data: author, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
 // Search
 export async function searchBlogPosts(query: string, limit: number = 10) {
   try {
     const posts = await client.fetch(
-      `*[_type == "post" && (title match "*${query}*" || excerpt match "*${query}*")] | order(publishedAt desc)[0...${limit}] {
+      `*[_type == "post" && (title match $term || excerpt match $term)] | order(publishedAt desc)[0...${limit}] {
         _id,
         _type,
         title,
@@ -217,7 +177,8 @@ export async function searchBlogPosts(query: string, limit: number = 10) {
         excerpt,
         author->{_id, _type, name, slug, image},
         categories[]->{_id, _type, title, slug}
-      }`
+      }`,
+      { term: `*${query}*` }
     )
 
     return { data: posts, error: null }
@@ -266,37 +227,6 @@ export async function getBlogComments(postId: string) {
     }`, { postId })
 
     return { data: comments, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
-export async function createBlogComment(comment: {
-  postId: string
-  author: {
-    name: string
-    email?: string
-    image?: string
-  }
-  content: PortableTextBlock[]
-}) {
-  try {
-    // This would typically create a comment document in Sanity
-    // For now, we'll just return a mock response
-    const newComment = {
-      _id: `comment-${Date.now()}`,
-      _type: "comment" as const,
-      _createdAt: new Date().toISOString(),
-      content: comment.content,
-      author: comment.author,
-      post: {
-        _ref: comment.postId,
-        _type: "reference" as const
-      },
-      approved: false
-    }
-
-    return { data: newComment, error: null }
   } catch (error) {
     return { data: null, error: error as Error }
   }

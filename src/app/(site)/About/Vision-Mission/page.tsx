@@ -1,16 +1,4 @@
-"use client";
-
-import { motion } from "framer-motion";
-
-const container = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0 },
-};
+import { FadeInSection } from "@/components/FadeInSection";
 
 const tools = [
   {
@@ -70,13 +58,7 @@ export default function VisionMissionPage() {
     <section className="mx-auto max-w-7xl px-6 py-16 md:py-24 min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
 
       {/* Page Header */}
-      <motion.header
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={{ duration: 0.6 }}
-        className="max-w-3xl mb-20"
-      >
+      <FadeInSection as="header" className="max-w-3xl mb-20">
          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
           Vision, Mission &amp; How We Work
         </span>
@@ -92,16 +74,10 @@ export default function VisionMissionPage() {
           This is the horizon MUI is listening its way toward — not a
           description of the institution as it stands this semester.
         </p>
-      </motion.header>
+      </FadeInSection>
 
       {/* Vision & Mission Cards */}
-      <motion.div
-        variants={container}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-12"
-      >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <Card
           title="Our Mission"
           subtitle="Why We Exist"
@@ -119,17 +95,10 @@ export default function VisionMissionPage() {
             "We envision a renewed generation of young people formed into holistic excellence — intellectually grounded, creatively bold, morally anchored, and socially responsible — across campuses and into society.",
           ]}
         />
-      </motion.div>
+      </div>
 
       {/* Core Values */}
-      <motion.section
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="mt-28"
-      >
+      <FadeInSection as="section" className="mt-28">
          <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
           Core Values
         </span>
@@ -143,29 +112,17 @@ export default function VisionMissionPage() {
           </p>
         </header>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           <Value title="Excellence" description="We pursue the highest standards academically, creatively, professionally, and personally — setting a benchmark for youth culture." />
           <Value title="Transformation" description="We commit to initiatives that produce measurable, lasting, and positive change in the lives of young people and their communities." />
           <Value title="Integrity" description="We uphold honesty, truthfulness, transparency, and responsibility in our content, relationships, and operations." />
           <Value title="Innovation" description="We embrace bold ideas, creative solutions, and new approaches to engage and empower youth effectively." />
           <Value title="Empowerment" description="We equip young people with the knowledge, skills, and mentorship they need to lead confidently and excel in life." />
-        </motion.div>
-      </motion.section>
+        </div>
+      </FadeInSection>
 
       {/* How We Work — Tools of Influence */}
-      <motion.section
-        initial={{ opacity: 0, y: 18 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.65 }}
-        className="mt-28"
-      >
+      <FadeInSection as="section" className="mt-28">
         <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
           How We Work
         </span>
@@ -186,16 +143,12 @@ export default function VisionMissionPage() {
 
         <div className="grid gap-6 md:grid-cols-2">
           {tools.map((tool, i) => (
-            <motion.div
+            <FadeInSection
               key={tool.title}
-              initial={{ opacity: 0, y: 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: i * 0.08 }}
-              whileHover={{ y: -6 }}
-              className="group rounded-2xl border border-white/10 bg-white/[0.04] p-7
-                         hover:border-amber-400/30 hover:bg-white/[0.07]
-                         hover:shadow-xl hover:shadow-amber-400/10 transition"
+              delay={i * 80}
+              className="group rounded-2xl border border-white/10 bg-white/[0.04] p-7 transition
+                         hover:-translate-y-1.5 hover:border-amber-400/30 hover:bg-white/[0.07]
+                         hover:shadow-xl hover:shadow-amber-400/10"
             >
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-xl font-semibold text-amber-200">
@@ -225,17 +178,11 @@ export default function VisionMissionPage() {
               </ul>
 
               <div className="mt-5 h-[1px] w-0 bg-amber-400/60 transition-all duration-500 group-hover:w-full" />
-            </motion.div>
+            </FadeInSection>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-8 max-w-4xl rounded-2xl border border-white/10 bg-white/[0.03] p-7"
-        >
+        <FadeInSection className="mt-8 max-w-4xl rounded-2xl border border-white/10 bg-white/[0.03] p-7">
           <h3 className="text-xl font-semibold text-amber-200 mb-3">
             Influence With Intention
           </h3>
@@ -246,25 +193,18 @@ export default function VisionMissionPage() {
               grounds credibility. Community extends reach.
             </p>
           </div>
-        </motion.div>
-      </motion.section>
+        </FadeInSection>
+      </FadeInSection>
 
       {/* Closing */}
-      <motion.div
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="mt-24 max-w-4xl"
-      >
+      <FadeInSection className="mt-24 max-w-4xl">
         <p className="text-lg text-white/70 leading-relaxed">
           Mic’d Up Initiative is a living movement —
           cultivating voices, shaping culture, and forming leaders who
           understand that influence carries responsibility. This is how MUI
           builds influence that lasts.
         </p>
-      </motion.div>
+      </FadeInSection>
     </section>
   );
 }
@@ -274,12 +214,7 @@ export default function VisionMissionPage() {
 ------------------------------*/
 function Card({ title, subtitle, body }: { title: string; subtitle: string; body: string[] }) {
   return (
-    <motion.div
-      className="p-8 rounded-2xl bg-white/5 border border-white/10 transition-transform hover:scale-105 hover:shadow-xl hover:shadow-amber-400/20"
-      variants={fadeUp}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.3 }}
-    >
+    <FadeInSection className="p-8 rounded-2xl bg-white/5 border border-white/10 transition-transform duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-xl hover:shadow-amber-400/20">
       <span className="text-xs tracking-widest uppercase text-amber-400">{title}</span>
       <h2 className="mt-4 text-2xl font-semibold">{subtitle}</h2>
       <div className="mt-4 space-y-3 text-white/80 leading-relaxed">
@@ -287,7 +222,7 @@ function Card({ title, subtitle, body }: { title: string; subtitle: string; body
           <p key={i}>{p}</p>
         ))}
       </div>
-    </motion.div>
+    </FadeInSection>
   );
 }
 
@@ -296,20 +231,9 @@ function Card({ title, subtitle, body }: { title: string; subtitle: string; body
 ------------------------------*/
 function Value({ title, description }: { title: string; description: string }) {
   return (
-    <motion.div
-      className="p-6 rounded-xl bg-white/5 border border-white/10 transition-colors hover:border-emerald-400 hover:shadow-xl hover:shadow-emerald-400/10 cursor-pointer"
-      initial={{ opacity: 0, scale: 0.96 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      whileHover={{
-        scale: 1.03,
-        borderColor: "rgb(34 197 94)", // green-500
-        boxShadow: "0 0 0 1px rgba(34,197,94,0.35)",
-      }}
-    >
+    <FadeInSection className="p-6 rounded-xl bg-white/5 border border-white/10 transition-all duration-300 hover:scale-[1.03] hover:border-emerald-400 hover:shadow-xl hover:shadow-emerald-400/10 cursor-pointer">
       <h3 className="text-lg font-semibold text-white/90">{title}</h3>
       <p className="mt-3 text-sm text-white/70 leading-relaxed">{description}</p>
-    </motion.div>
+    </FadeInSection>
   );
 }

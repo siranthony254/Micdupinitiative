@@ -1,6 +1,8 @@
 import { PostForm } from '@/components/admin/PostForm'
 import { getAdminAuthors, getAdminCategories } from '@/lib/admin-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function NewPostPage() {
   const [authors, categories] = await Promise.all([getAdminAuthors(), getAdminCategories()])
 

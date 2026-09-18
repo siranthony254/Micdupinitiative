@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { AuthorForm } from '@/components/admin/AuthorForm'
 import { getAdminAuthor } from '@/lib/admin-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditAuthorPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const author = await getAdminAuthor(id)

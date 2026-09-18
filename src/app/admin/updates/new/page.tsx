@@ -1,5 +1,7 @@
 import { UpdateForm } from '@/components/admin/UpdateForm'
 
+export const dynamic = 'force-dynamic'
+
 export default function NewUpdatePage() {
   return (
     <div>

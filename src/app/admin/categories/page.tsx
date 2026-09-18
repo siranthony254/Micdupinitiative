@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { Card, Button } from '@/components/ui'
 import { getAdminCategories } from '@/lib/admin-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminCategoriesPage() {
   const categories = await getAdminCategories()
 

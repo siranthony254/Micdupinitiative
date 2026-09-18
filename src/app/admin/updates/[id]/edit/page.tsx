@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import { UpdateForm } from '@/components/admin/UpdateForm'
 import { getAdminUpdate } from '@/lib/admin-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EditUpdatePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const update = await getAdminUpdate(id)

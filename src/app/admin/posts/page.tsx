@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { Card, Button } from '@/components/ui'
 import { getAdminPosts } from '@/lib/admin-content'
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminPostsPage() {
   const posts = await getAdminPosts()
 

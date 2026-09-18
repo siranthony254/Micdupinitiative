@@ -39,7 +39,7 @@ const nextConfig = {
   excludeDefaultMomentLocales: false,
   serverExternalPackages: [],
   
-  // Performance headers for static assets
+  // Performance and security headers
   headers: async () => [
     {
       source: '/images/(.*)',
@@ -48,6 +48,19 @@ const nextConfig = {
           key: 'Cache-Control',
           value: 'public, max-age=31536000, immutable',
         },
+      ],
+    },
+    {
+      // Applies site-wide. Kept conservative (no Content-Security-Policy)
+      // since this app embeds Sanity Studio, YouTube, Google Fonts, and
+      // posts to Formspree/Supabase/Sanity - a strict CSP needs to be
+      // built and tested against all of those before it's safe to ship.
+      source: '/(.*)',
+      headers: [
+        { key: 'X-Content-Type-Options', value: 'nosniff' },
+        { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+        { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
       ],
     },
   ],

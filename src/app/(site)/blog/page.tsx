@@ -3,14 +3,12 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useAuth } from '@/contexts/auth-context'
 import type { SanityPostWithRelations, SanityCategory } from '@/types/blog'
 import { urlFor } from '@/sanity/lib/image'
 import { getOptimizedImageProps } from '@/lib/performance'
 import { getBlogPosts, getBlogCategories, getFeaturedPosts } from '@/lib/blog'
 
 export default function BlogPage() {
-  const { user, profile, isAdmin } = useAuth()
   const [posts, setPosts] = useState<SanityPostWithRelations[]>([])
   const [categories, setCategories] = useState<SanityCategory[]>([])
   const [featuredPosts, setFeaturedPosts] = useState<SanityPostWithRelations[]>([])

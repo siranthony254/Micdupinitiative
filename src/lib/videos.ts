@@ -104,66 +104,6 @@ export async function getRailVideos() {
   }
 }
 
-export async function searchVideos(query: string, limit: number = 10) {
-  try {
-    const videos = await client.fetch(
-      `*[_type == "video" && (title match $term || description match $term) && (!defined(expiryDate) || expiryDate > now())] | order(publishedAt desc)[0...${limit}] {
-        ${VIDEO_FIELDS}
-      }`,
-      { term: `*${query}*` }
-    )
-
-    return { data: videos, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
-export async function getVideoTypes() {
-  try {
-    const types = await client.fetch(`*[_type == "video"] | order(type asc) {
-      type
-    }`)
-    
-    // Get unique types
-    const uniqueTypes = [...new Set(types.map((video: any) => video.type))]
-    
-    return { data: uniqueTypes, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
-export async function getVideoCategories() {
-  try {
-    const categories = await client.fetch(`*[_type == "video"] | order(category asc) {
-      category
-    }`)
-    
-    // Get unique categories
-    const uniqueCategories = [...new Set(categories.map((video: any) => video.category))]
-    
-    return { data: uniqueCategories, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
-export async function getVideoById(id: string) {
-  try {
-    const video = await client.fetch(
-      `*[_type == "video" && _id == $id && (!defined(expiryDate) || expiryDate > now())][0]{
-        ${VIDEO_FIELDS}
-      }`,
-      { id }
-    )
-
-    return { data: video, error: null }
-  } catch (error) {
-    return { data: null, error: error as Error }
-  }
-}
-
 // Helper function to get type display name
 export function getTypeDisplayName(type: string): string {
   const typeNames: Record<string, string> = {
@@ -176,18 +116,6 @@ export function getTypeDisplayName(type: string): string {
   }
   
   return typeNames[type] || type.charAt(0).toUpperCase() + type.slice(1)
-}
-
-// Helper function to group videos by type
-export function groupVideosByType(videos: SanityVideo[]) {
-  return videos.reduce((acc, video) => {
-    const type = video.type || 'podcast'
-    if (!acc[type]) {
-      acc[type] = []
-    }
-    acc[type].push(video)
-    return acc
-  }, {} as Record<string, SanityVideo[]>)
 }
 
 export function getVideoYouTubeId(video: Pick<SanityVideo, 'youtubeEmbed'>): string | null {
@@ -226,11 +154,6 @@ export function toMediaItem(video: SanityVideo): MediaItem {
     featured: video.featured,
     showInRail: video.showInRail,
   }
-}
-
-// Helper function to get YouTube URL from ID
-export function getYouTubeUrl(youtubeId: string): string {
-  return `https://www.youtube.com/watch?v=${youtubeId}`
 }
 
 // Helper function to get YouTube thumbnail URL from ID

@@ -16,31 +16,6 @@ export function Card({ children, className = '', hover = true }: CardProps) {
   )
 }
 
-interface ProgressBarProps {
-  progress: number
-  className?: string
-  showPercentage?: boolean
-}
-
-export function ProgressBar({ progress, className = '', showPercentage = true }: ProgressBarProps) {
-  return (
-    <div className={`w-full ${className}`}>
-      {showPercentage && (
-        <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-gray-400">Progress</span>
-          <span className="text-sm font-medium text-amber-500">{Math.round(progress)}%</span>
-        </div>
-      )}
-      <div className="w-full bg-gray-700 rounded-full h-2">
-        <div
-          className="bg-amber-500 h-2 rounded-full transition-all duration-300"
-          style={{ width: `${Math.min(progress, 100)}%` }}
-        ></div>
-      </div>
-    </div>
-  )
-}
-
 interface ButtonProps {
   children: ReactNode
   onClick?: () => void

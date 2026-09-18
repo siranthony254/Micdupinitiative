@@ -1,32 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { Mic, FileText, Calendar, MapPin, Info, Megaphone, Handshake, Users } from "lucide-react";
-import { PortableText } from "@portabletext/react";
 import { urlFor } from "@/sanity/lib/image";
 import { getOptimizedImageProps } from "@/lib/performance";
+import { FadeInSection } from "@/components/FadeInSection";
 import type { SanityUpdate } from "@/types/update";
-
-const bounce = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { 
-    opacity: 1, 
-    y: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 300,
-      damping: 20
-    }
-  },
-  hover: {
-    y: -8,
-    transition: {
-      type: "spring" as const,
-      stiffness: 400,
-      damping: 10
-    }
-  }
-};
 
 interface UpdateCardProps {
   update: SanityUpdate;
@@ -104,15 +82,7 @@ export function UpdateCard({ update, index = 0 }: UpdateCardProps) {
   };
 
   return (
-    <motion.div
-      variants={bounce}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      whileHover="hover"
-      className="group"
-    >
+    <FadeInSection delay={index * 100} className="group transition-transform duration-300 hover:-translate-y-2">
       {update.link ? (
         <Link href={update.link} className="block h-full">
           <div className="h-full rounded-2xl border border-white/10 bg-white/5 p-6 shadow-lg hover:bg-white/10 hover:border-amber-400/30 transition-all duration-300">
@@ -221,6 +191,6 @@ export function UpdateCard({ update, index = 0 }: UpdateCardProps) {
           </div>
         </div>
       )}
-    </motion.div>
+    </FadeInSection>
   );
 }

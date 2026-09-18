@@ -1,24 +1,11 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
-
-const fadeZoom = {
-  hidden: { opacity: 0, scale: 0.94 },
-  visible: { opacity: 1, scale: 1 },
-};
+import { FadeInSection } from "@/components/FadeInSection";
 
 export default function FoundingDirectorsPage() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-20 min-h-screen text-white" style={{backgroundColor: '#0D1F35'}}>
       {/* Header */}
-      <motion.header
-        className="mb-16 max-w-3xl"
-        initial="hidden"
-        animate="visible"
-        variants={fadeZoom}
-        transition={{ duration: 0.6 }}
-      >
+      <FadeInSection as="header" className="mb-16 max-w-3xl">
         <span className="inline-flex rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-emerald-400">
             FOUNDING DIRECTORS
           </span>
@@ -27,18 +14,14 @@ export default function FoundingDirectorsPage() {
           The leadership team guiding the vision, governance, and strategic
           direction of the Mic’d Up Initiative.
         </p>
-      </motion.header>
+      </FadeInSection>
 
       {/* Directors Grid */}
       <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
         {DIRECTORS.map((director, index) => (
-          <motion.article
+          <FadeInSection
             key={director.id}
-            variants={fadeZoom}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.08 }}
+            delay={index * 80}
             className="group rounded-2xl border border-white/10 bg-white/5 p-6 transition hover:bg-white/10"
           >
             {/* Image */}
@@ -65,7 +48,7 @@ export default function FoundingDirectorsPage() {
             <p className="mt-3 text-sm text-white/70 leading-relaxed">
               {director.bio}
             </p>
-          </motion.article>
+          </FadeInSection>
         ))}
       </div>
     </section>

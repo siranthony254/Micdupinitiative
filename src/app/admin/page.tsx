@@ -2,6 +2,10 @@ import Link from 'next/link'
 import { Card } from '@/components/ui'
 import { getAdminCounts } from '@/lib/admin-content'
 
+// Fetches live per-admin data via a non-CDN write client and sits behind
+// middleware auth - never statically prerender this.
+export const dynamic = 'force-dynamic'
+
 export default async function AdminDashboardPage() {
   const counts = await getAdminCounts()
 

@@ -26,21 +26,9 @@ export interface SanityUpdate {
   memoReference?: string
 }
 
-export interface UpdateGroup {
-  type: string
-  displayName: string
-  updates: SanityUpdate[]
-}
-
 export interface UpdateFilter {
   type?: string
   featured?: boolean
   limit?: number
   offset?: number
-}
-
-export interface UpdateSearchResult {
-  updates: SanityUpdate[]
-  total: number
-  query: string
 }

@@ -1,5 +1,4 @@
 import { client } from '@/sanity/lib/client'
-import type { SanityPost, SanityPostWithRelations, SanityCategory, SanityAuthor, BlogTag, BlogComment } from '@/types/blog'
 
 // Client-safe blog functions using client.fetch (for Client Components)
 

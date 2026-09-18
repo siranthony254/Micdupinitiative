@@ -187,7 +187,7 @@ export async function getUpdateTypes() {
 export async function searchUpdates(query: string, limit: number = 10) {
   try {
     const updates = await client.fetch(
-      `*[_type == "update" && (title match "*${query}*" || description match "*${query}*") && (!defined(expiryDate) || expiryDate > now())] | order(publishedAt desc)[0...${limit}] {
+      `*[_type == "update" && (title match $term || description match $term) && (!defined(expiryDate) || expiryDate > now())] | order(publishedAt desc)[0...${limit}] {
         _id,
         _type,
         title,
@@ -204,7 +204,8 @@ export async function searchUpdates(query: string, limit: number = 10) {
         memoContent,
         memoSender,
         memoReference
-      }`
+      }`,
+      { term: `*${query}*` }
     )
 
     return { data: updates, error: null }

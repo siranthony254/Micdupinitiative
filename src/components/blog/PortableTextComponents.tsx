@@ -1,6 +1,5 @@
 import React from 'react'
 import { PortableTextComponents } from '@portabletext/react'
-import ParagraphBlock from './ParagraphBlock'
 
 // Custom components for Portable Text rendering
 export const customComponents: Partial<PortableTextComponents> = {

@@ -1,5 +1,7 @@
 import { AuthorForm } from '@/components/admin/AuthorForm'
 
+export const dynamic = 'force-dynamic'
+
 export default function NewAuthorPage() {
   return (
     <div>

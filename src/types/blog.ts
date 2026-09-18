@@ -65,22 +65,6 @@ export interface SanityPostWithRelations extends SanityPost {
   categories?: SanityCategory[]
 }
 
-// Legacy types for backward compatibility (mapped to Sanity)
-export interface BlogAuthor extends SanityAuthor {}
-export interface BlogCategory extends SanityCategory {}
-export interface BlogPost extends SanityPost {}
-export interface BlogPostWithRelations extends SanityPostWithRelations {}
-
-// Additional types for admin functionality
-export interface BlogTag {
-  _id: string
-  _type: 'tag'
-  name: string
-  slug: {
-    current: string
-  }
-}
-
 export interface BlogComment {
   _id: string
   _type: 'comment'
@@ -95,19 +79,4 @@ export interface BlogComment {
   content: PortableTextBlock[]
   approved: boolean
   _createdAt: string
-}
-
-export interface BlogProfile {
-  _id: string
-  _type: 'profile'
-  name: string
-  email: string
-  avatar?: {
-    _type: 'image'
-    asset: {
-      _ref: string
-      _type: 'reference'
-    }
-  }
-  role: 'author' | 'editor' | 'admin'
 }

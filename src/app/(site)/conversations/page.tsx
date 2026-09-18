@@ -1,15 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import { UpdateCard } from "@/components/updates/UpdateCard";
+import { FadeInSection } from "@/components/FadeInSection";
 import { getUpdates, getUpdateTypes, groupUpdatesByType, getTypeDisplayName } from "@/lib/updates";
 import type { SanityUpdate } from "@/types/update";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0 },
-};
 
 export default function ConversationsPage() {
   const [updates, setUpdates] = useState<SanityUpdate[]>([]);
@@ -53,13 +48,7 @@ export default function ConversationsPage() {
       {/* Hero Section */}
       <div className="relative bg-gradient-to-b from-amber-400/10 to-transparent">
         <div className="mx-auto max-w-7xl px-6 py-20">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
+          <FadeInSection className="text-center">
             <span className="inline-flex items-center rounded-full border border-amber-400/20 bg-amber-400/10 px-3 py-1 text-[11px] tracking-widest uppercase text-amber-300">
               This Semester
             </span>
@@ -71,21 +60,14 @@ export default function ConversationsPage() {
             <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-3xl mx-auto">
               The work is the conversation. The media is how we carry it further. This is the record of what MUI is listening to, convening, and documenting right now — podcasts, talks, tours, and the announcements that come out of them.
             </p>
-          </motion.div>
+          </FadeInSection>
         </div>
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 md:px-12 lg:px-20 py-12">
         <div className="max-w-6xl mx-auto">
           {/* Type Filter */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="mb-12"
-          >
+          <FadeInSection delay={200} className="mb-12">
             <div className="flex flex-wrap gap-3 justify-center">
               <button
                 onClick={() => setSelectedType("all")}
@@ -111,18 +93,11 @@ export default function ConversationsPage() {
                 </button>
               ))}
             </div>
-          </motion.div>
+          </FadeInSection>
 
           {/* Featured Updates */}
           {selectedType === "all" && featuredUpdates.length > 0 && (
-            <motion.section
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-16"
-            >
+            <FadeInSection delay={300} as="section" className="mb-16">
               <h2 className="text-2xl font-semibold text-amber-400 mb-8 text-center">
                 Latest Conversations
               </h2>
@@ -131,19 +106,12 @@ export default function ConversationsPage() {
                   <UpdateCard key={update._id} update={update} index={index} />
                 ))}
               </div>
-            </motion.section>
+            </FadeInSection>
           )}
 
           {/* Updates by Type */}
           {selectedType === "all" ? (
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="space-y-16"
-            >
+            <FadeInSection delay={400} className="space-y-16">
               {Object.entries(groupedUpdates).map(([type, typeUpdates]) => (
                 <div key={type}>
                   <h2 className="text-2xl font-semibold text-amber-400 mb-6">
@@ -156,15 +124,9 @@ export default function ConversationsPage() {
                   </div>
                 </div>
               ))}
-            </motion.div>
+            </FadeInSection>
           ) : (
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
+            <FadeInSection delay={400}>
               <h2 className="text-2xl font-semibold text-amber-400 mb-6">
                 {getTypeDisplayName(selectedType)}
               </h2>
@@ -173,20 +135,14 @@ export default function ConversationsPage() {
                   <UpdateCard key={update._id} update={update} index={index} />
                 ))}
               </div>
-            </motion.div>
+            </FadeInSection>
           )}
 
           {/* No Results */}
           {filteredUpdates.length === 0 && !loading && (
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="text-center py-12"
-            >
+            <FadeInSection className="text-center py-12">
               <p className="text-white/50">No conversations found for this category yet.</p>
-            </motion.div>
+            </FadeInSection>
           )}
 
           {/* Loading State */}

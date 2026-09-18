@@ -1,5 +1,6 @@
 // src/components/layout/site-footer.tsx
 import Link from "next/link";
+import { NewsletterForm } from "./NewsletterForm";
 import {
   Youtube,
   Instagram,
@@ -84,30 +85,7 @@ export function SiteFooter() {
             Receive campus insights, stories, and research updates.
           </p>
 
-          <form className="flex gap-2">
-            <input
-              type="email"
-              placeholder="Your email"
-              className="
-                w-full rounded-md px-3 py-2
-                bg-white/10 border border-white/20
-                text-white placeholder:text-white/50
-                focus:outline-none focus:border-white
-              "
-            />
-            <button
-              type="submit"
-              className="
-                px-4 py-2 rounded-md
-                bg-white text-black
-                text-sm font-medium
-                hover:bg-neutral-200 transition
-              "
-              
-            >
-              Join
-            </button>
-          </form>
+          <NewsletterForm />
 
           {/* Social Platforms */}
           <div className="mt-6">
