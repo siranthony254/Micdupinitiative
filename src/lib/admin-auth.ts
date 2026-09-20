@@ -23,7 +23,7 @@ export async function requireAdmin(): Promise<AdminCheckResult> {
     .eq('id', user.id)
     .single()
 
-  const isAdmin = profile?.role === 'admin' || profile?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL
+  const isAdmin = profile?.role === 'admin' || (!!process.env.NEXT_PUBLIC_ADMIN_EMAIL && user.email?.toLowerCase() === process.env.NEXT_PUBLIC_ADMIN_EMAIL.toLowerCase())
 
   if (!isAdmin) {
     return { ok: false, status: 403 }

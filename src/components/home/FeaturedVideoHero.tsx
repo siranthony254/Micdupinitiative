@@ -32,9 +32,9 @@ export async function FeaturedVideoHero() {
               </span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight">
               {featuredVideo.title || "Featured Conversation"}
-            </h1>
+            </h2>
 
             {featuredVideo.description && (
               <p className="text-xl text-[#0D1F35]/75 leading-relaxed">

@@ -33,7 +33,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     })
     .commit()
 
-  revalidateForDocument('update', doc, ['/', '/conversations'])
+  revalidateForDocument('update', doc, ['/', '/updates'])
 
   return NextResponse.json(doc)
 }
@@ -46,7 +46,7 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   const doc = await writeClient.fetch(`*[_id == $id][0]`, { id })
   await writeClient.delete(id)
 
-  if (doc) revalidateForDocument('update', doc, ['/', '/conversations'])
+  if (doc) revalidateForDocument('update', doc, ['/', '/updates'])
 
   return NextResponse.json({ ok: true })
 }

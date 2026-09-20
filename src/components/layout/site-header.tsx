@@ -15,25 +15,17 @@ import { MegaMenu } from "./mega-menu";
    and "What's Next" stays a direct link rather than hiding behind a
    dropdown for a single destination. Campus Tours lives inside the
    Events page (as its smallest-scale format), not as its own nav item.
+
+   Conversations is a single merged page (hero, featured video, and
+   category playlists) - it has no dropdown of its own anymore. The old
+   Podcast/Talks/Documentaries pages were retired when their content
+   moved into that page's category playlists.
 ------------------------------*/
 const NAV_ITEMS = [
   {
     label: "Conversations",
     href: "/conversations",
-    items: [
-      {
-        title: "Campus Podcast",
-        href: "/Media/Podcast",
-      },
-      {
-        title: "MUC Talks",
-        href: "/Media/Talks",
-      },
-      {
-        title: "Documentaries",
-        href: "/Media/Documentaries",
-      },
-    ],
+    items: [],
   },
   {
     label: "Insights",
@@ -46,6 +38,10 @@ const NAV_ITEMS = [
       {
         title: "FAQs",
         href: "/research/faqs",
+      },
+      {
+        title: "Updates",
+        href: "/updates",
       },
     ],
   },

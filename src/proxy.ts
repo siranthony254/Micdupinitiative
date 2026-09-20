@@ -39,7 +39,7 @@ export default async function proxy(req: NextRequest) {
         .eq('id', user.id)
         .single()
 
-      const isAdmin = profile?.role === 'admin' || profile?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL
+      const isAdmin = profile?.role === 'admin' || (!!process.env.NEXT_PUBLIC_ADMIN_EMAIL && user.email?.toLowerCase() === process.env.NEXT_PUBLIC_ADMIN_EMAIL.toLowerCase())
 
       if (!isAdmin) {
         return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
@@ -67,7 +67,7 @@ export default async function proxy(req: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    const isAdmin = profile?.role === 'admin' || profile?.email === process.env.NEXT_PUBLIC_ADMIN_EMAIL
+    const isAdmin = profile?.role === 'admin' || (!!process.env.NEXT_PUBLIC_ADMIN_EMAIL && user.email?.toLowerCase() === process.env.NEXT_PUBLIC_ADMIN_EMAIL.toLowerCase())
 
     if (!isAdmin) {
       return NextResponse.redirect(new URL('/unauthorized', req.url))

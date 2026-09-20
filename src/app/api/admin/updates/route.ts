@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     memoReference: body.memoReference || undefined,
   })
 
-  revalidateForDocument('update', doc, ['/', '/conversations'])
+  revalidateForDocument('update', doc, ['/', '/updates'])
 
   return NextResponse.json(doc, { status: 201 })
 }
